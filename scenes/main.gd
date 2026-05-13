@@ -23,7 +23,8 @@ var starting_cells : Array[Vector2i] = [
 ]
 
 var queue : Array = []
-var cur_cell
+var cur_cell = null
+var prev_cell = null
 var visited_cells : Dictionary
 
 var time_per_tick : float = 0.5
@@ -40,10 +41,13 @@ func _ready() -> void:
 		queue.push_back(cell)
 		visited_cells[cell] = true
 	
-	#Engine.physics_ticks_per_second = 1
+	Engine.physics_ticks_per_second = 6
 
 func _physics_process(delta: float) -> void:
 	if(queue.is_empty() == false):
+		# Makes it so only the active cell is saturated
+		if(prev_cell != null):
+			$TileMapLayer.set_cell(prev_cell, 0, colours_in_tileset[TilesetColour.DESATURATED_ORANGE])
 		# We can try make this more aggressive to keep it lower than 150 -v
 		var reset_threshold : int = 30
 		if(cur_index >= reset_threshold):
@@ -53,7 +57,7 @@ func _physics_process(delta: float) -> void:
 			queue = new_queue
 			cur_index = 0
 		if(trigger_pointer_mode):
-			# To stop it from erroring when the array is of size one
+			# To stop it from erroring when the array is of size one -s
 			if(cur_index >= queue.size()):
 				queue.clear()
 				return
@@ -65,6 +69,7 @@ func _physics_process(delta: float) -> void:
 			"""
 		$TileMapLayer.set_cell(cur_cell, 0, colours_in_tileset[TilesetColour.ORANGE])
 		add_to_queue(cur_cell)
+		prev_cell = cur_cell
 	else:
 		print("all done")
 
