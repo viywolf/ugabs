@@ -77,9 +77,13 @@ func _physics_process(delta: float) -> void:
 				cur_cell = queue.front()
 				queue.pop_front()
 				"""
-			$TileMapLayer.set_cell(cur_cell, 0, colours_in_tileset[TilesetColour.ORANGE])
-			add_to_queue(cur_cell)
-			prev_cell = cur_cell
+			if(prev_cell == null or $TileMapLayer.get_cell_tile_data(cur_cell) == null):
+				$TileMapLayer.set_cell(cur_cell, 0, colours_in_tileset[TilesetColour.ORANGE])
+				add_to_queue(cur_cell)
+				prev_cell = cur_cell
+		else:
+			if(cur_cell2 != null):
+				$TileMapLayer.set_cell(cur_cell2, 0, colours_in_tileset[TilesetColour.DESATURATED_ORANGE])
 	#elif (movement_type == "skeleton"):
 	if(true):
 		if(stack.is_empty() == false):
@@ -89,29 +93,34 @@ func _physics_process(delta: float) -> void:
 				
 			cur_cell2 = stack.pop_back()
 			
-			$TileMapLayer.set_cell(cur_cell2, 0, colours_in_tileset[TilesetColour.PURPLE])
+			if(prev_cell2 == null or $TileMapLayer.get_cell_tile_data(cur_cell2) == null):
 			
-			add_to_skel_stack(cur_cell2)
-			prev_cell2 = cur_cell2
+				$TileMapLayer.set_cell(cur_cell2, 0, colours_in_tileset[TilesetColour.PURPLE])
+				
+				add_to_skel_stack(cur_cell2)
+				prev_cell2 = cur_cell2
 		else:
 			if(cur_cell2 != null):
 				$TileMapLayer.set_cell(cur_cell2, 0, colours_in_tileset[TilesetColour.DESATURATED_PURPLE])
 
 func add_to_queue(cell : Vector2) -> void:
-	for i in range(3):
-		for j in range(3):
-			if(abs(a[i]) == abs(a[j])): continue
+	for i in a:
+		for j in a:
+			if(abs(i) == abs(j)): continue
 			# We are adding stuff here multiple times -v
-			if(visited_cells.get(Vector2i(cur_cell.x + a[i],cur_cell.y + a[j])) == null):
+			if(visited_cells.get(Vector2i(cur_cell.x + i,cur_cell.y + j)) == null):
 				# This prevents it from going if the cell already has a colour
-				if($TileMapLayer.get_cell_tile_data(Vector2i(cell.x + a[i],cell.y + a[j])) == null):
-					queue.push_back(Vector2i(cell.x + a[i],cell.y + a[j]))
-					print("added " + str(Vector2i(cell.x + a[i],cell.y + a[j])) + " to queue")
-					visited_cells[Vector2i(cell.x + a[i],cell.y + a[j])] = true
+				if($TileMapLayer.get_cell_tile_data(Vector2i(cell.x + i,cell.y + j)) == null):
+					queue.push_back(Vector2i(cell.x + i,cell.y + j))
+					print("added " + str(Vector2i(cell.x + i,cell.y + j)) + " to queue")
+					visited_cells[Vector2i(cell.x + i,cell.y + j)] = true
 			else:
 				pass
 				#print("already done")
 
+# So there will always be a gap because the direction
+# wants to default towards something regardless
+# of the direction it was going now
 func add_to_skel_stack(cell : Vector2) -> void:
 	for i in a:
 		for j in a:
