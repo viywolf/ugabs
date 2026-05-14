@@ -43,11 +43,15 @@ var trigger_pointer_mode : bool = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	"""
 	for cell in starting_cells:
 		$TileMapLayer.set_cell(cell, 0, colours_in_tileset[TilesetColour.ORANGE])
 		queue.push_back(cell)
 		stack.push_back(cell)
 		visited_cells[cell] = true
+	"""
+	queue.push_back(starting_cells[0] + Vector2i(5, 0))
+	stack.push_back(starting_cells[0] - Vector2i(5, 0))
 	
 	Engine.physics_ticks_per_second = 6
 
