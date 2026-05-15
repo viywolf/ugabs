@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Grid Based Thing"
-run/main_scene="uid://ctjymnjt4trmo"
+run/main_scene="uid://b84n1pq7y7d1w"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
