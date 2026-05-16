@@ -1,8 +1,15 @@
-extends Node
+@abstract extends Node
 
 class_name Traveller
 
 var tilemap : TileMapLayer
+
+var directions : Array[Vector2i] = [
+	Vector2i.UP,
+	Vector2i.DOWN,
+	Vector2i.LEFT,
+	Vector2i.RIGHT
+]
 
 @export_category("Colours")
 
@@ -16,6 +23,11 @@ var tilemap : TileMapLayer
 @export_category("Position")
 
 @export var current_position : Vector2i = Vector2i(0, 0)
+var previous_position : Vector2i = Vector2i(0, 0)
+
+@export_category("Modifiers")
+
+@export var traveller_modifier : String
 
 func _ready() -> void:
 	if(get_parent() is TileMapLayer):
@@ -25,6 +37,9 @@ func _ready() -> void:
 
 func move(next_position : Vector2i) -> void:
 	if(can_move(next_position)):
+		previous_position = current_position
+		if(tilemap.get_cell_tile_data(next_position).get_custom_data("Colour") == passed_colour):
+			check_if_enclosed()
 		tilemap.set_cell(next_position, 0, active_colour)
 		tilemap.get_cell_tile_data(next_position).set_custom_data("Colour", active_colour)
 		tilemap.set_cell(current_position, 0, passed_colour)
@@ -37,15 +52,11 @@ func can_move(next_position : Vector2i) -> bool:
 		return true
 	else:
 		return false
-		
+
+func check_if_enclosed() -> void:
+	pass
+
+@abstract func get_next_position() -> Vector2i
 
 func get_speed() -> float:
 	return traveller_speed
-
-
-"""
-Make a manager for things like nearest position in the tile map layer, 
-so all the travellers can access it easily.
-Also make a function for getting these things.
--j
-"""
