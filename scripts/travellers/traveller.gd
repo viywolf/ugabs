@@ -113,15 +113,22 @@ func check_if_enclosed(current_next_position : Vector2i) -> void:
 		# using regular process to do it as fast as possible
 		await get_tree().process_frame
 		
-	print(visited)
+	print(current_next_position)
+	var recursive_check_starting_point : Vector2i
 	for key : Vector2i in visited.keys():
 		var surrounded : int = 0
 		for direction : Vector2i in directions:
 			if(visited.get_or_add(key + direction, false) == true):
 				surrounded += 1
 		if(surrounded == 4):
+			var rng : RandomNumberGenerator = RandomNumberGenerator.new()
+			if(rng.randi_range(0, 3) == 1):
+				recursive_check_starting_point = key
 			tilemap.set_cell(key, 0, passed_colour)
 			tilemap.get_cell_tile_data(key).set_custom_data("Colour", passed_colour)
+	if(recursive_check_starting_point == Vector2i(0,0)):
+		recursive_check_starting_point = visited.keys()[0]
+	check_if_enclosed(recursive_check_starting_point)
 	
 @abstract func get_next_position() -> Vector2i
 
