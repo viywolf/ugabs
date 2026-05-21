@@ -60,64 +60,69 @@ func can_move(to_next_position : Vector2i) -> bool:
 		return false
 
 func check_if_enclosed(current_next_position : Vector2i) -> void:
-	var q : Array[Vector2i]
-	var visited : Array[Array]
-	var visited_list : Array[Vector2i]
-	for i in range(500):
-		var a:Array
-		a.resize(500)
-		visited.push_back(a)
-		
-	# Temporary to stop array from going out of range
-	var offset = 250
-		
-	q.push_back(current_next_position)
-	# Make sure we get the empty cell if there is any
-	q.push_back(current_next_position + Vector2i.DOWN)
-	q.push_back(current_next_position + Vector2i.UP)
-	q.push_back(current_next_position + Vector2i.LEFT)
-	q.push_back(current_next_position + Vector2i.RIGHT)
-	var cur_cell : Vector2i
-	print("checking")
-	while(q.is_empty() == false):
-		cur_cell = q.pop_front()
-		var current_cell_data = tilemap.get_cell_tile_data(cur_cell)
-		if(visited[cur_cell.x + offset][cur_cell.y + offset] == true):
-			continue
-		# Doesnt really work, inf loop
-		if((current_cell_data != null
-		   and (current_cell_data.get_custom_data("Colour") != passed_colour
-		   and current_cell_data.get_custom_data("Colour") != active_colour))):
-			print("breaking at " + str(cur_cell))
-			break
-		if(current_cell_data != null and
-			current_cell_data.get_custom_data("Colour") == passed_colour):
-			continue
-		visited[cur_cell.x + offset][cur_cell.y + offset] = true
-		visited_list.push_back(cur_cell)
-		q.push_back(cur_cell + Vector2i.DOWN)
-		q.push_back(cur_cell + Vector2i.UP)
-		q.push_back(cur_cell + Vector2i.LEFT)
-		q.push_back(cur_cell + Vector2i.RIGHT)
-		await get_tree().process_frame
-		if(q.size() > 1000):
-			print("q too big, breaking")
-			break
-	print("done")
-	print(q.size())
-	print(q)
-	print("visited")
-	print(visited_list)
-	if(q.is_empty()):
-		printerr("filling it in!!")
-		for key in visited_list:
-			tilemap.set_cell(key, 0, passed_colour)
+	# current next position = passed colour
 	
-	#temporary
-	if(true):
-		for key in visited_list:
+	# Using a raycast, rotate it 360 degrees to check for gaps
+	# This does not work if the shape is weird and blocks parts of it
+	
+	#Graph cycle detection
+	# Have to stop it from going int a random direction - maybe stop it if it touches the passed colour twice?
+	
+	# Need a way to get all enclosed cells
+	
+	# What if there are two empty spaces in an enclosed space?
+	#	This will never happen since they get filled in immedietly
+	# What if it is mostly empty except for a traveller in the middle?
+	
+	var visited : Dictionary[Vector2i, bool]
+	
+	var q : Array[Vector2i]
+	q.push_back(current_next_position)
+	
+	var cur_index = 0
+	
+	# Need a way to find unfilled cells in the right place
+	
+	#Idea: if it is next to 4 visited cells, fill it in.
+	
+	print("starting")
+	while(q.is_empty() == false):
+		var cur_cell = q.pop_front()
+		#var cur_cell = q[cur_index]
+		#cur_index += 1
+		var surrounded_by_filled_cell : int = 0
+		var temp_queue : Array[Vector2i]
+		for direction : Vector2i in directions:
+			if(visited.get_or_add(cur_cell + direction, false) == true):
+				pass
+			else:
+				visited[cur_cell + direction] = true
+				if(tilemap.get_cell_tile_data(cur_cell + direction) == null):
+					pass
+				elif(tilemap.get_cell_tile_data(cur_cell + direction).get_custom_data("Colour") == passed_colour
+					 or tilemap.get_cell_tile_data(cur_cell + direction).get_custom_data("Colour") == active_colour):
+					temp_queue.push_back(cur_cell + direction)
+					surrounded_by_filled_cell += 1
+		
+		# if surrounded on all sides, impossible for this to be a boundary
+		if(surrounded_by_filled_cell != 4):
+			for cell in temp_queue:
+				q.push_back(cell)
+				visited[cell] = true
+				
+		# using regular process to do it as fast as possible
+		await get_tree().process_frame
+		
+	print(visited)
+	for key : Vector2i in visited.keys():
+		var surrounded : int = 0
+		for direction : Vector2i in directions:
+			if(visited.get_or_add(key + direction, false) == true):
+				surrounded += 1
+		if(surrounded == 4):
 			tilemap.set_cell(key, 0, passed_colour)
-
+			tilemap.get_cell_tile_data(key).set_custom_data("Colour", passed_colour)
+	
 @abstract func get_next_position() -> Vector2i
 
 func get_speed() -> float:
