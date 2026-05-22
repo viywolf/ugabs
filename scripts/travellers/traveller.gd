@@ -133,10 +133,16 @@ func check_if_enclosed(current_next_position : Vector2i) -> void:
 			#tilemap.get_cell_tile_data(key).set_custom_data("Colour", passed_colour)
 	if(recursive_check_starting_point == Vector2i(0,0)):
 		recursive_check_starting_point = visited.keys()[0]
+	var all_is_already_filled : bool = true
 	for cell in cells_to_fill:
+		if(tilemap.get_cell_tile_data(cell) == null
+		   or (tilemap.get_cell_tile_data(cell).get_custom_data("Colour") != passed_colour
+		   and tilemap.get_cell_tile_data(cell).get_custom_data("Colour") != active_colour)):
+			all_is_already_filled = false
 		tilemap.set_cell(cell, 0, passed_colour)
 		tilemap.get_cell_tile_data(cell).set_custom_data("Colour", passed_colour)
-	#check_if_enclosed(recursive_check_starting_point)
+	if(all_is_already_filled == false):
+		check_if_enclosed(current_next_position + Vector2i.LEFT)
 	
 @abstract func get_next_position() -> Vector2i
 
