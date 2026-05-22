@@ -74,9 +74,9 @@ func check_if_enclosed(current_next_position : Vector2i) -> void:
 	#	This will never happen since they get filled in immedietly
 	# What if it is mostly empty except for a traveller in the middle?
 	
-	var visited : Dictionary[Vector2i, bool]
+	var visited : Dictionary[Vector2i, bool] = {}
 	
-	var q : Array[Vector2i]
+	var q : Array[Vector2i] = []
 	q.push_back(current_next_position)
 	
 	var cur_index = 0
@@ -115,6 +115,9 @@ func check_if_enclosed(current_next_position : Vector2i) -> void:
 		
 	print(current_next_position)
 	var recursive_check_starting_point : Vector2i
+	
+	var cells_to_fill : Array = []
+	
 	for key : Vector2i in visited.keys():
 		var surrounded : int = 0
 		for direction : Vector2i in directions:
@@ -123,12 +126,17 @@ func check_if_enclosed(current_next_position : Vector2i) -> void:
 		if(surrounded == 4):
 			var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 			if(rng.randi_range(0, 3) == 1):
+				pass
 				recursive_check_starting_point = key
-			tilemap.set_cell(key, 0, passed_colour)
-			tilemap.get_cell_tile_data(key).set_custom_data("Colour", passed_colour)
+			cells_to_fill.push_back(key)
+			#tilemap.set_cell(key, 0, passed_colour)
+			#tilemap.get_cell_tile_data(key).set_custom_data("Colour", passed_colour)
 	if(recursive_check_starting_point == Vector2i(0,0)):
 		recursive_check_starting_point = visited.keys()[0]
-	check_if_enclosed(recursive_check_starting_point)
+	for cell in cells_to_fill:
+		tilemap.set_cell(cell, 0, passed_colour)
+		tilemap.get_cell_tile_data(cell).set_custom_data("Colour", passed_colour)
+	#check_if_enclosed(recursive_check_starting_point)
 	
 @abstract func get_next_position() -> Vector2i
 
