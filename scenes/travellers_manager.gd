@@ -8,7 +8,7 @@ func _ready() -> void:
 
 func _physics_process(_delta: float) -> void:
 	if(Input.is_action_just_pressed("ui_accept")):
-		$Random.check_if_enclosed(Vector2i(1,0))
+		$Random.check_if_enclosed(Vector2i(2,0))
 	if(Input.is_action_just_pressed("ui_down")):
 		$Random.check_if_enclosed(Vector2i(0,0))
 	if(Input.is_action_just_pressed("ui_up")):

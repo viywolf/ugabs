@@ -31,6 +31,24 @@ var next_position : Vector2i = Vector2i(0, 0)
 @export var traveller_modifier : String
 @export var disabled : bool = false
 
+@export_category("Path boundries")
+
+"""
+@onready var boundaries : Array[Vector2i] = [
+	current_position, # top left
+	current_position, # top right
+	current_position, # botton right
+	current_position, # botton left
+]
+"""
+
+@onready var boundaries : Array[Vector2i] = [
+	Vector2i(-10, -10), # top left
+	Vector2i(10, -10), # top right
+	Vector2i(10, 10), # botton right
+	Vector2i(-10, 10), # botton left
+]
+
 func _ready() -> void:
 	if(get_parent() is TileMapLayer):
 		tilemap = get_parent()
@@ -51,6 +69,21 @@ func move(to_next_position : Vector2i) -> void:
 		tilemap.set_cell(current_position, 0, passed_colour)
 		tilemap.get_cell_tile_data(current_position).set_custom_data("Colour", passed_colour)
 		current_position = next_position
+		
+		# Checking boundaries
+		
+		# top left
+		if(current_position.x >= boundaries[0].x and current_position.y <= boundaries[0].y):
+			boundaries[0] = current_position
+		# top right
+		if(current_position.x <= boundaries[1].x and current_position.y <= boundaries[1].y):
+			boundaries[1] = current_position
+		# bottom right
+		if(current_position.x >= boundaries[2].x and current_position.y >= boundaries[2].y):
+			boundaries[2] = current_position
+		# buttom left
+		if(current_position.x <= boundaries[3].x and current_position.y >= boundaries[3].y):
+			boundaries[3] = current_position
 
 func can_move(to_next_position : Vector2i) -> bool:
 	if(tilemap.get_cell_tile_data(to_next_position) == null or 
@@ -60,89 +93,56 @@ func can_move(to_next_position : Vector2i) -> bool:
 		return false
 
 func check_if_enclosed(current_next_position : Vector2i) -> void:
-	# current next position = passed colour
-	
-	# Using a raycast, rotate it 360 degrees to check for gaps
-	# This does not work if the shape is weird and blocks parts of it
-	
-	#Graph cycle detection
-	# Have to stop it from going int a random direction - maybe stop it if it touches the passed colour twice?
-	
-	# Need a way to get all enclosed cells
-	
-	# What if there are two empty spaces in an enclosed space?
-	#	This will never happen since they get filled in immedietly
-	# What if it is mostly empty except for a traveller in the middle?
 	
 	var visited : Dictionary[Vector2i, bool] = {}
 	
 	var q : Array[Vector2i] = []
-	q.push_back(current_next_position)
-	
-	var cur_index = 0
-	
-	# Need a way to find unfilled cells in the right place
-	
-	#Idea: if it is next to 4 visited cells, fill it in.
-	
-	print("starting")
-	while(q.is_empty() == false):
-		var cur_cell = q.pop_front()
-		#var cur_cell = q[cur_index]
-		#cur_index += 1
-		var surrounded_by_filled_cell : int = 0
-		var temp_queue : Array[Vector2i]
-		for direction : Vector2i in directions:
-			if(visited.get_or_add(cur_cell + direction, false) == true):
-				pass
-			else:
-				visited[cur_cell + direction] = true
-				if(tilemap.get_cell_tile_data(cur_cell + direction) == null):
-					pass
-				elif(tilemap.get_cell_tile_data(cur_cell + direction).get_custom_data("Colour") == passed_colour
-					 or tilemap.get_cell_tile_data(cur_cell + direction).get_custom_data("Colour") == active_colour):
-					temp_queue.push_back(cur_cell + direction)
-					surrounded_by_filled_cell += 1
+	q.push_back(current_position)
+	var cur_index : int = 0
+	while(cur_index != q.size()):
+		var cur_cell : Vector2i = q[cur_index]
+		cur_index += 1
 		
-		# if surrounded on all sides, impossible for this to be a boundary
-		if(surrounded_by_filled_cell != 4):
-			for cell in temp_queue:
-				q.push_back(cell)
-				visited[cell] = true
+		print("checking " + str(cur_cell))
+		
+		visited[cur_cell] = true
+		
+		for direction : Vector2i in directions:
+			var next_direction = cur_cell + direction
+			
+			if(visited.get_or_add(next_direction, false) == true): cur_index += 1; continue
+			
+			if(next_direction.x < min(boundaries[0].x, boundaries[3].x)): cur_index += 1; continue
+			if(next_direction.x > max(boundaries[1].x, boundaries[2].x)): cur_index += 1; continue
+			if(next_direction.y < min(boundaries[0].y, boundaries[1].y)): cur_index += 1; continue
+			if(next_direction.y > max(boundaries[2].y, boundaries[3].y)): cur_index += 1; continue
+			
+			if(tilemap.get_cell_tile_data(next_direction) == null or tilemap.get_cell_tile_data(next_direction).get_custom_data("Colour") != passed_colour):
+				q.push_back(next_direction)
 				
-		# using regular process to do it as fast as possible
 		await get_tree().process_frame
 		
-	print(current_next_position)
-	var recursive_check_starting_point : Vector2i
-	
-	var cells_to_fill : Array = []
-	
-	for key : Vector2i in visited.keys():
-		var surrounded : int = 0
-		for direction : Vector2i in directions:
-			if(visited.get_or_add(key + direction, false) == true):
-				surrounded += 1
-		if(surrounded == 4):
-			var rng : RandomNumberGenerator = RandomNumberGenerator.new()
-			if(rng.randi_range(0, 3) == 1):
-				pass
-				recursive_check_starting_point = key
-			cells_to_fill.push_back(key)
-			#tilemap.set_cell(key, 0, passed_colour)
-			#tilemap.get_cell_tile_data(key).set_custom_data("Colour", passed_colour)
-	if(recursive_check_starting_point == Vector2i(0,0)):
-		recursive_check_starting_point = visited.keys()[0]
-	var all_is_already_filled : bool = true
-	for cell in cells_to_fill:
-		if(tilemap.get_cell_tile_data(cell) == null
-		   or (tilemap.get_cell_tile_data(cell).get_custom_data("Colour") != passed_colour
-		   and tilemap.get_cell_tile_data(cell).get_custom_data("Colour") != active_colour)):
-			all_is_already_filled = false
-		tilemap.set_cell(cell, 0, passed_colour)
-		tilemap.get_cell_tile_data(cell).set_custom_data("Colour", passed_colour)
-	if(all_is_already_filled == false):
-		check_if_enclosed(current_next_position + Vector2i.LEFT)
+	var cells_to_fill : Array[Vector2i]
+	var is_fill_valid : bool = true
+	for i in range(min(boundaries[0].y, boundaries[1].y), max(boundaries[2].y, boundaries[3].y)):
+		for j in range(min(boundaries[0].x, boundaries[3].x), max(boundaries[2].x, boundaries[1].x)):
+			
+			if(visited.get_or_add(Vector2i(i, j), false) == true): continue
+			
+			if(tilemap.get_cell_tile_data(Vector2i(i, j)) == null
+			or tilemap.get_cell_tile_data(Vector2i(i, j)).get_custom_data("Colour") == passed_colour
+			or tilemap.get_cell_tile_data(Vector2i(i, j)).get_custom_data("Colour") == active_colour):
+				cells_to_fill.push_back(Vector2i(i, j))
+			elif(tilemap.get_cell_tile_data(Vector2i(i, j)).get_custom_data("Colour").y == 1):
+				print("Invalid fill attempted")
+				is_fill_valid = false
+				break
+			
+			
+	if(is_fill_valid):
+		for cell in cells_to_fill:
+			tilemap.set_cell(cell, 0, passed_colour)
+			tilemap.get_cell_tile_data(cell).set_custom_data("Colour", passed_colour)
 	
 @abstract func get_next_position() -> Vector2i
 
