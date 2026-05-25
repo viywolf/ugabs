@@ -4,17 +4,9 @@ var current_turn : int = 0
 
 func _ready() -> void:
 	pass
-	Engine.physics_ticks_per_second = 6
+	Engine.physics_ticks_per_second = 12
 
 func _physics_process(_delta: float) -> void:
-	if(Input.is_action_just_pressed("ui_accept")):
-		$Random.check_if_enclosed(Vector2i(2,0))
-	if(Input.is_action_just_pressed("ui_down")):
-		$Random.check_if_enclosed(Vector2i(0,0))
-	if(Input.is_action_just_pressed("ui_up")):
-		$Random.check_if_enclosed(Vector2i(-1,0))
-	if(Input.is_action_just_pressed("ui_left")):
-		$Random.check_if_enclosed(Vector2i(-2,0))
 	current_turn += 1
 	for traveller in get_children():
 		if(current_turn % int(traveller.get_speed()) == 0):
