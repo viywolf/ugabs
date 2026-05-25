@@ -180,8 +180,10 @@ func check_if_enclosed(current_next_position : Vector2i) -> void:
 			tilemap.get_cell_tile_data(cell).set_custom_data("Colour", passed_colour)
 		tilemap.get_cell_tile_data(current_position).set_custom_data("Colour", active_colour)
 	
-	
+	for i in range(boundaries.size()):
+		boundaries[i] = current_position
 	disabled = false
+	
 	
 @abstract func get_next_position() -> Vector2i
 
