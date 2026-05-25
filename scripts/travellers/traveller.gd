@@ -33,14 +33,13 @@ var next_position : Vector2i = Vector2i(0, 0)
 
 @export_category("Path boundries")
 
-#"""
+
 @onready var boundaries : Array[Vector2i] = [
 	current_position, # top left
 	current_position, # top right
 	current_position, # botton right
 	current_position, # botton left
 ]
-#"""
 
 var is_new_position : Dictionary[Vector2i, bool]
 
@@ -56,11 +55,20 @@ func move(to_next_position : Vector2i) -> void:
 	next_position = to_next_position
 	if(can_move(next_position)):
 		previous_position = current_position
-		#if(is_new_position.get_or_add(next_position, true) == true):
-		if(tilemap.get_cell_tile_data(next_position) != null 
-		   and tilemap.get_cell_tile_data(next_position).get_custom_data("Colour") == passed_colour):
-			check_if_enclosed(next_position)
-		is_new_position[next_position] = false
+		if(is_new_position.get_or_add(current_position, true) == true):
+			if(tilemap.get_cell_tile_data(next_position) != null 
+			   and (tilemap.get_cell_tile_data(next_position).get_custom_data("Colour") == passed_colour
+			or tilemap.get_cell_tile_data(next_position).get_custom_data("Colour") == active_colour)):
+				check_if_enclosed(next_position)
+				# Moving in the y axis
+				if(abs(next_position - current_position).x == 0):
+					check_if_enclosed(current_position - directions[2])
+					check_if_enclosed(current_position - directions[3])
+				# Moving in the x axis
+				elif(abs(next_position - current_position).y == 0):
+					check_if_enclosed(current_position - directions[0])
+					check_if_enclosed(current_position - directions[1])
+			is_new_position[next_position] = false
 		tilemap.set_cell(next_position, 0, active_colour)
 		tilemap.get_cell_tile_data(next_position).set_custom_data("Colour", active_colour)
 		tilemap.set_cell(current_position, 0, passed_colour)
@@ -98,7 +106,7 @@ func check_if_enclosed(current_next_position : Vector2i) -> void:
 	var visited : Dictionary[Vector2i, bool] = {}
 	
 	var q : Array[Vector2i] = []
-	q.push_back(current_position)
+	q.push_back(current_next_position)
 	var cur_index : int = 0
 	while(cur_index < q.size()):
 		var cur_cell : Vector2i = q[cur_index]
@@ -116,15 +124,20 @@ func check_if_enclosed(current_next_position : Vector2i) -> void:
 			
 			if(visited.get_or_add(next_direction, false) == true): continue
 			
-			if(next_direction.x < min(boundaries[0].x, boundaries[3].x)): continue
-			if(next_direction.x > max(boundaries[1].x, boundaries[2].x)): continue
-			if(next_direction.y < min(boundaries[0].y, boundaries[1].y)): continue
-			if(next_direction.y > max(boundaries[2].y, boundaries[3].y)): continue
+			if(next_direction.x < min(boundaries[0].x, boundaries[3].x) - 1): continue
+			if(next_direction.x > max(boundaries[1].x, boundaries[2].x) + 1): continue
+			if(next_direction.y < min(boundaries[0].y, boundaries[1].y) - 1): continue
+			if(next_direction.y > max(boundaries[2].y, boundaries[3].y) + 1): continue
 			
-			if(tilemap.get_cell_tile_data(next_direction) == null or tilemap.get_cell_tile_data(next_direction).get_custom_data("Colour") != passed_colour):
+			if(next_direction == current_position): continue
+			
+			if(tilemap.get_cell_tile_data(next_direction) == null):
+				#or tilemap.get_cell_tile_data(next_direction).get_custom_data("Colour") != passed_colour)
 				q.push_back(next_direction)
 				
 		await get_tree().process_frame
+		
+	print(q)
 		
 	#print("waiting 3 secs...")
 	#await get_tree().create_timer(3).timeout
@@ -136,11 +149,13 @@ func check_if_enclosed(current_next_position : Vector2i) -> void:
 			
 			if(visited.get_or_add(Vector2i(i, j), false) == true): continue
 			
-			if(tilemap.get_cell_tile_data(Vector2i(i, j)) == null
-			or tilemap.get_cell_tile_data(Vector2i(i, j)).get_custom_data("Colour") == passed_colour
-			or tilemap.get_cell_tile_data(Vector2i(i, j)).get_custom_data("Colour") == active_colour):
+			if(tilemap.get_cell_tile_data(Vector2i(i, j)) == null):
+			#or tilemap.get_cell_tile_data(Vector2i(i, j)).get_custom_data("Colour") == passed_colour
+			#or tilemap.get_cell_tile_data(Vector2i(i, j)).get_custom_data("Colour") == active_colour):
 				cells_to_fill.push_back(Vector2i(i, j))
-			elif(tilemap.get_cell_tile_data(Vector2i(i, j)).get_custom_data("Colour").y == 1):
+			elif(tilemap.get_cell_tile_data(Vector2i(i, j)).get_custom_data("Colour").y == 1
+				and tilemap.get_cell_tile_data(Vector2i(i, j)).get_custom_data("Colour") != active_colour
+				and tilemap.get_cell_tile_data(Vector2i(i, j)).get_custom_data("Colour") != passed_colour):
 				print("Invalid fill attempted")
 				is_fill_valid = false
 				break
