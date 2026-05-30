@@ -41,6 +41,17 @@ var next_position : Vector2i = Vector2i(0, 0)
 	current_position, # botton left
 ]
 
+var max_pos : Array[int] = [
+	-10, # left
+	10, # right
+	-10, # up
+	10, # down
+]
+
+enum MaxPosDirections {
+	LEFT, RIGHT, UP, DOWN
+}
+
 var is_new_position : Dictionary[Vector2i, bool]
 
 func _ready() -> void:
@@ -94,6 +105,7 @@ func check_if_enclosed(current_next_position : Vector2i) -> void:
 	disabled = true
 	
 	print("checking")
+	"""
 	
 	var visited : Dictionary[Vector2i, bool] = {}
 	
@@ -131,38 +143,85 @@ func check_if_enclosed(current_next_position : Vector2i) -> void:
 				
 		await get_tree().process_frame
 		
+	"""
+		
 	#print("waiting 3 secs...")
 	#await get_tree().create_timer(3).timeout
 		
-	var cells_to_fill : Array[Vector2i]
+	var cells_to_fill_1 : Dictionary[Vector2i, bool]
 	var is_fill_valid : bool = true
-	for i in range(min(boundaries[0].x, boundaries[1].x) - 2, max(boundaries[2].x, boundaries[3].x) + 2):
+	# This goes through column by column
+	
+	#for i in range(min(boundaries[0].x, boundaries[1].x) - 2, max(boundaries[2].x, boundaries[3].x) + 2):
+	for i in range(max_pos[MaxPosDirections.LEFT], max_pos[MaxPosDirections.RIGHT] + 1):
 		# Checking each x position
+		var cells_found : int = 0
+		
 		var found_cell_front : bool = false
 		var found_cell_back : bool = false
 		var empty_cells : Array[Vector2i]
-		#print("going through row: " + str(i))
-		for j in range(min(boundaries[0].y, boundaries[3].y) - 2, max(boundaries[2].y, boundaries[1].y) + 2):
+		#for j in range(min(boundaries[0].y, boundaries[3].y) - 2, max(boundaries[2].y, boundaries[1].y) + 2):
+		for j in range(max_pos[MaxPosDirections.UP], max_pos[MaxPosDirections.DOWN] + 1):
 			# Checking each y position
-			#print("checking y position: " + str(j))
-			if(visited.get_or_add(Vector2i(i, j), false) == true): 
+			#if(visited.get_or_add(Vector2i(i, j), false) == true): 
+			if(tilemap.get_cell_tile_data(Vector2i(i, j)) != null
+				and (tilemap.get_cell_tile_data(Vector2i(i, j)).get_custom_data("Colour") == passed_colour
+				or tilemap.get_cell_tile_data(Vector2i(i, j)).get_custom_data("Colour") == active_colour)):
 				# if the cell has been visited in the bfs (it is a passed cell)
+				cells_found += 1
 				if(found_cell_front == true):
 					found_cell_back = true
 				found_cell_front = true
 				if found_cell_front == true and found_cell_back == true:
-					print("deciding to fill in " + str(empty_cells))
 					for cell in empty_cells:
-						cells_to_fill.push_back(cell)
+						cells_to_fill_1[cell] = true
 					empty_cells.clear()
 					found_cell_back = false
 				continue
 			
 			if(tilemap.get_cell_tile_data(Vector2i(i, j)) == null):
-			#or tilemap.get_cell_tile_data(Vector2i(i, j)).get_custom_data("Colour") == passed_colour
-			#or tilemap.get_cell_tile_data(Vector2i(i, j)).get_custom_data("Colour") == active_colour):
 				if(found_cell_front == true):
-					print("adding " + str(Vector2i(i, j)) + " to empty cells" )
+					empty_cells.push_back(Vector2i(i, j))
+			elif(tilemap.get_cell_tile_data(Vector2i(i, j)).get_custom_data("Colour").y == 1
+				and tilemap.get_cell_tile_data(Vector2i(i, j)).get_custom_data("Colour") != active_colour
+				and tilemap.get_cell_tile_data(Vector2i(i, j)).get_custom_data("Colour") != passed_colour):
+				print("Invalid fill attempted")
+				is_fill_valid = false
+				break
+		print("found " + str(cells_found) + " cells in column " + str(i))
+	# Row by row
+	
+	var cells_to_fill_2 : Dictionary[Vector2i, bool]
+	
+	#for i in range(min(boundaries[0].y, boundaries[3].y) - 2, max(boundaries[2].y, boundaries[1].y) + 2):
+	for i in range(max_pos[MaxPosDirections.UP], max_pos[MaxPosDirections.DOWN] + 1):
+		var cells_found : int = 0
+		# Checking each y position
+		var found_cell_front : bool = false
+		var found_cell_back : bool = false
+		var empty_cells : Array[Vector2i]
+		#for j in range(min(boundaries[0].x, boundaries[1].x) - 2, max(boundaries[2].x, boundaries[3].x) + 2):
+		for j in range(max_pos[MaxPosDirections.LEFT], max_pos[MaxPosDirections.RIGHT] + 1):
+			# Checking each x position
+			
+			#if(visited.get_or_add(Vector2i(i, j), false) == true): 
+			if(tilemap.get_cell_tile_data(Vector2i(i, j)) != null
+				and (tilemap.get_cell_tile_data(Vector2i(i, j)).get_custom_data("Colour") == passed_colour
+				or tilemap.get_cell_tile_data(Vector2i(i, j)).get_custom_data("Colour") == active_colour)):
+				# if the cell has been visited in the bfs (it is a passed cell)
+				cells_found += 1
+				if(found_cell_front == true):
+					found_cell_back = true
+				found_cell_front = true
+				if found_cell_front == true and found_cell_back == true:
+					for cell in empty_cells:
+						cells_to_fill_2[cell] = true
+					empty_cells.clear()
+					found_cell_back = false
+				continue
+			
+			if(tilemap.get_cell_tile_data(Vector2i(i, j)) == null):
+				if(found_cell_front == true):
 					empty_cells.push_back(Vector2i(i, j))
 			elif(tilemap.get_cell_tile_data(Vector2i(i, j)).get_custom_data("Colour").y == 1
 				and tilemap.get_cell_tile_data(Vector2i(i, j)).get_custom_data("Colour") != active_colour
@@ -171,17 +230,20 @@ func check_if_enclosed(current_next_position : Vector2i) -> void:
 				is_fill_valid = false
 				break
 			
-	print("cells to fill ; " + str(cells_to_fill))
+		print("found " + str(cells_found) + " cells in row " + str(i))
 			
 	if(is_fill_valid):
-		for cell in cells_to_fill:
-			print("filling in " + str(cell))
-			tilemap.set_cell(cell, 0, passed_colour)
-			tilemap.get_cell_tile_data(cell).set_custom_data("Colour", passed_colour)
+		for cell in cells_to_fill_1.keys():
+			if(cells_to_fill_2.get_or_add(cell, false) == true):
+				print("filling in " + str(cell))
+				if(is_new_position.get_or_add(current_position, true) == true):
+					is_new_position[cell] = false
+				tilemap.set_cell(cell, 0, passed_colour)
+				tilemap.get_cell_tile_data(cell).set_custom_data("Colour", passed_colour)
 		tilemap.get_cell_tile_data(current_position).set_custom_data("Colour", active_colour)
 	
-	for i in range(boundaries.size()):
-		boundaries[i] = current_position
+	#for i in range(boundaries.size()):
+	#	boundaries[i] = current_position
 	disabled = false
 	
 	
