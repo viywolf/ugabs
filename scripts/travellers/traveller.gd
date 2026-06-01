@@ -199,11 +199,17 @@ func check_if_enclosed(current_next_position : Vector2i) -> void:
 		print(cells_to_fill_2)
 		for cell in cells_to_fill_1.keys():
 			if(cells_to_fill_2.get_or_add(cell, false) == true):
-				print("filling in " + str(cell))
-				if(is_new_position.get_or_add(current_position, true) == true):
-					is_new_position[cell] = false
-				tilemap.set_cell(cell, 0, passed_colour)
-				tilemap.get_cell_tile_data(cell).set_custom_data("Colour", passed_colour)
+				var open_to_not_added_cells : bool = false
+				for direction : Vector2i in directions:
+					if((tilemap.get_cell_tile_data(cell + direction) == null and cells_to_fill_1.get_or_add(cell + direction, false) == false)
+						or(tilemap.get_cell_tile_data(cell + direction) == null and cells_to_fill_2.get_or_add(cell + direction, false) == false)):
+							open_to_not_added_cells = true
+				if(open_to_not_added_cells == false):
+					print("filling in " + str(cell))
+					if(is_new_position.get_or_add(current_position, true) == true):
+						is_new_position[cell] = false
+					tilemap.set_cell(cell, 0, passed_colour)
+					tilemap.get_cell_tile_data(cell).set_custom_data("Colour", passed_colour)
 		tilemap.get_cell_tile_data(current_position).set_custom_data("Colour", active_colour)
 	
 	#for i in range(boundaries.size()):
