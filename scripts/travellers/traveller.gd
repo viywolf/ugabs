@@ -42,10 +42,10 @@ var next_position : Vector2i = Vector2i(0, 0)
 ]
 
 var max_pos : Array[int] = [
-	-10, # left
-	10, # right
-	-10, # up
-	10, # down
+	0, # left
+	0, # right
+	0, # up
+	0, # down
 ]
 
 enum MaxPosDirections {
@@ -54,11 +54,19 @@ enum MaxPosDirections {
 
 var is_new_position : Dictionary[Vector2i, bool]
 
+var move_log : Array[Vector2i]
+
 func _ready() -> void:
 	if(get_parent() is TileMapLayer):
 		tilemap = get_parent()
 	else:
 		printerr("No tile map layer to reference!")
+		assert(false)
+		
+	max_pos[0] = current_position.x
+	max_pos[1] = current_position.x
+	max_pos[2] = current_position.y
+	max_pos[3] = current_position.y
 
 func move(to_next_position : Vector2i) -> void:
 	if(disabled):
@@ -80,18 +88,22 @@ func move(to_next_position : Vector2i) -> void:
 		
 		# Checking boundaries
 		
-		# top left
-		if(current_position.x >= boundaries[0].x and current_position.y <= boundaries[0].y):
-			boundaries[0] = current_position
-		# top right
-		if(current_position.x <= boundaries[1].x and current_position.y <= boundaries[1].y):
-			boundaries[1] = current_position
-		# bottom right
-		if(current_position.x >= boundaries[2].x and current_position.y >= boundaries[2].y):
-			boundaries[2] = current_position
-		# buttom left
-		if(current_position.x <= boundaries[3].x and current_position.y >= boundaries[3].y):
-			boundaries[3] = current_position
+			
+		#left
+		
+		max_pos[0] = min(max_pos[0], current_position.x)
+		
+		#right
+		
+		max_pos[1] = max(max_pos[1], current_position.x)
+		
+		#up
+		
+		max_pos[2] = min(max_pos[2], current_position.y)
+		
+		#down
+		
+		max_pos[3] = max(max_pos[3], current_position.y)
 
 func can_move(to_next_position : Vector2i) -> bool:
 	if(tilemap.get_cell_tile_data(to_next_position) == null or 
@@ -130,7 +142,7 @@ func check_if_enclosed(current_next_position : Vector2i) -> void:
 				found_cell_front = true
 				if found_cell_front == true and found_cell_back == true:
 					for cell in empty_cells:
-						print("added cell to fill: " + str(cell))
+						#print("added cell to fill: " + str(cell))
 						cells_to_fill_1[cell] = true
 					empty_cells.clear()
 					found_cell_back = false
@@ -142,10 +154,11 @@ func check_if_enclosed(current_next_position : Vector2i) -> void:
 			elif(tilemap.get_cell_tile_data(Vector2i(i, j)).get_custom_data("Colour").y == 1
 				and tilemap.get_cell_tile_data(Vector2i(i, j)).get_custom_data("Colour") != active_colour
 				and tilemap.get_cell_tile_data(Vector2i(i, j)).get_custom_data("Colour") != passed_colour):
-				print("Invalid fill attempted")
-				is_fill_valid = false
-				break
-		print("found " + str(cells_found) + " cells in column " + str(i))
+				pass
+				#print("Invalid fill attempted")
+				#is_fill_valid = false
+				#break
+		#print("found " + str(cells_found) + " cells in column " + str(i))
 		
 	# Row by row
 	
@@ -186,17 +199,18 @@ func check_if_enclosed(current_next_position : Vector2i) -> void:
 			elif(tilemap.get_cell_tile_data(Vector2i(j, i)).get_custom_data("Colour").y == 1
 				and tilemap.get_cell_tile_data(Vector2i(j, i)).get_custom_data("Colour") != active_colour
 				and tilemap.get_cell_tile_data(Vector2i(j, i)).get_custom_data("Colour") != passed_colour):
-				print("Invalid fill attempted")
-				is_fill_valid = false
-				break
+				pass
+				#print("Invalid fill attempted")
+				#is_fill_valid = false
+				#break
 			
-		print("found " + str(cells_found) + " cells in row " + str(i))
-		if(added_cell_to_fill):
-			print("added cell to fill")
+		#print("found " + str(cells_found) + " cells in row " + str(i))
+		#if(added_cell_to_fill):
+	#		print("added cell to fill")
 			
 	if(is_fill_valid):
-		print(cells_to_fill_1)
-		print(cells_to_fill_2)
+		#print(cells_to_fill_1)
+		#print(cells_to_fill_2)
 		for cell in cells_to_fill_1.keys():
 			if(cells_to_fill_2.get_or_add(cell, false) == true):
 				var open_to_not_added_cells : bool = false
