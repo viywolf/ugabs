@@ -3,8 +3,8 @@ extends Traveller
 var next_pos_ready : bool = false
 var next_position_input : Vector2i
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+
+func _process(_delta: float) -> void:
 	if(Input.is_action_just_pressed("ui_up")):
 		next_position_input = directions[0] + current_position
 		next_pos_ready = true

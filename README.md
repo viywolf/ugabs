@@ -1,2 +1,1 @@
-# Grid Based Thing
-
+# Grid Algorithm Battle
