@@ -2,6 +2,9 @@ extends Traveller
 
 var current_direction : Vector2i = Vector2i.RIGHT
 
+func preparatory_actions() -> void:
+	pass
+
 func is_near_cell(cell_coords : Vector2i) -> bool:
 	const three_directions : Array = [-1, 0, 1]
 	for i in three_directions:

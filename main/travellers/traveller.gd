@@ -57,6 +57,9 @@ var is_new_position : Dictionary[Vector2i, bool]
 
 var move_log : Array[Vector2i]
 
+func get_speed() -> float:
+	return traveller_speed
+
 func _ready() -> void:
 	if(get_parent() is TileMapLayer):
 		tilemap = get_parent()
@@ -70,10 +73,12 @@ func _ready() -> void:
 	max_pos[2] = current_position.y
 	max_pos[3] = current_position.y
 	
+	preparatory_actions()
 
 func move(to_next_position : Vector2i) -> void:
 	if(disabled):
 		return
+		
 	next_position = to_next_position
 	
 	if(next_position == current_position):
@@ -81,6 +86,8 @@ func move(to_next_position : Vector2i) -> void:
 	
 	if(can_move(next_position)):
 		previous_position = current_position
+		
+		# Checking if it needs to be filled
 		if(is_new_position.get_or_add(current_position, true) == true):
 			if(tilemap.get_cell_tile_data(next_position) != null 
 			   and (tilemap.get_cell_tile_data(next_position).get_custom_data("Colour") == passed_colour
@@ -88,6 +95,7 @@ func move(to_next_position : Vector2i) -> void:
 				if(filling_disabled == false):
 					check_if_enclosed(next_position)
 			is_new_position[current_position] = false
+			
 		tilemap.set_cell(next_position, 0, active_colour)
 		tilemap.get_cell_tile_data(next_position).set_custom_data("Colour", active_colour)
 		tilemap.set_cell(current_position, 0, passed_colour)
@@ -113,8 +121,8 @@ func move(to_next_position : Vector2i) -> void:
 		
 		max_pos[3] = max(max_pos[3], current_position.y)
 	else:
-		print(next_position)
-		#print(name + " cannot move to this location")
+		#print(next_position)
+		print(name + " cannot move to this location")
 
 func can_move(to_next_position : Vector2i) -> bool:
 	if(tilemap.get_cell_tile_data(to_next_position) == null or 
@@ -245,5 +253,4 @@ func check_if_enclosed(current_next_position : Vector2i) -> void:
 	
 @abstract func get_next_position() -> Vector2i
 
-func get_speed() -> float:
-	return traveller_speed
+@abstract func preparatory_actions() -> void
