@@ -48,14 +48,12 @@ travellers = Array[String](["Random"])
 
 [node name="Seeker" type="Node" parent="TileMapLayer" unique_id=1384049201]
 script = ExtResource("3_m1m65")
-filling_disabled = true
 
 [node name="Seeker2" type="Node" parent="TileMapLayer" unique_id=287361683]
 script = ExtResource("3_m1m65")
 active_colour = Vector2i(6, 0)
 passed_colour = Vector2i(6, 1)
 current_position = Vector2i(-15, 0)
-filling_disabled = true
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=561495329]
 zoom = Vector2(10, 10)
