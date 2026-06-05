@@ -82,7 +82,7 @@ func set_cell_colour(cell_coords: Vector2i, colour : Vector2i) -> void:
 	tilemap.get_cell_tile_data(cell_coords).set_custom_data("Colour", colour)
 	
 	
-func is_cell_coloured(cell_coords : Vector2i) -> bool:
+func is_cell_null(cell_coords : Vector2i) -> bool:
 	if(tilemap.get_cell_tile_data(cell_coords) == null):
 		return true
 	else:
@@ -90,7 +90,7 @@ func is_cell_coloured(cell_coords : Vector2i) -> bool:
 	
 	
 func is_cell_traveller_colour(cell_coords: Vector2i) -> bool:
-	if(is_cell_coloured(cell_coords)):
+	if(is_cell_null(cell_coords)):
 		return false
 	
 	if(tilemap.get_cell_tile_data(cell_coords).get_custom_data("Colour") == passed_colour
@@ -99,6 +99,14 @@ func is_cell_traveller_colour(cell_coords: Vector2i) -> bool:
 	else:
 		return false
 
+func can_travel_to_cell(cell_coords: Vector2i) -> bool:
+	return(is_cell_null(cell_coords) or is_cell_traveller_colour(cell_coords))
+
+func start_moving() -> void:
+	if disabled:
+		return
+	else:
+		move(get_next_position())
 
 func move(to_next_position : Vector2i) -> void:
 	if(disabled):
@@ -114,7 +122,7 @@ func move(to_next_position : Vector2i) -> void:
 		
 		# Checking if it needs to be filled
 		if(is_new_position.get_or_add(current_position, true) == true):
-			if(is_cell_coloured(next_position) 
+			if(is_cell_null(next_position) == false
 			   and is_cell_traveller_colour(next_position)):
 				if(filling_disabled == false):
 					check_if_enclosed(next_position)
@@ -127,29 +135,19 @@ func move(to_next_position : Vector2i) -> void:
 		
 		# Checking boundaries
 		
-			
 		#left
-		
 		max_pos[0] = min(max_pos[0], current_position.x)
-		
 		#right
-		
 		max_pos[1] = max(max_pos[1], current_position.x)
-		
 		#up
-		
 		max_pos[2] = min(max_pos[2], current_position.y)
-		
 		#down
-		
 		max_pos[3] = max(max_pos[3], current_position.y)
 	else:
-		#print(next_position)
 		print(name + " cannot move to this location")
 
 func can_move(to_next_position : Vector2i) -> bool:
-	if(tilemap.get_cell_tile_data(to_next_position) == null or 
-			is_cell_traveller_colour(to_next_position)):
+	if(can_travel_to_cell(to_next_position)):
 		return true
 	else:
 		return false
@@ -161,26 +159,17 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 	var cells_to_fill_1 : Dictionary[Vector2i, bool]
 	var is_fill_valid : bool = true
 	# This goes through column by column
-	
-	#for i in range(min(boundaries[0].x, boundaries[1].x) - 2, max(boundaries[2].x, boundaries[3].x) + 2):
+
 	for i in range(max_pos[MaxPosDirections.LEFT], max_pos[MaxPosDirections.RIGHT] + 1):
 		# Checking each x position
-		#var cells_found : int = 0
 		
 		var found_cell_front : bool = false
 		var found_cell_back : bool = false
 		var empty_cells : Array[Vector2i]
-		#for j in range(min(boundaries[0].y, boundaries[3].y) - 2, max(boundaries[2].y, boundaries[1].y) + 2):
 		for j in range(max_pos[MaxPosDirections.UP], max_pos[MaxPosDirections.DOWN] + 1):
 			# Checking each y position
-			#if(visited.get_or_add(Vector2i(i, j), false) == true): 
-			if(tilemap.get_cell_tile_data(Vector2i(i, j)) != null
-				and (tilemap.get_cell_tile_data(Vector2i(i, j)).get_custom_data("Colour") == passed_colour
-				or tilemap.get_cell_tile_data(Vector2i(i, j)).get_custom_data("Colour") == active_colour)):
-			#if(is_cell_coloured(Vector2i(i, j)) == false
-		#		and is_cell_traveller_colour(Vector2i(i, j))):
-				# if the cell has been visited in the bfs (it is a passed cell)
-				#cells_found += 1
+			if(is_cell_traveller_colour(Vector2i(i, j))):
+				
 				if(found_cell_front == true):
 					found_cell_back = true
 				found_cell_front = true
@@ -192,73 +181,58 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 					found_cell_back = false
 				continue
 			
-			if(tilemap.get_cell_tile_data(Vector2i(i, j)) == null):
+			if(is_cell_null(Vector2i(i, j))):
 				if(found_cell_front == true):
 					empty_cells.push_back(Vector2i(i, j))
-			elif(tilemap.get_cell_tile_data(Vector2i(i, j)).get_custom_data("Colour").y == 1
-				and is_cell_traveller_colour(Vector2i(i, j))):
-				pass
-				#print("Invalid fill attempted")
-				#is_fill_valid = false
-				#break
-		#print("found " + str(cells_found) + " cells in column " + str(i))
+				# Invalid fill
+			elif(is_cell_traveller_colour(Vector2i(i, j)) == false):
+				if(found_cell_front == true):
+					found_cell_front = false
 		
 	# Row by row
 	
 	var cells_to_fill_2 : Dictionary[Vector2i, bool]
 	
-	#for i in range(min(boundaries[0].y, boundaries[3].y) - 2, max(boundaries[2].y, boundaries[1].y) + 2):
 	for i in range(max_pos[MaxPosDirections.UP], max_pos[MaxPosDirections.DOWN] + 1):
-		#var cells_found : int = 0
 		# Checking each y position
 		var found_cell_front : bool = false
 		var found_cell_back : bool = false
 		var empty_cells : Array[Vector2i]
-		#var added_cell_to_fill : bool =false
-		#for j in range(min(boundaries[0].x, boundaries[1].x) - 2, max(boundaries[2].x, boundaries[3].x) + 2):
 		for j in range(max_pos[MaxPosDirections.LEFT], max_pos[MaxPosDirections.RIGHT] + 1):
 			# Checking each x position
 			
-			#if(visited.get_or_add(Vector2i(i, j), false) == true): 
-			if(tilemap.get_cell_tile_data(Vector2i(j, i)) != null
-				and is_cell_traveller_colour(Vector2i(i, j))):
+			if(is_cell_traveller_colour(Vector2i(j, i))):
 				# if the cell has been visited in the bfs (it is a passed cell)
-				#cells_found += 1
 				if(found_cell_front == true):
 					found_cell_back = true
 				found_cell_front = true
 				if found_cell_front == true and found_cell_back == true:
 					for cell in empty_cells:
-						#added_cell_to_fill = true
 						cells_to_fill_2[cell] = true
 					empty_cells.clear()
 					found_cell_back = false
 				continue
 			
-			if(tilemap.get_cell_tile_data(Vector2i(j, i)) == null):
+			if(is_cell_null(Vector2i(j, i))):
 				if(found_cell_front == true):
 					empty_cells.push_back(Vector2i(j, i))
 			elif(tilemap.get_cell_tile_data(Vector2i(j, i)).get_custom_data("Colour").y == 1
 				and (is_cell_traveller_colour(Vector2i(j, i)) == false)):
 				pass
-				#print("Invalid fill attempted")
+				print("Invalid fill attempted")
 				#is_fill_valid = false
 				#break
 			
-		#print("found " + str(cells_found) + " cells in row " + str(i))
-		#if(added_cell_to_fill):
-	#		print("added cell to fill")
-			
 	if(is_fill_valid):
-		#print(cells_to_fill_1)
-		#print(cells_to_fill_2)
 		for cell in cells_to_fill_1.keys():
 			if(cells_to_fill_2.get_or_add(cell, false) == true):
 				var open_to_not_added_cells : bool = false
 				for direction : Vector2i in directions:
-					if((tilemap.get_cell_tile_data(cell + direction) == null and cells_to_fill_1.get_or_add(cell + direction, false) == false)
-						or(tilemap.get_cell_tile_data(cell + direction) == null and cells_to_fill_2.get_or_add(cell + direction, false) == false)):
-							open_to_not_added_cells = true
+					if(
+						(is_cell_null(cell + direction) and cells_to_fill_1.get_or_add(cell + direction, false) == false)
+						or (is_cell_null(cell + direction) and cells_to_fill_2.get_or_add(cell + direction, false) == false)
+					):
+						open_to_not_added_cells = true
 				if(open_to_not_added_cells == false):
 					print("filling in " + str(cell))
 					if(is_new_position.get_or_add(current_position, true) == true):
@@ -266,8 +240,6 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 					set_cell_colour(cell, passed_colour)
 		set_cell_colour(current_position, active_colour)
 	
-	#for i in range(boundaries.size()):
-	#	boundaries[i] = current_position
 	disabled = false
 	
 	

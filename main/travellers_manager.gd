@@ -54,6 +54,7 @@ func _ready() -> void:
 	Engine.physics_ticks_per_second = 12
 	
 	for child : Traveller in self.get_children():
+		if(child.disabled): continue
 		var new_astar_grid : AStarGrid2D = AStarGrid2D.new()
 		new_astar_grid.region = Rect2i(Vector2i(-60, -35), grid_size)
 		new_astar_grid.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_NEVER
@@ -63,19 +64,20 @@ func _ready() -> void:
 		all_astar_grids[child.passed_colour] = new_astar_grid
 		# Set up astar grid
 		update_solid_points(get_astar_grid(child.passed_colour), child.active_colour, child.passed_colour)
+		
+		child.set_cell_colour(child.current_position, child.active_colour)
 	
-	#update_solid_points(astar_grid, CellColour.colours_in_tileset[CellColour.TilesetColour.RED], CellColour.colours_in_tileset[CellColour.TilesetColour.DESATURATED_RED])
-
 func _physics_process(_delta: float) -> void:
 	current_turn += 1
 	for traveller in get_children():
 		if(current_turn % int(traveller.get_speed()) == 0):
-			traveller.move(traveller.get_next_position())
+			traveller.start_moving()
 		traveller.move_log.push_back(traveller.current_position)
 		
 	# Re calculate astar grids
 	
 	if(current_turn % 10 == 0):
 		for child : Traveller in self.get_children():
+			if child.disabled: continue
 			update_solid_points(get_astar_grid(child.passed_colour), child.active_colour, child.passed_colour)
 		
