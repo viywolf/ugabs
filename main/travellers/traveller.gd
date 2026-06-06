@@ -216,12 +216,10 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 			if(is_cell_null(Vector2i(j, i))):
 				if(found_cell_front == true):
 					empty_cells.push_back(Vector2i(j, i))
-			elif(tilemap.get_cell_tile_data(Vector2i(j, i)).get_custom_data("Colour").y == 1
-				and (is_cell_traveller_colour(Vector2i(j, i)) == false)):
-				pass
-				print("Invalid fill attempted")
-				#is_fill_valid = false
-				#break
+			elif(is_cell_traveller_colour(Vector2i(i, j)) == false):
+				# Invalid fill
+				if(found_cell_front == true):
+					found_cell_front = false
 			
 	if(is_fill_valid):
 		for cell in cells_to_fill_1.keys():

@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://dwau6iyp5vnxc"]
+
+[node name="TravellerSetupMenu" type="CanvasLayer" unique_id=392752584]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1710508902]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=899254600]
+layout_mode = 2
+text = "Add New Traveller"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=794769522]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=1880961291]
+layout_mode = 2
+text = "Type:"
+
+[node name="OptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer" unique_id=939569510]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer" unique_id=353664610]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2" unique_id=1928831216]
+layout_mode = 2
+text = "Colour:"
+
+[node name="OptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer2" unique_id=1863843716]
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer" unique_id=1901411660]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3" unique_id=1649894888]
+layout_mode = 2
+text = "Starting Position:"
+
+[node name="OptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer3" unique_id=1315143673]
+layout_mode = 2
+
+[node name="AddNewTravellerButton" type="Button" parent="VBoxContainer" unique_id=906707842]
+layout_mode = 2
+text = "Add"
