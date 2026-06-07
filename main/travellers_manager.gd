@@ -75,7 +75,6 @@ func _physics_process(_delta: float) -> void:
 		traveller.move_log.push_back(traveller.current_position)
 		
 	# Re calculate astar grids
-	
 	if(current_turn % 10 == 0):
 		for child : Traveller in self.get_children():
 			if child.disabled: continue

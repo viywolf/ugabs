@@ -16,10 +16,6 @@ var directions : Array[Vector2i] = [
 @export var active_colour : Vector2i = CellColour.colours_in_tileset[CellColour.TilesetColour.RED]
 @export var passed_colour : Vector2i = CellColour.colours_in_tileset[CellColour.TilesetColour.DESATURATED_RED]
 
-@export_category("Speed")
-
-@export var traveller_speed : float = 1
-
 @export_category("Position")
 
 @export var current_position : Vector2i = Vector2i(0, 0)
@@ -28,19 +24,10 @@ var next_position : Vector2i = Vector2i(0, 0)
 
 @export_category("Modifiers")
 
+@export var traveller_speed : float = 1
 @export var traveller_modifier : String
 @export var disabled : bool = false
 @export var filling_disabled : bool = false
-
-@export_category("Path boundries")
-
-
-@onready var boundaries : Array[Vector2i] = [
-	current_position, # top left
-	current_position, # top right
-	current_position, # botton right
-	current_position, # botton left
-]
 
 var max_pos : Array[int] = [
 	0, # left
@@ -56,6 +43,10 @@ enum MaxPosDirections {
 var is_new_position : Dictionary[Vector2i, bool]
 
 var move_log : Array[Vector2i]
+
+var direction_of_movement : Vector2i
+
+# Functions start here
 
 func get_speed() -> float:
 	return traveller_speed
@@ -109,9 +100,6 @@ func start_moving() -> void:
 		move(get_next_position())
 
 func move(to_next_position : Vector2i) -> void:
-	if(disabled):
-		return
-		
 	next_position = to_next_position
 	
 	if(next_position == current_position):
@@ -120,16 +108,34 @@ func move(to_next_position : Vector2i) -> void:
 	if(can_move(next_position)):
 		previous_position = current_position
 		
+		# Find the direction it is moving in
+		direction_of_movement = next_position - current_position
+		
+		# CHeck if its not goinf dialogn bc that abd
+		var valid_dirt : bool = false
+		for direction in directions:
+			if direction_of_movement == direction:
+				valid_dirt = true
+		if valid_dirt == false:
+			printerr("Diagonal movement attempted!")
+		
 		# Checking if it needs to be filled
 		if(is_new_position.get_or_add(current_position, true) == true):
-			if(is_cell_null(next_position) == false
-			   and is_cell_traveller_colour(next_position)):
-				if(filling_disabled == false):
+			if(is_cell_null(next_position) == false and is_cell_traveller_colour(next_position)):
+				if(filling_disabled == false): 
 					check_if_enclosed(next_position)
+					for direction : Vector2i in directions:
+						if direction == -direction_of_movement:
+							continue
+						else:
+							check_if_enclosed(current_position + direction)
+		
 			is_new_position[current_position] = false
 			
+		# Visually change the position of the active cell
 		set_cell_colour(next_position, active_colour)
 		set_cell_colour(current_position, passed_colour)
+		
 		
 		current_position = next_position
 		
@@ -143,6 +149,8 @@ func move(to_next_position : Vector2i) -> void:
 		max_pos[2] = min(max_pos[2], current_position.y)
 		#down
 		max_pos[3] = max(max_pos[3], current_position.y)
+		
+	# Cannot move to the next location
 	else:
 		print(name + " cannot move to this location")
 
@@ -184,7 +192,7 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 			if(is_cell_null(Vector2i(i, j))):
 				if(found_cell_front == true):
 					empty_cells.push_back(Vector2i(i, j))
-				# Invalid fill
+				# Invalid fill (its not null or traveller colour
 			elif(is_cell_traveller_colour(Vector2i(i, j)) == false):
 				if(found_cell_front == true):
 					found_cell_front = false
@@ -227,6 +235,7 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 				var open_to_not_added_cells : bool = false
 				for direction : Vector2i in directions:
 					if(
+						# Cell in each direction is null and its not in any cells to fill array
 						(is_cell_null(cell + direction) and cells_to_fill_1.get_or_add(cell + direction, false) == false)
 						or (is_cell_null(cell + direction) and cells_to_fill_2.get_or_add(cell + direction, false) == false)
 					):
