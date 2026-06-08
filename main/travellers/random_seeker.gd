@@ -55,7 +55,7 @@ func get_next_position() -> Vector2i:
 	
 	if(index_in_path < path_to_target.size()):
 		if(can_move(get_next_cell()) == false):
-			print(name + " cannot move to next cell")
+			#print(name + " cannot move to next cell")
 			reset_path()
 			return current_position
 		else:

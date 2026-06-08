@@ -228,10 +228,16 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 				if(found_cell_front == true):
 					found_cell_front = false
 			
+	
+			
 	if(is_fill_valid):
 		var all_visited_cells : Dictionary
+		
+		var cell_is_invalid : Dictionary
+		
 		for cell in cells_to_fill_1.keys():
-			if(all_visited_cells.get_or_add(cell, false) == true): continue
+			if(all_visited_cells.get_or_add(cell, false) == true): 
+				continue
 			
 			if(cells_to_fill_2.get_or_add(cell, false) == true):
 				# dfs here
@@ -245,6 +251,11 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 					var cur_cell = stack.pop_back()
 					
 					print("Checking " + str(cur_cell))
+					
+					if(cell_is_invalid.get_or_add(cur_cell, false)):
+						print(str(cur_cell) + ", a previously visited cell was found to be invalid, discard this dfs")
+						is_dfs_valid = false
+						break
 					
 					all_visited_cells[cur_cell] = true
 					
@@ -272,6 +283,9 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 						if(is_cell_traveller_colour(cur_cell + direction2) == false):
 							stack.push_back(cur_cell + direction2)
 							print("Added " + str(cur_cell + direction2) + " to stack from " + str(cur_cell))
+							
+					# To help a bit with lag
+					await get_tree().process_frame
 					
 					
 				if(is_dfs_valid == true):
@@ -281,7 +295,9 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 						if(is_new_position.get_or_add(current_position, true) == true):
 							is_new_position[dfs_marked_cell] = false
 						set_cell_colour(dfs_marked_cell, passed_colour)
-						
+				else:
+					for dfs_marked_cell in marked_empty_cells.keys():
+						cell_is_invalid[dfs_marked_cell] = true
 				
 		set_cell_colour(current_position, active_colour)
 	

@@ -1,1 +1,3 @@
 check if enclosed when it is by a filled cell not just on one :D
+
+dfs is quite laggy could be more optimised?
