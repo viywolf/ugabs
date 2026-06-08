@@ -239,6 +239,37 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 						(is_cell_null(cell + direction) and cells_to_fill_1.get_or_add(cell + direction, false) == false)
 						or (is_cell_null(cell + direction) and cells_to_fill_2.get_or_add(cell + direction, false) == false)
 					):
+						# dfs here
+						var marked_empty_cells : Dictionary[Vector2i, bool]
+						var stack : Array[Vector2i]
+						stack.push_back(cell)
+						
+						var is_dfs_valid : bool = true
+						
+						while(stack.is_empty() == false):
+							var cur_cell = stack.pop_back()
+							
+							if(marked_empty_cells.get_or_add(cur_cell, false) == true):
+								continue
+							else:
+								marked_empty_cells[cur_cell] = true
+								
+							if(cur_cell.x < max_pos[0] or cur_cell.x > max_pos[1]
+								or cur_cell.y < max_pos[2] or cur_cell > max_pos[3]):
+									is_dfs_valid = false
+									break
+								
+							for direction2 in directions:
+								if(is_cell_null(cell + direction2)):
+									stack.push_back(cell + direction2)
+							
+							
+						if(is_dfs_valid == true):
+							for dfs_marked_cell in marked_empty_cells.keys():
+								
+						
+						
+						###
 						open_to_not_added_cells = true
 				if(open_to_not_added_cells == false):
 					print("filling in " + str(cell))
