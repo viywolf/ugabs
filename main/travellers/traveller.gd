@@ -261,9 +261,15 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 							print(str(cur_cell) + " is on the boundary, discard this dfs")
 							is_dfs_valid = false
 							break
+							
+					# If the current cell is not null or passed or active (cannot fill it in)
+					if(is_cell_null(cur_cell) == false and is_cell_traveller_colour(cur_cell) == false):
+						print(str(cur_cell) + " is not a valid cell to fill in, discard this dfs")
+						is_dfs_valid = false
+						break
 						
 					for direction2 in directions:
-						if(is_cell_null(cur_cell + direction2)):
+						if(is_cell_traveller_colour(cur_cell + direction2) == false):
 							stack.push_back(cur_cell + direction2)
 							print("Added " + str(cur_cell + direction2) + " to stack from " + str(cur_cell))
 					
