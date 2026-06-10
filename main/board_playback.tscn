@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://vta41c6v32by"]
+
+[ext_resource type="Script" uid="uid://bpvubonnkjcvx" path="res://main/board_playback.gd" id="1_wnjpl"]
+
+[node name="BoardPlayback" type="TileMapLayer" unique_id=968460006]
+script = ExtResource("1_wnjpl")

@@ -58,4 +58,26 @@ emoji_menu_enabled = false
 layout_mode = 2
 text = "Add"
 
+[node name="CurrentlySelectedOptions" type="VBoxContainer" parent="." unique_id=1528176738]
+offset_left = 652.0
+offset_top = 18.0
+offset_right = 692.0
+offset_bottom = 58.0
+
+[node name="Placeholder" type="Panel" parent="CurrentlySelectedOptions" unique_id=1637904593]
+custom_minimum_size = Vector2(400, 100)
+layout_mode = 2
+
+[node name="Placeholder2" type="Panel" parent="CurrentlySelectedOptions" unique_id=330463112]
+custom_minimum_size = Vector2(400, 100)
+layout_mode = 2
+
+[node name="Placeholder3" type="Panel" parent="CurrentlySelectedOptions" unique_id=296631864]
+custom_minimum_size = Vector2(400, 100)
+layout_mode = 2
+
+[node name="Placeholder4" type="Panel" parent="CurrentlySelectedOptions" unique_id=1447519551]
+custom_minimum_size = Vector2(400, 100)
+layout_mode = 2
+
 [connection signal="pressed" from="MainContainer/AddNewTravellerButton" to="." method="_on_add_new_traveller_button_pressed"]

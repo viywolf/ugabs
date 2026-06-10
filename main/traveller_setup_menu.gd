@@ -18,6 +18,7 @@ func _ready() -> void:
 	for type : String in GlobalTravInfo.all_traveller_types.keys():
 		$MainContainer/TypeContainer/OptionButton.add_item(type.capitalize())
 		
+	# Only add the main colours?
 	for colour : String in CellColour.colour_names:
 		$MainContainer/ColourContainer/OptionButton.add_item(colour.capitalize())
 		

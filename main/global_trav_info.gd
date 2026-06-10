@@ -5,3 +5,5 @@ var all_traveller_types : Dictionary[String, Resource] = {
 	"random" : load("res://main/travellers/random.gd"),
 	"random location" : load("res://main/travellers/random_seeker.gd"),
 }
+
+var global_move_log : Array[Array]

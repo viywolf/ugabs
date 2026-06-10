@@ -2,6 +2,8 @@
 
 class_name Traveller
 
+signal move_finished
+
 var tilemap : TileMapLayer
 
 var directions : Array[Vector2i] = [
@@ -102,9 +104,11 @@ func can_travel_to_cell(cell_coords: Vector2i) -> bool:
 
 func start_moving() -> void:
 	if disabled:
+		move_finished.emit()
 		return
 	else:
-		move(get_next_position())
+		await move(get_next_position())
+	move_finished.emit()
 
 func move(to_next_position : Vector2i) -> void:
 	next_position = to_next_position
@@ -130,7 +134,7 @@ func move(to_next_position : Vector2i) -> void:
 		if(is_new_position.get_or_add(current_position, true) == true):
 			if(is_cell_null(next_position) == false and is_cell_traveller_colour(next_position)):
 				if(filling_disabled == false): 
-					check_if_enclosed(next_position)
+					await check_if_enclosed(next_position)
 					"""
 					for direction : Vector2i in directions:
 						if direction == -direction_of_movement:

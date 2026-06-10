@@ -19,6 +19,18 @@ var filled_cells_in_grid : Dictionary
 # making an astar grid for each colour
 # which allows teams
 
+"""
+[
+	[[action type, action value]],[ [action type, action value]],
+	[[action type, action value]],[ [action type, action value]], for each move
+	] traveller no
+[fill, [(pos, filled), (for, every_pos)]]
+[move, (pos, moved_to)]
+
+"""
+
+var moves_finished : Array[bool]
+
 func get_astar_grid(current_passed_colour : Vector2i) -> AStarGrid2D:
 	return all_astar_grids[current_passed_colour]
 
@@ -56,7 +68,19 @@ func _ready() -> void:
 				
 	Engine.physics_ticks_per_second = 12
 	
-	for child : Traveller in self.get_children():
+	GlobalTravInfo.global_move_log.resize(self.get_child_count())
+	moves_finished.resize(self.get_child_count())
+	moves_finished.fill(true)
+	
+	for arr : Array in GlobalTravInfo.global_move_log:
+		arr.push_back([])
+	
+	for i in range(self.get_child_count()):
+	#for child : Traveller in self.get_children():
+		var child : Traveller = self.get_child(i)
+		
+		child.move_finished.connect(traveller_move_finished.bind(i))
+		
 		if(child.disabled): continue
 		var new_astar_grid : AStarGrid2D = AStarGrid2D.new()
 		new_astar_grid.region = Rect2i(Vector2i(-60, -35), grid_size)
@@ -71,15 +95,38 @@ func _ready() -> void:
 		child.set_cell_colour(child.current_position, child.active_colour)
 	
 func _physics_process(_delta: float) -> void:
+	if Input.is_action_just_pressed("ui_accept"):
+		var playback_scene : PackedScene = load("res://main/board_playback.tscn")
+		add_child(playback_scene.instantiate())
+		queue_free()
+		return
+	if is_all_travellers_finished() == false:
+		return
 	current_turn += 1
-	for traveller in get_children():
-		if(current_turn % int(traveller.get_speed()) == 0):
-			traveller.start_moving()
-		traveller.move_log.push_back(traveller.current_position)
-		
+	
+	for arr : Array in GlobalTravInfo.global_move_log:
+		arr.push_back([])
+	
+	for i in range(get_child_count()):
+		var child : Traveller = self.get_child(i)
+		if(current_turn % int(child.get_speed()) == 0):
+			child.start_moving()
+		child.move_log.push_back(child.current_position)
+		var arr_to_be_added = ["move", child.current_position]
+		GlobalTravInfo.global_move_log[i][current_turn].push_back(arr_to_be_added)
 	# Re calculate astar grids
 	if(current_turn % 10 == 0):
 		for child : Traveller in self.get_children():
 			if child.disabled: continue
 			update_solid_points(get_astar_grid(child.passed_colour), child.active_colour, child.passed_colour)
 		
+		
+func traveller_move_finished(traveller_no : int) -> void:
+	moves_finished[traveller_no] = true
+	
+func is_all_travellers_finished() -> bool:
+	for i in range(moves_finished.size()):
+		if moves_finished[i] == false:
+			return false
+	moves_finished.fill(false)
+	return true
