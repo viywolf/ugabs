@@ -7,3 +7,7 @@ var all_traveller_types : Dictionary[String, Resource] = {
 }
 
 var global_move_log : Array[Array]
+
+var no_of_travellers : int
+
+var traveller_colours : Array[int]

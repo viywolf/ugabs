@@ -72,6 +72,9 @@ func _ready() -> void:
 	moves_finished.resize(self.get_child_count())
 	moves_finished.fill(true)
 	
+	GlobalTravInfo.no_of_travellers = self.get_child_count()
+	GlobalTravInfo.traveller_colours.resize(GlobalTravInfo.no_of_travellers)
+	
 	for arr : Array in GlobalTravInfo.global_move_log:
 		arr.push_back([])
 	
@@ -80,6 +83,8 @@ func _ready() -> void:
 		var child : Traveller = self.get_child(i)
 		
 		child.move_finished.connect(traveller_move_finished.bind(i))
+		
+		GlobalTravInfo.traveller_colours[i] = child.active_colour.x
 		
 		if(child.disabled): continue
 		var new_astar_grid : AStarGrid2D = AStarGrid2D.new()
@@ -97,7 +102,7 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void:
 	if Input.is_action_just_pressed("ui_accept"):
 		var playback_scene : PackedScene = load("res://main/board_playback.tscn")
-		add_child(playback_scene.instantiate())
+		add_sibling(playback_scene.instantiate())
 		queue_free()
 		return
 	if is_all_travellers_finished() == false:

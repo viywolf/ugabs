@@ -6,8 +6,12 @@ var cur_turn : int = 0
 
 var prev_positions : Array[Vector2i]
 
+func set_cell_colour(cell_coords : Vector2i, colour : Vector2i):
+	self.set_cell(cell_coords, 0, colour)
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	prev_positions.resize(GlobalTravInfo.no_of_travellers)
 	# random out of bounds value
 	prev_positions.fill(Vector2i(237, 237))
 
@@ -21,15 +25,18 @@ func _physics_process(_delta: float) -> void:
 			var action_value : Variant = action[1]
 			if(action_type == "move"):
 				# fill prev pos with passd colour
-				prev_positions[i]
+				# temp color
+				set_cell_colour(prev_positions[i], Vector2i(GlobalTravInfo.traveller_colours[i], 0))
 				# fill cur pos with active colour 
 				# actin value shold be a vector2i
-				action_value
+				# tem oclour
+				set_cell_colour(action_value, Vector2i(GlobalTravInfo.traveller_colours[i], 0))
 			elif(action_type == "fill"):
 				# action value should be array of vector2i
 				for coordinate : Vector2i in action_value:
 					# fill coordinate in passed colour
-					coordinate
+					# temp colour
+					set_cell_colour(coordinate, Vector2i(GlobalTravInfo.traveller_colours[i], 0))
 			else:
 				printerr("Invalid action type in move_log[", i, "]")
 			
