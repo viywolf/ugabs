@@ -258,12 +258,8 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 		
 		#print(all_visited_cells)
 		
-		print(cells_to_fill_1.keys())
-		
 		for cell in cells_to_fill_1.keys():
-			if(#all_visited_cells[cell.x + adj_mat_offset][cell.y + adj_mat_offset] == true
-				is_cell_traveller_colour(cell)
-			): 
+			if(all_visited_cells[cell.x + adj_mat_offset][cell.y + adj_mat_offset] == true): 
 				#print(all_visited_cells)
 				print("already visited " + str(cell))
 				continue
@@ -280,26 +276,18 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 				
 				var temp_timer = get_tree().create_timer(20)
 				
-				var cur_index : int = 0
-				
-				while(true):
-				#while(stack.is_empty() == false):
-					#var cur_cell = stack.pop_back()
-					if(cur_index >= stack.size()):
-						print("ending search: ", stack) 
-						break
-					var cur_cell = stack[cur_index]
-					cur_index += 1
+				while(stack.is_empty() == false):
+					var cur_cell = stack.pop_back()
 					
 					print("Checking " + str(cur_cell))
 					
 					if(cell_is_invalid.get_or_add(cur_cell, false) == true):
-						printerr(str(cur_cell) + ", a previously visited cell was found to be invalid, discard this bfs")
+						printerr(str(cur_cell) + ", a previously visited cell was found to be invalid, discard this dfs")
 						is_dfs_valid = false
 						break
 					if(all_visited_cells[cur_cell.x + adj_mat_offset][cur_cell.y + adj_mat_offset] == true):
 						print("visited cell before: " + str(cur_cell))
-						continue
+						break
 					all_visited_cells[cur_cell.x + adj_mat_offset][cur_cell.y + adj_mat_offset] = true
 					
 					if(marked_empty_cells.get_or_add(cur_cell, false) == true):
@@ -312,7 +300,7 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 					# If the dfs reaches the border (which it shouldn't for an enclosed space)
 					if(cur_cell.x <= max_pos[0] or cur_cell.x >= max_pos[1]
 						or cur_cell.y <= max_pos[2] or cur_cell.y >= max_pos[3]):
-							print(str(cur_cell) + " is on the boundary, discard this bfs")
+							print(str(cur_cell) + " is on the boundary, discard this dfs")
 							is_dfs_valid = false
 							break
 							
@@ -326,11 +314,10 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 						if(is_cell_traveller_colour(cur_cell + direction2) == false
 							and all_visited_cells[cur_cell.x + direction2.x + adj_mat_offset][cur_cell.y + direction2.y + adj_mat_offset] == false):
 							stack.push_back(cur_cell + direction2)
-							print("Added " + str(cur_cell + direction2) + " to q from " + str(cur_cell))
+							print("Added " + str(cur_cell + direction2) + " to stack from " + str(cur_cell))
 							
 					# To help a bit with lag
 					await get_tree().process_frame
-
 					
 					
 				if(is_dfs_valid == true):
@@ -344,7 +331,7 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 					for dfs_marked_cell in marked_empty_cells.keys():
 						cell_is_invalid[dfs_marked_cell] = true
 						
-				print("bfs from ", cell, " took ", 20 - temp_timer.time_left, " secs")
+				print("dfs from ", cell, " took ", 20 - temp_timer.time_left, " secs")
 				
 		set_cell_colour(current_position, active_colour)
 	

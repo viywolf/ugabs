@@ -1,45 +1,61 @@
 [gd_scene format=3 uid="uid://dwau6iyp5vnxc"]
 
-[node name="TravellerSetupMenu" type="CanvasLayer" unique_id=392752584]
+[ext_resource type="Script" uid="uid://dakg8d7rqrbsf" path="res://main/traveller_setup_menu.gd" id="1_4yp6q"]
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1710508902]
+[node name="TravellerSetupMenu" type="CanvasLayer" unique_id=392752584]
+script = ExtResource("1_4yp6q")
+
+[node name="MainContainer" type="VBoxContainer" parent="." unique_id=1710508902]
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Label" type="Label" parent="VBoxContainer" unique_id=899254600]
+[node name="TitleLabel" type="Label" parent="MainContainer" unique_id=899254600]
 layout_mode = 2
 text = "Add New Traveller"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=794769522]
+[node name="TypeContainer" type="HBoxContainer" parent="MainContainer" unique_id=794769522]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=1880961291]
+[node name="Label" type="Label" parent="MainContainer/TypeContainer" unique_id=1880961291]
 layout_mode = 2
 text = "Type:"
 
-[node name="OptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer" unique_id=939569510]
+[node name="OptionButton" type="OptionButton" parent="MainContainer/TypeContainer" unique_id=939569510]
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer" unique_id=353664610]
+[node name="ColourContainer" type="HBoxContainer" parent="MainContainer" unique_id=353664610]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2" unique_id=1928831216]
+[node name="Label" type="Label" parent="MainContainer/ColourContainer" unique_id=1928831216]
 layout_mode = 2
 text = "Colour:"
 
-[node name="OptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer2" unique_id=1863843716]
+[node name="OptionButton" type="OptionButton" parent="MainContainer/ColourContainer" unique_id=1863843716]
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer" unique_id=1901411660]
+[node name="StartingPosContainer" type="HBoxContainer" parent="MainContainer" unique_id=1901411660]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3" unique_id=1649894888]
+[node name="Label" type="Label" parent="MainContainer/StartingPosContainer" unique_id=1649894888]
 layout_mode = 2
 text = "Starting Position:"
 
-[node name="OptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer3" unique_id=1315143673]
+[node name="GridPosInputX" type="LineEdit" parent="MainContainer/StartingPosContainer" unique_id=2063013953]
 layout_mode = 2
+placeholder_text = "X Pos"
+max_length = 3
+emoji_menu_enabled = false
 
-[node name="AddNewTravellerButton" type="Button" parent="VBoxContainer" unique_id=906707842]
+[node name="GridPosInputY" type="LineEdit" parent="MainContainer/StartingPosContainer" unique_id=356547956]
+layout_mode = 2
+placeholder_text = "Y Pos"
+max_length = 2
+emoji_menu_enabled = false
+
+[node name="AddNewTravellerButton" type="Button" parent="MainContainer" unique_id=906707842]
 layout_mode = 2
 text = "Add"
+
+[connection signal="pressed" from="MainContainer/AddNewTravellerButton" to="." method="_on_add_new_traveller_button_pressed"]
