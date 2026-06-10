@@ -13,6 +13,9 @@ var astar_grid : AStarGrid2D = AStarGrid2D.new()
 
 var grid_size : Vector2i = Vector2i(120 + 1, 70 + 1)
 
+# Position : colour
+var filled_cells_in_grid : Dictionary
+
 # making an astar grid for each colour
 # which allows teams
 

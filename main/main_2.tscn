@@ -52,18 +52,20 @@ travellers = Array[String](["Random"])
 script = ExtResource("3_m1m65")
 active_colour = Vector2i(1, 0)
 passed_colour = Vector2i(1, 1)
+disabled = true
 
 [node name="Seeker2" type="Node" parent="TileMapLayer" unique_id=287361683]
 script = ExtResource("3_m1m65")
 active_colour = Vector2i(6, 0)
 passed_colour = Vector2i(6, 1)
 current_position = Vector2i(-15, 0)
+disabled = true
 
 [node name="User" type="Node" parent="TileMapLayer" unique_id=1048561479]
 script = ExtResource("4_u8quh")
+hold_to_continue_mode = true
 active_colour = Vector2i(8, 0)
 passed_colour = Vector2i(8, 1)
-disabled = true
 
 [node name="DoesNotMove" type="Node" parent="TileMapLayer" unique_id=1015791877]
 script = ExtResource("5_1fsht")
