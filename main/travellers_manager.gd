@@ -111,7 +111,7 @@ func _physics_process(_delta: float) -> void:
 	for i in range(get_child_count()):
 		var child : Traveller = self.get_child(i)
 		if(GlobalTravInfo.current_turn % int(child.get_speed()) == 0):
-			child.start_moving()
+			await child.start_moving()
 		child.move_log.push_back(child.current_position)
 		var arr_to_be_added = ["move", child.current_position]
 		GlobalTravInfo.global_move_log[i][GlobalTravInfo.current_turn].push_back(arr_to_be_added)

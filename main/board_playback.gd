@@ -39,6 +39,7 @@ func _physics_process(_delta: float) -> void:
 					# fill coordinate in passed colour
 					# temp colour
 					set_cell_colour(coordinate, Vector2i(GlobalTravInfo.traveller_colours[i], 1))
+				print("filled at ", cur_turn)
 			elif(action_type == "move"):
 				# fill prev pos with passd colour
 				set_cell_colour(prev_positions[i], Vector2i(GlobalTravInfo.traveller_colours[i], 1))
@@ -47,10 +48,9 @@ func _physics_process(_delta: float) -> void:
 				# actin value shold be a vector2i
 				set_cell_colour(action_value, Vector2i(GlobalTravInfo.traveller_colours[i], 0))
 				position_of_trav = action_value
-				print("filling ", action_value)
 			else:
 				printerr("Invalid action type in move_log[", i, "]")
 			if position_of_trav != Vector2i(237,237):
-					set_cell_colour(position_of_trav, Vector2i(GlobalTravInfo.traveller_colours[i], 0))
+				set_cell_colour(position_of_trav, Vector2i(GlobalTravInfo.traveller_colours[i], 0))
 			
 	cur_turn += 1
