@@ -121,6 +121,7 @@ func _physics_process(_delta: float) -> void:
 		child.move_log.push_back(child.current_position)
 		var arr_to_be_added = ["move", child.current_position]
 		GlobalTravInfo.global_move_log[i][current_turn].push_back(arr_to_be_added)
+		#print("push back ", arr_to_be_added, " to ", i)
 	# Re calculate astar grids
 	if(current_turn % 10 == 0):
 		for child : Traveller in self.get_children():
