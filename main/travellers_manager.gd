@@ -102,11 +102,6 @@ func _ready() -> void:
 		child.set_cell_colour(child.current_position, child.active_colour)
 	
 func _physics_process(_delta: float) -> void:
-	if Input.is_action_just_pressed("ui_accept"):
-		var playback_scene : PackedScene = load("res://main/board_playback.tscn")
-		add_sibling(playback_scene.instantiate())
-		queue_free()
-		return
 	if is_all_travellers_finished() == false:
 		return
 	current_turn += 1

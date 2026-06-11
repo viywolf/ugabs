@@ -1,5 +1,6 @@
 [gd_scene format=4 uid="uid://b84n1pq7y7d1w"]
 
+[ext_resource type="Script" uid="uid://bru07g80new0w" path="res://main/main.gd" id="1_okaqm"]
 [ext_resource type="Texture2D" uid="uid://dumwfdviqrfqh" path="res://main/Colours1.png" id="1_plxl6"]
 [ext_resource type="Script" uid="uid://bqxunvqtxkirg" path="res://main/travellers_manager.gd" id="2_18olw"]
 [ext_resource type="Script" uid="uid://d2xm80qsd2d3q" path="res://main/travellers/random_seeker.gd" id="3_m1m65"]
@@ -40,6 +41,7 @@ custom_data_layer_0/type = 6
 sources/0 = SubResource("TileSetAtlasSource_qdc3n")
 
 [node name="Main2" type="Node2D" unique_id=801575902]
+script = ExtResource("1_okaqm")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=785367590]
 unique_name_in_owner = true
