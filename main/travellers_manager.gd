@@ -4,8 +4,6 @@ extends TileMapLayer
 
 @export var travellers : Array[String]
 
-var current_turn : int = 0
-
 # Colour -> astar grid
 var all_astar_grids : Dictionary[Vector2i, AStarGrid2D]
 
@@ -87,6 +85,7 @@ func _ready() -> void:
 		
 		GlobalTravInfo.traveller_colours[i] = child.active_colour.x
 		GlobalTravInfo.is_traveller_disabled[i] = child.disabled
+		child.child_no = i
 		
 		if(child.disabled): continue
 		var new_astar_grid : AStarGrid2D = AStarGrid2D.new()
@@ -104,21 +103,21 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void:
 	if is_all_travellers_finished() == false:
 		return
-	current_turn += 1
+	GlobalTravInfo.current_turn += 1
 	
 	for arr : Array in GlobalTravInfo.global_move_log:
 		arr.push_back([])
 	
 	for i in range(get_child_count()):
 		var child : Traveller = self.get_child(i)
-		if(current_turn % int(child.get_speed()) == 0):
+		if(GlobalTravInfo.current_turn % int(child.get_speed()) == 0):
 			child.start_moving()
 		child.move_log.push_back(child.current_position)
 		var arr_to_be_added = ["move", child.current_position]
-		GlobalTravInfo.global_move_log[i][current_turn].push_back(arr_to_be_added)
+		GlobalTravInfo.global_move_log[i][GlobalTravInfo.current_turn].push_back(arr_to_be_added)
 		#print("push back ", arr_to_be_added, " to ", i)
 	# Re calculate astar grids
-	if(current_turn % 10 == 0):
+	if(GlobalTravInfo.current_turn % 10 == 0):
 		for child : Traveller in self.get_children():
 			if child.disabled: continue
 			update_solid_points(get_astar_grid(child.passed_colour), child.active_colour, child.passed_colour)

@@ -48,6 +48,8 @@ var move_log : Array[Vector2i]
 
 var direction_of_movement : Vector2i
 
+var child_no : int = -1
+
 # Functions start here
 
 func get_speed() -> float:
@@ -325,12 +327,17 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 					
 					
 				if(is_dfs_valid == true):
+					var arr_for_playback : Array = ["fill"]
+					var temp_arr_for_positions : Array[Vector2i]
 					for dfs_marked_cell in marked_empty_cells.keys():
 						#print("filling in " + str(dfs_marked_cell))
 						#???
 						if(is_new_position.get_or_add(current_position, true) == true):
 							is_new_position[dfs_marked_cell] = false
 						set_cell_colour(dfs_marked_cell, passed_colour)
+						temp_arr_for_positions.push_back(dfs_marked_cell)
+					arr_for_playback.push_back(temp_arr_for_positions)
+					GlobalTravInfo.global_move_log[child_no][GlobalTravInfo.current_turn].push_back(arr_for_playback)
 				else:
 					for dfs_marked_cell in marked_empty_cells.keys():
 						cell_is_invalid[dfs_marked_cell] = true

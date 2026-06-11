@@ -13,3 +13,5 @@ var no_of_travellers : int
 var traveller_colours : Array[int]
 
 var is_traveller_disabled : Array[bool]
+
+var current_turn : int = 0
