@@ -19,6 +19,14 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(_delta: float) -> void:
 	for i in range(move_log.size()):
+		
+		if GlobalTravInfo.is_traveller_disabled[i] == true:
+			continue
+			
+		if cur_turn >= move_log.size():
+			print("All moves done")
+			break
+		
 		var move = move_log[cur_turn][i]
 		for action : Array in move:
 			var action_type : String = action[0]

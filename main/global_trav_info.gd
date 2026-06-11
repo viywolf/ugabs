@@ -11,3 +11,5 @@ var global_move_log : Array[Array]
 var no_of_travellers : int
 
 var traveller_colours : Array[int]
+
+var is_traveller_disabled : Array[bool]

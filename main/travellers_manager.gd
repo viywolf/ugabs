@@ -74,6 +74,7 @@ func _ready() -> void:
 	
 	GlobalTravInfo.no_of_travellers = self.get_child_count()
 	GlobalTravInfo.traveller_colours.resize(GlobalTravInfo.no_of_travellers)
+	GlobalTravInfo.is_traveller_disabled.resize(GlobalTravInfo.no_of_travellers)
 	
 	for arr : Array in GlobalTravInfo.global_move_log:
 		arr.push_back([])
@@ -85,6 +86,7 @@ func _ready() -> void:
 		child.move_finished.connect(traveller_move_finished.bind(i))
 		
 		GlobalTravInfo.traveller_colours[i] = child.active_colour.x
+		GlobalTravInfo.is_traveller_disabled[i] = child.disabled
 		
 		if(child.disabled): continue
 		var new_astar_grid : AStarGrid2D = AStarGrid2D.new()

@@ -1,4 +1,4 @@
-[gd_scene format=4 uid="uid://vta41c6v32by"]
+[gd_scene format=3 uid="uid://vta41c6v32by"]
 
 [ext_resource type="Texture2D" uid="uid://dumwfdviqrfqh" path="res://main/Colours1.png" id="1_sbi0w"]
 [ext_resource type="Script" uid="uid://bpvubonnkjcvx" path="res://main/board_playback.gd" id="1_wnjpl"]
@@ -35,6 +35,5 @@ tile_size = Vector2i(1, 1)
 sources/0 = SubResource("TileSetAtlasSource_idnbf")
 
 [node name="BoardPlayback" type="TileMapLayer" unique_id=968460006]
-tile_map_data = PackedByteArray("AADO/+f/AAAHAAEAAADP/+f/AAAHAAEAAADQ/+f/AAAHAAEAAADR/+f/AAAHAAEAAADS/+f/AAAHAAEAAADT/+f/AAAHAAEAAADU/+f/AAAHAAEAAADV/+f/AAAHAAEAAADW/+f/AAAHAAEAAADX/+b/AAAHAAEAAADY/+b/AAAHAAEAAADZ/+b/AAAHAAEAAADa/+b/AAAHAAEAAADb/+b/AAAHAAEAAADc/+b/AAAHAAEAAADd/+b/AAAHAAEAAADe/+b/AAAHAAEAAADf/+b/AAAHAAEAAADg/+b/AAAHAAEAAADh/+b/AAAHAAEAAADi/+b/AAAHAAEAAADj/+b/AAAHAAEAAADk/+b/AAAHAAEAAADl/+b/AAAHAAEAAADm/+b/AAAHAAEAAADn/+b/AAAHAAEAAADo/+b/AAAHAAEAAADp/+b/AAAHAAEAAADq/+b/AAAHAAEAAADr/+b/AAAHAAEAAADs/+b/AAAHAAEAAADt/+b/AAAHAAEAAADu/+b/AAAHAAEAAADv/+b/AAAHAAEAAADw/+b/AAAHAAEAAADx/+b/AAAHAAEAAADy/+b/AAAHAAEAAADz/+b/AAAHAAEAAAD0/+b/AAAHAAEAAAD1/+b/AAAHAAEAAAD2/+b/AAAHAAEAAAD3/+b/AAAHAAEAAAD4/+b/AAAHAAEAAAD5/+b/AAAHAAEAAAD6/+b/AAAHAAEAAAD7/+b/AAAHAAEAAAD8/+b/AAAHAAEAAAD9/+b/AAAHAAEAAAD+/+b/AAAHAAEAAAD//+X/AAAHAAEAAAAAAOX/AAAHAAEAAAA=")
 tile_set = SubResource("TileSet_s8urc")
 script = ExtResource("1_wnjpl")
