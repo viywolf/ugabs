@@ -7,6 +7,9 @@ var path_to_target : PackedVector2Array
 
 var index_in_path : int = -1
 
+@export var seek_null_cells_only : bool = false
+@export var seek_any_cell : bool = false
+
 """
 To do
 
@@ -20,8 +23,16 @@ func preparatory_actions() -> void:
 	get_new_target_cell()
 
 func get_new_target_cell() -> void:
-	target_cell = Vector2i(rng.randi_range(-60, 60), rng.randi_range(-35, 35))
-
+	for i in 100:
+		target_cell = Vector2i(rng.randi_range(-60, 60), rng.randi_range(-35, 35))
+		if seek_null_cells_only:
+			if is_cell_null(target_cell):
+				break
+		elif seek_any_cell:
+			break
+		else:
+			if is_cell_traveller_colour(target_cell):
+				break
 func reset_path() -> void:
 	index_in_path = -1
 	
@@ -40,13 +51,13 @@ func get_next_cell() -> Vector2i:
 
 func get_next_position() -> Vector2i:
 	if(current_position == target_cell):
-		print(name + " reached target")
+		#print(name + " reached target")
 		get_new_target_cell()
 		reset_path()
 		
 	# Impossible to go there
 	if(path_to_target.size() == 0):
-		print(name + " cannot go there")
+		#print(name + " cannot go there")
 		get_new_target_cell()
 		reset_path()
 		return current_position
@@ -61,5 +72,5 @@ func get_next_position() -> Vector2i:
 		else:
 			return get_next_cell()
 	else:
-		print(name + " has finished the current path")
+		#print(name + " has finished the current path")
 		return current_position
