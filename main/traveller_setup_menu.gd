@@ -11,6 +11,7 @@ var current_traveller_info : Array[Variant] = [
 @onready var position_select_x : LineEdit = $MainContainer/StartingPosContainer/GridPosInputX
 @onready var position_select_y : LineEdit = $MainContainer/StartingPosContainer/GridPosInputY
 
+var info_box_resource : PackedScene = preload("res://main/contender_info_box.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -31,6 +32,11 @@ func _on_add_new_traveller_button_pressed() -> void:
 	position_as_vector.x = int(position_select_x.text)
 	position_as_vector.y = int(position_select_y.text)
 	current_traveller_info[2] = position_as_vector
+	var new_info_box : Node = info_box_resource.instantiate()
+	new_info_box.trav_type = current_traveller_info[0]
+	new_info_box.trav_colour = current_traveller_info[1]
+	new_info_box.trav_start_pos = current_traveller_info[2]
+	%CurrentlySelectedOptions.add_child(new_info_box)
 
 func get_traveller_info() -> Array:
 	return current_traveller_info
