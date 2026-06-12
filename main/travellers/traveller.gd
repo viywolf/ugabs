@@ -106,7 +106,7 @@ func start_moving() -> void:
 		move_finished.emit()
 		return
 	else:
-		await move(get_next_position())
+		move(get_next_position())
 	move_finished.emit()
 
 func move(to_next_position : Vector2i) -> void:

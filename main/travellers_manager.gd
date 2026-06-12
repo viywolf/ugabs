@@ -63,8 +63,6 @@ func _ready() -> void:
 		child.disabled = false
 		
 	"""
-				
-	Engine.physics_ticks_per_second = 12
 	
 	GlobalTravInfo.global_move_log.resize(self.get_child_count())
 	moves_finished.resize(self.get_child_count())
@@ -111,7 +109,7 @@ func _physics_process(_delta: float) -> void:
 	for i in range(get_child_count()):
 		var child : Traveller = self.get_child(i)
 		if(GlobalTravInfo.current_turn % int(child.get_speed()) == 0):
-			await child.start_moving()
+			child.start_moving()
 		child.move_log.push_back(child.current_position)
 		var arr_to_be_added = ["move", child.current_position]
 		GlobalTravInfo.global_move_log[i][GlobalTravInfo.current_turn].push_back(arr_to_be_added)
