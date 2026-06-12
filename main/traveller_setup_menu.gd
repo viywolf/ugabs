@@ -27,10 +27,18 @@ func _ready() -> void:
 func _on_add_new_traveller_button_pressed() -> void:
 	current_traveller_info[0] = type_select.get_item_text(type_select.get_selected_id())
 	current_traveller_info[1] = CellColour.colours_in_tileset[colour_select.get_selected_id()]
-	# Add some input validation for int only
 	var position_as_vector : Vector2i
+	if(position_select_x.text.is_valid_int() == false or position_select_y.text.is_valid_int() == false):
+		# Show error message or something
+		return
 	position_as_vector.x = int(position_select_x.text)
 	position_as_vector.y = int(position_select_y.text)
+	@warning_ignore("integer_division")
+	if(position_as_vector.x < -GlobalTravInfo.grid_size.x / 2 or position_as_vector.x > GlobalTravInfo.grid_size.x / 2
+			or position_as_vector.y < -GlobalTravInfo.grid_size.y / 2 or position_as_vector.y > GlobalTravInfo.grid_size.y / 2):
+		# Its out of bounds or something warning
+		print("out of bundn range")
+		return
 	current_traveller_info[2] = position_as_vector
 	var new_info_box : Node = info_box_resource.instantiate()
 	new_info_box.trav_type = current_traveller_info[0]

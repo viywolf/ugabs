@@ -15,3 +15,5 @@ var traveller_colours : Array[int]
 var is_traveller_disabled : Array[bool]
 
 var current_turn : int = 0
+
+var grid_size : Vector2i = Vector2i(120 + 1, 70 + 1)

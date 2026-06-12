@@ -9,8 +9,6 @@ var all_astar_grids : Dictionary[Vector2i, AStarGrid2D]
 
 var astar_grid : AStarGrid2D = AStarGrid2D.new()
 
-var grid_size : Vector2i = Vector2i(120 + 1, 70 + 1)
-
 # Position : colour
 var filled_cells_in_grid : Dictionary
 
@@ -33,8 +31,8 @@ func get_astar_grid(current_passed_colour : Vector2i) -> AStarGrid2D:
 	return all_astar_grids[current_passed_colour]
 
 func update_solid_points(current_astar_grid : AStarGrid2D, good_active_colour : Vector2i, good_passed_colour : Vector2i) -> void:
-	for x in range(grid_size.x):
-		for y in range(grid_size.y):
+	for x in range(GlobalTravInfo.grid_size.x):
+		for y in range(GlobalTravInfo.grid_size.y):
 			var current_tile_data = get_cell_tile_data(Vector2i(x - 60, y - 35))
 			if(current_tile_data == null): continue
 			if(current_tile_data.get_custom_data("Colour") != good_active_colour 
@@ -87,7 +85,8 @@ func _ready() -> void:
 		
 		if(child.disabled): continue
 		var new_astar_grid : AStarGrid2D = AStarGrid2D.new()
-		new_astar_grid.region = Rect2i(Vector2i(-60, -35), grid_size)
+		@warning_ignore("integer_division")
+		new_astar_grid.region = Rect2i(Vector2i(-GlobalTravInfo.grid_size.x / 2, -GlobalTravInfo.grid_size.y / 2), GlobalTravInfo.grid_size)
 		new_astar_grid.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_NEVER
 		new_astar_grid.default_compute_heuristic = AStarGrid2D.HEURISTIC_OCTILE
 		new_astar_grid.default_estimate_heuristic = AStarGrid2D.HEURISTIC_OCTILE
