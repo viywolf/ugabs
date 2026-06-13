@@ -39,7 +39,6 @@ func _physics_process(_delta: float) -> void:
 					# fill coordinate in passed colour
 					# temp colour
 					set_cell_colour(coordinate, Vector2i(GlobalTravInfo.traveller_colours[i], 1))
-				print("filled at ", cur_turn)
 			elif(action_type == "move"):
 				# fill prev pos with passd colour
 				set_cell_colour(prev_positions[i], Vector2i(GlobalTravInfo.traveller_colours[i], 1))

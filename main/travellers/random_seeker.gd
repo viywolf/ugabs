@@ -13,13 +13,12 @@ var index_in_path : int = -1
 """
 To do
 
-Speed up the finding new cell part by only considering null cells in range
-
 (0,0) colour seems to be able to escape through walls for some reason
 
 """
 
 func preparatory_actions() -> void:
+	name = "RandomSeeker"
 	get_new_target_cell()
 
 func get_new_target_cell() -> void:

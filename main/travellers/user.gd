@@ -6,7 +6,7 @@ var next_position_input : Vector2i
 @export var hold_to_continue_mode : bool = false
 
 func preparatory_actions() -> void:
-	pass
+	name = "User"
 	
 func _process(_delta: float) -> void:
 	if(hold_to_continue_mode):

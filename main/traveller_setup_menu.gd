@@ -27,6 +27,7 @@ func _ready() -> void:
 		
 	# Only add the main colours?
 	for colour : String in CellColour.colour_names:
+		if colour == "BLACK": break
 		$MainContainer/ColourContainer/OptionButton.add_item(colour.capitalize())
 		
 
@@ -36,7 +37,7 @@ func _on_add_new_traveller_button_pressed() -> void:
 	var position_as_vector : Vector2i
 	
 	if(position_select_x.text.is_valid_int() == false or position_select_y.text.is_valid_int() == false):
-		# Show error message or something
+		show_warning("Please enter an integer as the position value.")
 		return
 		
 	position_as_vector.x = int(position_select_x.text)
@@ -46,8 +47,7 @@ func _on_add_new_traveller_button_pressed() -> void:
 	
 	if(position_as_vector.x < -GlobalTravInfo.grid_size.x / 2 or position_as_vector.x > GlobalTravInfo.grid_size.x / 2
 			or position_as_vector.y < -GlobalTravInfo.grid_size.y / 2 or position_as_vector.y > GlobalTravInfo.grid_size.y / 2):
-		# Its out of bounds or something warning
-		print("out of bundn range")
+		show_warning("Position " + str(position_as_vector) + " is out of bounds.")
 		return
 	
 	if (position_as_vector):
@@ -69,6 +69,27 @@ func get_traveller_info() -> Array:
 
 
 func _on_start_button_pressed() -> void:
-	
 	add_sibling(main_sim_instance)
 	queue_free()
+
+func show_warning(message : String) -> void:
+	var warning_label : Label = Label.new()
+	warning_label.text = message
+	warning_label.add_theme_color_override("font_color", Color(0.227, 0.0, 0.0, 0.784))
+	warning_label.custom_minimum_size.y = 500
+	#warning_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	# Half of scrren width, temp val for nw
+	# Please center it somehow???
+	@warning_ignore("integer_division")
+	warning_label.position.x = 1152 /2 - (warning_label.custom_minimum_size.y / 4)
+	warning_label.position.y = 50
+	
+	add_child(warning_label)
+	
+	await get_tree().create_timer(0.7).timeout
+	
+	var tween  = create_tween()
+	tween.tween_property(warning_label, "modulate:a", 0, 0.5)
+	await tween.parallel().tween_property(warning_label, "position:y", -100, 1).finished
+	
+	warning_label.queue_free()
