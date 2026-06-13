@@ -60,8 +60,6 @@ func _on_add_new_traveller_button_pressed() -> void:
 	new_info_box.trav_start_pos = current_traveller_info[2]
 	main_sim_instance.travellers.push_back(current_traveller_info.duplicate())
 	
-	print(main_sim_instance.travellers)
-	
 	%CurrentlySelectedOptions.add_child(new_info_box)
 
 func get_traveller_info() -> Array:
