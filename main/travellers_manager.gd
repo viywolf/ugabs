@@ -2,7 +2,15 @@ extends TileMapLayer
 
 @export_category("Travellers")
 
-@export var travellers : Array[String]
+@export var auto_add_travellers : bool = true
+
+# arr = ["traveller type", vector2i colour, vector2i start pos]
+
+@export var travellers : Array
+
+enum TravInfo {
+	TYPE, COLOUR, START_POS
+}
 
 # Colour -> astar grid
 var all_astar_grids : Dictionary[Vector2i, AStarGrid2D]
@@ -40,27 +48,38 @@ func update_solid_points(current_astar_grid : AStarGrid2D, good_active_colour : 
 				current_astar_grid.set_point_solid(Vector2i(x - 60, y - 35))
 
 func _ready() -> void:
-	"""
-	for traveller_type in travellers:
-		traveller_type = traveller_type.to_lower()
-		
-		var new_traveller_node = Node.new()
-		
-		match traveller_type:
-			"user":
-				new_traveller_node.set_script(load("res://scripts/travellers/user.gd"))
-			"random":
-				new_traveller_node.set_script(load("res://scripts/travellers/random.gd"))
-			_:
-				printerr("Invalid traveller type entered")
-				assert(false)
-		
-		add_child(new_traveller_node)
-				
-	for child : Traveller in get_children():
-		child.disabled = false
-		
-	"""
+	if name == "OriginalTileMap":
+		queue_free()
+		return
+	
+	if auto_add_travellers == true:
+		for traveller : Array[Variant] in travellers:
+			var traveller_type = traveller[TravInfo.TYPE]
+			traveller_type = traveller_type.to_lower()
+			var trav_colour : Vector2i = traveller[TravInfo.COLOUR]
+			
+			var new_traveller_node = Node.new()
+			
+			match traveller_type:
+				"user":
+					new_traveller_node.set_script(load("res://main/travellers/user.gd"))
+				"random":
+					new_traveller_node.set_script(load("res://main/travellers/random.gd"))
+				"random_seeker":
+					new_traveller_node.set_script(load("res://main/travellers/random_seeker.gd"))
+				_:
+					printerr("Invalid traveller type entered")
+					assert(false)
+			
+			new_traveller_node.active_colour = Vector2i(trav_colour.x, 0)
+			new_traveller_node.passed_colour = Vector2i(trav_colour.x, 1)
+			
+			new_traveller_node.current_position = traveller[TravInfo.START_POS]
+			
+			add_child(new_traveller_node)
+					
+		for child : Traveller in get_children():
+			child.disabled = false
 	
 	GlobalTravInfo.global_move_log.resize(self.get_child_count())
 	moves_finished.resize(self.get_child_count())
@@ -72,6 +91,9 @@ func _ready() -> void:
 	
 	for arr : Array in GlobalTravInfo.global_move_log:
 		arr.push_back([])
+	
+	if self.get_child_count() == 0:
+		printerr(name, " has no children")
 	
 	for i in range(self.get_child_count()):
 	#for child : Traveller in self.get_children():
@@ -98,6 +120,10 @@ func _ready() -> void:
 		child.set_cell_colour(child.current_position, child.active_colour)
 	
 func _physics_process(_delta: float) -> void:
+	if name == "OriginalTileMap":
+		queue_free()
+		return
+	
 	if is_all_travellers_finished() == false:
 		return
 	GlobalTravInfo.current_turn += 1
