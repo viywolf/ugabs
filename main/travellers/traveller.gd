@@ -199,7 +199,6 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 					if empty_cells.size() > 0:
 						cells_to_fill_1[empty_cells[0]] = true
 					for cell in empty_cells:
-						#print("added cell to fill: " + str(cell))
 						cells_to_fill_1[cell] = true
 					empty_cells.clear()
 					found_cell_back = false
@@ -262,8 +261,6 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 	
 	for cell in cells_to_fill_1.keys():
 		if(all_visited_cells[cell.x + adj_mat_offset][cell.y + adj_mat_offset] == true): 
-			#print(all_visited_cells)
-			#print("already visited " + str(cell))
 			continue
 		
 		if(cells_to_fill_2.get_or_add(cell, false) == true):
@@ -274,42 +271,32 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 			
 			var is_dfs_valid : bool = true
 			
-			#print("New dfs started from " + str(cell))
-			
 			while(stack.is_empty() == false):
 				var cur_cell = stack.pop_back()
 				
-				#print("Checking " + str(cur_cell))
-				
 				if(cell_is_invalid.get_or_add(cur_cell, false) == true):
-					#printerr(str(cur_cell) + ", a previously visited cell was found to be invalid, discard this dfs")
 					is_dfs_valid = false
 					break
 					
 				# Visited cell in all dfs before
 				if(all_visited_cells[cur_cell.x + adj_mat_offset][cur_cell.y + adj_mat_offset] == true):
-					#print("visited cell before: " + str(cur_cell))
 					continue
 				all_visited_cells[cur_cell.x + adj_mat_offset][cur_cell.y + adj_mat_offset] = true
 				
 				# Visited in this dfs
 				if(marked_empty_cells.get_or_add(cur_cell, false) == true):
-					#print("skip " + str(cur_cell))
 					continue
 				else:
-					#print(str(cur_cell) + " is a new cell")
 					marked_empty_cells[cur_cell] = true
 					
 				# If the dfs reaches the border (which it shouldn't for an enclosed space)
 				if(cur_cell.x <= max_pos[0] or cur_cell.x >= max_pos[1]
 					or cur_cell.y <= max_pos[2] or cur_cell.y >= max_pos[3]):
-						#print(str(cur_cell) + " is on the boundary, discard this dfs")
 						is_dfs_valid = false
 						break
 						
 				# If the current cell is not null or passed or active (cannot fill it in)
 				if(is_cell_null(cur_cell) == false and is_cell_traveller_colour(cur_cell) == false):
-					#print(str(cur_cell) + " is not a valid cell to fill in, discard this dfs")
 					is_dfs_valid = false
 					# Continue to get as many cells in this search as possible
 					continue
@@ -320,13 +307,11 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 					if(is_cell_traveller_colour(cur_cell + direction2) == false):
 					#and all_visited_cells[cur_cell.x + direction2.x + adj_mat_offset][cur_cell.y + direction2.y + adj_mat_offset] == false
 						stack.push_back(cur_cell + direction2)
-						#print("Added " + str(cur_cell + direction2) + " to stack from " + str(cur_cell))
 				
 			if(is_dfs_valid == true):
 				var arr_for_playback : Array = ["fill"]
 				var temp_arr_for_positions : Array[Vector2i]
 				for dfs_marked_cell in marked_empty_cells.keys():
-					#print("filling in " + str(dfs_marked_cell))
 					#???
 					if(is_new_position.get_or_add(current_position, true) == true):
 						is_new_position[dfs_marked_cell] = false
