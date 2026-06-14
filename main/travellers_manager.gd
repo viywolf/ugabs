@@ -38,6 +38,25 @@ var filled_cells_in_grid : Dictionary
 
 var moves_finished : Array[bool]
 
+func draw_shape_border(shape : String, radius : int):
+	if(radius <= 0):
+		printerr("Radius must be greater than 0")
+	
+	var middle : Vector2i = Vector2i(0, 0)
+	var min_y : int = middle.y - radius
+	var max_y : int = middle.y + radius
+	var min_x : int = middle.x - radius
+	var max_x : int = middle.x + radius
+	
+	# Draw top and bottom lines
+	for i in abs(min_x) + max_x + 1:
+		set_cell(Vector2i(i - radius, min_y), 0, CellColour.colours_in_tileset[CellColour.TilesetColour.BLACK])
+		set_cell(Vector2i(i - radius, max_y), 0, CellColour.colours_in_tileset[CellColour.TilesetColour.BLACK])
+		
+	# Draw left and rigth lines
+	for i in abs(min_y) + max_y + 1:
+		set_cell(Vector2i(min_x, i - radius), 0, CellColour.colours_in_tileset[CellColour.TilesetColour.BLACK])
+		set_cell(Vector2i(max_x, i - radius), 0, CellColour.colours_in_tileset[CellColour.TilesetColour.BLACK])
 func get_astar_grid(current_passed_colour : Vector2i) -> AStarGrid2D:
 	return all_astar_grids[current_passed_colour]
 
@@ -54,6 +73,8 @@ func _ready() -> void:
 	if name == "OriginalTileMap":
 		queue_free()
 		return
+		
+	draw_shape_border("square", 4)
 		
 	# quick dfs here to get grid size :>
 	var cells_in_grid : int = 0
