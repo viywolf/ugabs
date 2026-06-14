@@ -48,15 +48,50 @@ func draw_shape_border(shape : String, radius : int):
 	var min_x : int = middle.x - radius
 	var max_x : int = middle.x + radius
 	
-	# Draw top and bottom lines
-	for i in abs(min_x) + max_x + 1:
-		set_cell(Vector2i(i - radius, min_y), 0, CellColour.colours_in_tileset[CellColour.TilesetColour.BLACK])
-		set_cell(Vector2i(i - radius, max_y), 0, CellColour.colours_in_tileset[CellColour.TilesetColour.BLACK])
+	shape = shape.to_lower()
+	
+	var colour_black : Vector2i = CellColour.colours_in_tileset[CellColour.TilesetColour.BLACK]
+	
+	if(shape == "square"):
+		# Draw top and bottom lines
+		for i in abs(min_x) + max_x + 1:
+			set_cell(Vector2i(i - radius, min_y), 0, colour_black)
+			set_cell(Vector2i(i - radius, max_y), 0, colour_black)
+			
+		# Draw left and rigth lines
+		for i in abs(min_y) + max_y + 1:
+			set_cell(Vector2i(min_x, i - radius), 0, colour_black)
+			set_cell(Vector2i(max_x, i - radius), 0, colour_black)
+	elif(shape == "circle"):
+		var d : int = floori(3 - (2 * radius))
+		var x : int = 0
+		var y : int = radius
 		
-	# Draw left and rigth lines
-	for i in abs(min_y) + max_y + 1:
-		set_cell(Vector2i(min_x, i - radius), 0, CellColour.colours_in_tileset[CellColour.TilesetColour.BLACK])
-		set_cell(Vector2i(max_x, i - radius), 0, CellColour.colours_in_tileset[CellColour.TilesetColour.BLACK])
+		var continue_loop : bool = true
+		
+		while(continue_loop == true):
+			# Midpoint circle algorithm
+			
+			set_cell(Vector2i(middle.x + x, middle.y + y), 0, colour_black)
+			set_cell(Vector2i(middle.x + x, middle.y - y), 0, colour_black)
+			set_cell(Vector2i(middle.x - x, middle.y + y), 0, colour_black)
+			set_cell(Vector2i(middle.x - x, middle.y - y), 0, colour_black)
+			set_cell(Vector2i(middle.x + y, middle.y + x), 0, colour_black)
+			set_cell(Vector2i(middle.x + y, middle.y - x), 0, colour_black)
+			set_cell(Vector2i(middle.x - y, middle.y + x), 0, colour_black)
+			set_cell(Vector2i(middle.x - y, middle.y - x), 0, colour_black)
+			
+			if(d < 0):
+				d = floori(d + (4 * x) + 6)
+			else:
+				d = floori(d + 4 * (x - y) + 10)
+				y -= 1
+			x += 1
+			
+			continue_loop = (x <= y)
+		
+	else:
+		printerr("Unknown shape: " + shape)
 func get_astar_grid(current_passed_colour : Vector2i) -> AStarGrid2D:
 	return all_astar_grids[current_passed_colour]
 
@@ -74,7 +109,7 @@ func _ready() -> void:
 		queue_free()
 		return
 		
-	draw_shape_border("square", 4)
+	draw_shape_border("circle", 5)
 		
 	# quick dfs here to get grid size :>
 	var cells_in_grid : int = 0
