@@ -151,7 +151,6 @@ func _ready() -> void:
 		
 		child.set_cell_colour(child.current_position, child.active_colour)
 
-	
 func _physics_process(_delta: float) -> void:
 	if name == "OriginalTileMap":
 		queue_free()

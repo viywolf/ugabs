@@ -28,5 +28,4 @@ var traveller_cells_claimed : Array[int]
 var current_turn : int = 0
 
 var grid_size : Vector2i = Vector2i(120 + 1, 70 + 1)
-# Find the total cells in grid
-var total_cells_in_grid : int = 1000
+var total_cells_in_grid : int

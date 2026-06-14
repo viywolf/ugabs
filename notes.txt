@@ -1,3 +1,1 @@
-somehow make each square person know and update their corresponding cell claimed
-
 make it so you can choose whether the arena is sqaure or cirle and also the size I guess and I guess you would need a weird circle finding out perimeter equation for this so uh yeah 

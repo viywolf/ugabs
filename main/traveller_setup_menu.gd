@@ -37,8 +37,7 @@ func _ready() -> void:
 	for colour : String in CellColour.colour_names:
 		if colour == "BLACK": break
 		$MainContainer/ColourContainer/OptionButton.add_item(colour.capitalize())
-		
-
+	
 func _on_add_new_traveller_button_pressed() -> void:
 	current_traveller_info[0] = type_select.get_item_text(type_select.get_selected_id())
 	current_traveller_info[1] = CellColour.colours_in_tileset[colour_select.get_selected_id()]
@@ -79,7 +78,6 @@ func _on_add_new_traveller_button_pressed() -> void:
 
 func get_traveller_info() -> Array:
 	return current_traveller_info
-
 
 func _on_start_button_pressed() -> void:
 	for key in temp_added_travs_storage.keys():

@@ -13,7 +13,5 @@ func _ready() -> void:
 	%TypeLabel.text = "Type: " + trav_type
 	%StartPosLabel.text = "Starting Position: " + str(trav_start_pos.x) + ", " + str(trav_start_pos.y)
 
-
-
 func _on_remove_button_pressed() -> void:
 	remove_this.emit()

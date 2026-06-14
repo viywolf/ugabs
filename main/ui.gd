@@ -38,6 +38,10 @@ func update_no_of_labels() -> void:
 func update_cell_claimed_labels() -> void:
 	for i in $PercentagedClaimedBox.get_child_count():
 		var child : Label = $PercentagedClaimedBox.get_child(i)
-		#cells claimed percentage needs to reset to tbe the same number of travs
-		child.text = label_base_text[i] + str(cells_claimed_percentages[i])
-		print(child.text)
+		# Convert number to percentage
+		cells_claimed_percentages[i] *= 100
+		# Round the percentage to 2 d.p
+		cells_claimed_percentages[i] *= 100
+		cells_claimed_percentages[i] = roundf(cells_claimed_percentages[i])
+		cells_claimed_percentages[i] /= 100
+		child.text = label_base_text[i] + str(cells_claimed_percentages[i]) + "%"
