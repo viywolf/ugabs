@@ -1,5 +1,7 @@
 extends CanvasLayer
 
+signal setup_done
+
 var current_traveller_info : Array[Variant] = [
 	"", # Type (string),
 	Vector2i.ZERO, # Colour (vector2i), 
@@ -85,6 +87,7 @@ func _on_start_button_pressed() -> void:
 			main_sim_instance.travellers.push_back(temp_added_travs_storage[key].duplicate())
 	
 	add_sibling(main_sim_instance)
+	setup_done.emit()
 	queue_free()
 	
 func remove_traveller(id : int) -> void:

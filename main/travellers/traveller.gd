@@ -50,6 +50,8 @@ var direction_of_movement : Vector2i
 
 var child_no : int = -1
 
+var cells_claimed : int = 0
+
 # Functions start here
 
 func get_speed() -> float:
@@ -69,22 +71,20 @@ func _ready() -> void:
 	max_pos[3] = current_position.y
 	
 	preparatory_actions()
-	
-	
-	
+
 func set_cell_colour(cell_coords: Vector2i, colour : Vector2i) -> void:
+	if(is_cell_null(cell_coords) == true):
+		cells_claimed += 1
 	tilemap.set_cell(cell_coords, 0, colour)
 	tilemap.get_cell_tile_data(cell_coords).set_custom_data("Colour", colour)
 	tilemap.filled_cells_in_grid[cell_coords] = colour
-	
-	
+
 func is_cell_null(cell_coords : Vector2i) -> bool:
 	if(tilemap.get_cell_tile_data(cell_coords) == null):
 		return true
 	else:
 		return false
-	
-	
+
 func is_cell_traveller_colour(cell_coords: Vector2i) -> bool:
 	if(is_cell_null(cell_coords)):
 		return false
@@ -326,8 +326,7 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 		set_cell_colour(current_position, active_colour)
 	
 	disabled = false
-	
-	
+
 @abstract func get_next_position() -> Vector2i
 
 @abstract func preparatory_actions() -> void

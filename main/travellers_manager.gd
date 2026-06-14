@@ -1,5 +1,8 @@
 extends TileMapLayer
 
+# Emits every turn, with a Array[int] of cells claimed
+signal update_cells_claimed
+
 @export_category("Travellers")
 
 @export var auto_add_travellers : bool = true
@@ -51,6 +54,27 @@ func _ready() -> void:
 	if name == "OriginalTileMap":
 		queue_free()
 		return
+		
+	# quick dfs here to get grid size :>
+	var cells_in_grid : int = 0
+	
+	var stack : Array[Vector2i]
+	stack.push_back(Vector2i(0,0))
+	var visited : Dictionary[Vector2i, bool]
+	
+	while(stack.is_empty() == false):
+		var cur_node = stack.pop_back()
+		if(visited.get_or_add(cur_node, false) == true):
+			continue
+		else:
+			visited[cur_node] = true
+			cells_in_grid += 1
+			
+		for direction in GlobalTravInfo.directions:
+			if(get_cell_tile_data(cur_node + direction) == null):
+				stack.push_back(cur_node + direction)
+				
+		GlobalTravInfo.total_cells_in_grid = cells_in_grid
 	
 	if auto_add_travellers == true:
 		for traveller : Array[Variant] in travellers:
@@ -88,6 +112,7 @@ func _ready() -> void:
 	GlobalTravInfo.no_of_travellers = self.get_child_count()
 	GlobalTravInfo.traveller_colours.resize(GlobalTravInfo.no_of_travellers)
 	GlobalTravInfo.is_traveller_disabled.resize(GlobalTravInfo.no_of_travellers)
+	GlobalTravInfo.traveller_names.resize(GlobalTravInfo.no_of_travellers)
 	
 	# index 0 for empty space
 	GlobalTravInfo.traveller_cells_claimed.resize(GlobalTravInfo.no_of_travellers + 1)
@@ -109,6 +134,7 @@ func _ready() -> void:
 		
 		GlobalTravInfo.traveller_colours[i] = child.active_colour.x
 		GlobalTravInfo.is_traveller_disabled[i] = child.disabled
+		GlobalTravInfo.traveller_names[i] = child.name
 		child.child_no = i
 		
 		if(child.disabled): continue
@@ -124,6 +150,7 @@ func _ready() -> void:
 		update_solid_points(get_astar_grid(child.passed_colour), child.active_colour, child.passed_colour)
 		
 		child.set_cell_colour(child.current_position, child.active_colour)
+
 	
 func _physics_process(_delta: float) -> void:
 	if name == "OriginalTileMap":
@@ -144,14 +171,18 @@ func _physics_process(_delta: float) -> void:
 		child.move_log.push_back(child.current_position)
 		var arr_to_be_added = ["move", child.current_position]
 		GlobalTravInfo.global_move_log[i][GlobalTravInfo.current_turn].push_back(arr_to_be_added)
-		#print("push back ", arr_to_be_added, " to ", i)
 	# Re calculate astar grids
 	if(GlobalTravInfo.current_turn % 10 == 0):
 		for child : Traveller in self.get_children():
 			if child.disabled: continue
 			update_solid_points(get_astar_grid(child.passed_colour), child.active_colour, child.passed_colour)
-		
-		
+	
+	var cur_cells_claimed : Array[int]
+	for child : Traveller in get_children():
+		cur_cells_claimed.push_back(child.cells_claimed)
+	
+	update_cells_claimed.emit(cur_cells_claimed)
+	
 func traveller_move_finished(traveller_no : int) -> void:
 	moves_finished[traveller_no] = true
 	
