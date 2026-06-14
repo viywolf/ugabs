@@ -134,15 +134,15 @@ func move(to_next_position : Vector2i) -> void:
 			if(is_cell_null(next_position) == false and is_cell_traveller_colour(next_position)):
 				if(filling_disabled == false): 
 					check_if_enclosed(next_position)
-					"""
-					for direction : Vector2i in directions:
-						if direction == -direction_of_movement:
-							continue
-						else:
-							check_if_enclosed(current_position + direction)
-					"""
-		
 			is_new_position[current_position] = false
+			
+		for direction : Vector2i in directions:
+			if direction == -direction_of_movement:
+				continue
+			else:
+				if(is_cell_traveller_colour(current_position + direction)):
+					if(filling_disabled == false): 
+						check_if_enclosed(current_position + direction)
 			
 		# Visually change the position of the active cell
 		set_cell_colour(next_position, active_colour)
