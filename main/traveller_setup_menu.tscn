@@ -46,19 +46,13 @@ layout_mode = 2
 layout_mode = 2
 text = "Starting Position:"
 
-[node name="GridPosInputX" type="LineEdit" parent="MainContainer/StartingPosContainer" unique_id=2063013953]
+[node name="GridPosInputX" type="SpinBox" parent="MainContainer/StartingPosContainer" unique_id=138117840]
 layout_mode = 2
-text = "0"
-placeholder_text = "X Pos"
-max_length = 4
-emoji_menu_enabled = false
+prefix = "X: "
 
-[node name="GridPosInputY" type="LineEdit" parent="MainContainer/StartingPosContainer" unique_id=356547956]
+[node name="GridPosInputY" type="SpinBox" parent="MainContainer/StartingPosContainer" unique_id=469497494]
 layout_mode = 2
-text = "0"
-placeholder_text = "Y Pos"
-max_length = 3
-emoji_menu_enabled = false
+prefix = "Y: "
 
 [node name="AddNewTravellerButton" type="Button" parent="MainContainer" unique_id=906707842]
 layout_mode = 2
@@ -74,6 +68,36 @@ offset_bottom = 618.0
 [node name="CurrentlySelectedOptions" type="VBoxContainer" parent="ScrollContainer" unique_id=1528176738]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="BorderInfo" type="HBoxContainer" parent="." unique_id=1286213096]
+offset_left = 27.0
+offset_top = 308.0
+offset_right = 390.0
+offset_bottom = 348.0
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="BorderInfo" unique_id=1902496587]
+layout_mode = 2
+text = "Border Type:"
+
+[node name="OptionButton" type="OptionButton" parent="BorderInfo" unique_id=966220343]
+layout_mode = 2
+selected = 0
+item_count = 2
+popup/item_0/text = "Square"
+popup/item_0/id = 0
+popup/item_1/text = "Circle"
+popup/item_1/id = 1
+
+[node name="Label2" type="Label" parent="BorderInfo" unique_id=971946379]
+layout_mode = 2
+text = "Radius: "
+
+[node name="SpinBox" type="SpinBox" parent="BorderInfo" unique_id=1153893608]
+layout_mode = 2
+min_value = 1.0
+max_value = 35.0
+value = 10.0
 
 [node name="StartButton" type="Button" parent="." unique_id=368410278]
 offset_left = 43.0

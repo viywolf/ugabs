@@ -15,6 +15,11 @@ enum TravInfo {
 	TYPE, COLOUR, START_POS
 }
 
+# Border making stuff
+
+var chosen_border_shape : String
+var border_radius : int
+
 # Colour -> astar grid
 var all_astar_grids : Dictionary[Vector2i, AStarGrid2D]
 
@@ -92,6 +97,7 @@ func draw_shape_border(shape : String, radius : int):
 		
 	else:
 		printerr("Unknown shape: " + shape)
+		
 func get_astar_grid(current_passed_colour : Vector2i) -> AStarGrid2D:
 	return all_astar_grids[current_passed_colour]
 
@@ -109,7 +115,7 @@ func _ready() -> void:
 		queue_free()
 		return
 		
-	draw_shape_border("circle", 5)
+	draw_shape_border(chosen_border_shape, border_radius)
 		
 	# quick dfs here to get grid size :>
 	var cells_in_grid : int = 0

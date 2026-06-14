@@ -10,8 +10,8 @@ var current_traveller_info : Array[Variant] = [
 
 @onready var type_select : OptionButton = $MainContainer/TypeContainer/OptionButton
 @onready var colour_select : OptionButton = $MainContainer/ColourContainer/OptionButton
-@onready var position_select_x : LineEdit = $MainContainer/StartingPosContainer/GridPosInputX
-@onready var position_select_y : LineEdit = $MainContainer/StartingPosContainer/GridPosInputY
+@onready var position_select_x : SpinBox = $MainContainer/StartingPosContainer/GridPosInputX
+@onready var position_select_y : SpinBox = $MainContainer/StartingPosContainer/GridPosInputY
 
 var info_box_resource : PackedScene = preload("res://main/contender_info_box.tscn")
 
@@ -38,24 +38,21 @@ func _ready() -> void:
 		if colour == "BLACK": break
 		$MainContainer/ColourContainer/OptionButton.add_item(colour.capitalize())
 	
+	# Position limits
+	$MainContainer/StartingPosContainer/GridPosInputX.min_value = int(-GlobalTravInfo.grid_size.x / 2.0)
+	$MainContainer/StartingPosContainer/GridPosInputX.max_value = int(GlobalTravInfo.grid_size.x / 2.0)
+	$MainContainer/StartingPosContainer/GridPosInputY.min_value = int(-GlobalTravInfo.grid_size.y / 2.0)
+	$MainContainer/StartingPosContainer/GridPosInputY.max_value = int(GlobalTravInfo.grid_size.y / 2.0)
+	
 func _on_add_new_traveller_button_pressed() -> void:
 	current_traveller_info[0] = type_select.get_item_text(type_select.get_selected_id())
 	current_traveller_info[1] = CellColour.colours_in_tileset[colour_select.get_selected_id()]
 	var position_as_vector : Vector2i
-	
-	if(position_select_x.text.is_valid_int() == false or position_select_y.text.is_valid_int() == false):
-		show_warning("Please enter two valid integers as the position value.")
-		return
 		
-	position_as_vector.x = int(position_select_x.text)
-	position_as_vector.y = int(position_select_y.text)
+	position_as_vector.x = int(position_select_x.value)
+	position_as_vector.y = int(position_select_y.value)
 	current_traveller_info[2] = position_as_vector
 	@warning_ignore("integer_division")
-	
-	if(position_as_vector.x < -GlobalTravInfo.grid_size.x / 2 or position_as_vector.x > GlobalTravInfo.grid_size.x / 2
-			or position_as_vector.y < -GlobalTravInfo.grid_size.y / 2 or position_as_vector.y > GlobalTravInfo.grid_size.y / 2):
-		show_warning("Position " + str(position_as_vector) + " is out of bounds.")
-		return
 	
 	if (positions_taken.get_or_add(position_as_vector, false) == true):
 		positions_taken[position_as_vector] = true
@@ -83,6 +80,9 @@ func _on_start_button_pressed() -> void:
 	for key in temp_added_travs_storage.keys():
 		if(temp_added_travs_storage[key] != []):
 			main_sim_instance.travellers.push_back(temp_added_travs_storage[key].duplicate())
+	
+	main_sim_instance.chosen_border_shape = $BorderInfo/OptionButton.text
+	main_sim_instance.border_radius = $BorderInfo/SpinBox.value
 	
 	add_sibling(main_sim_instance)
 	setup_done.emit()
