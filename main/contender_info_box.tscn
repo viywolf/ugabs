@@ -39,3 +39,9 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.11858138, 0.11858138, 0.11858138, 1)
 text = "Starting Position: []"
+
+[node name="RemoveButton" type="Button" parent="HBoxContainer" unique_id=849866645]
+layout_mode = 2
+text = "Remove"
+
+[connection signal="pressed" from="HBoxContainer/RemoveButton" to="." method="_on_remove_button_pressed"]

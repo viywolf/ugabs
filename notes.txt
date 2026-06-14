@@ -1,1 +1,3 @@
 check if enclosed when it is by a filled cell not just on one :D
+
+somehow make each square person know and update their corresponding cell claimed

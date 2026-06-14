@@ -65,7 +65,7 @@ func _ready() -> void:
 					new_traveller_node.set_script(load("res://main/travellers/user.gd"))
 				"random":
 					new_traveller_node.set_script(load("res://main/travellers/random.gd"))
-				"random_seeker":
+				"random location":
 					new_traveller_node.set_script(load("res://main/travellers/random_seeker.gd"))
 				_:
 					printerr("Invalid traveller type entered")
@@ -88,6 +88,12 @@ func _ready() -> void:
 	GlobalTravInfo.no_of_travellers = self.get_child_count()
 	GlobalTravInfo.traveller_colours.resize(GlobalTravInfo.no_of_travellers)
 	GlobalTravInfo.is_traveller_disabled.resize(GlobalTravInfo.no_of_travellers)
+	
+	# index 0 for empty space
+	GlobalTravInfo.traveller_cells_claimed.resize(GlobalTravInfo.no_of_travellers + 1)
+	GlobalTravInfo.traveller_cells_claimed.fill(0)
+	# The number of empty cells in the grid (placehodl valeu)
+	GlobalTravInfo.traveller_cells_claimed[0] = 832409
 	
 	for arr : Array in GlobalTravInfo.global_move_log:
 		arr.push_back([])

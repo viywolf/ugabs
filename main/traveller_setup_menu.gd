@@ -17,6 +17,12 @@ var main_sim_res : PackedScene = preload("res://main/main_simulation.tscn")
 
 var main_sim_instance : TileMapLayer
 
+var positions_taken : Dictionary
+
+var current_trav_id : int = 0
+
+var temp_added_travs_storage : Dictionary[int, Array]
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	main_sim_instance = main_sim_res.instantiate()
@@ -37,7 +43,7 @@ func _on_add_new_traveller_button_pressed() -> void:
 	var position_as_vector : Vector2i
 	
 	if(position_select_x.text.is_valid_int() == false or position_select_y.text.is_valid_int() == false):
-		show_warning("Please enter an integer as the position value.")
+		show_warning("Please enter two valid integers as the position value.")
 		return
 		
 	position_as_vector.x = int(position_select_x.text)
@@ -50,16 +56,23 @@ func _on_add_new_traveller_button_pressed() -> void:
 		show_warning("Position " + str(position_as_vector) + " is out of bounds.")
 		return
 	
-	if (position_as_vector):
-		# This vector used before; cannot have two lil guys on the same cell
-		pass
+	if (positions_taken.get_or_add(position_as_vector, false) == true):
+		positions_taken[position_as_vector] = true
+		show_warning("Position value entered cannot be the same as a previously added position")
+		return
+	positions_taken[position_as_vector] = true
 		
 	var new_info_box : Node = info_box_resource.instantiate()
 	new_info_box.trav_type = current_traveller_info[0]
 	new_info_box.trav_colour = current_traveller_info[1]
 	new_info_box.trav_start_pos = current_traveller_info[2]
-	main_sim_instance.travellers.push_back(current_traveller_info.duplicate())
 	
+	new_info_box.node_id = current_trav_id
+	new_info_box.remove_this.connect(remove_traveller.bind(current_trav_id))
+	
+	temp_added_travs_storage[current_trav_id] = current_traveller_info.duplicate()
+	
+	current_trav_id += 1
 	%CurrentlySelectedOptions.add_child(new_info_box)
 
 func get_traveller_info() -> Array:
@@ -67,8 +80,20 @@ func get_traveller_info() -> Array:
 
 
 func _on_start_button_pressed() -> void:
+	for key in temp_added_travs_storage.keys():
+		if(temp_added_travs_storage[key] != []):
+			main_sim_instance.travellers.push_back(temp_added_travs_storage[key].duplicate())
+	
 	add_sibling(main_sim_instance)
 	queue_free()
+	
+func remove_traveller(id : int) -> void:
+	for child : Node in %CurrentlySelectedOptions.get_children():
+		if child.node_id == id:
+			child.queue_free()
+			temp_added_travs_storage[id] = []
+			return
+	printerr("Id " + str(id) + " was not found")
 
 func show_warning(message : String) -> void:
 	var warning_label : Label = Label.new()
