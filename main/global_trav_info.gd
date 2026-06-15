@@ -29,3 +29,5 @@ var current_turn : int = 0
 
 var grid_size : Vector2i = Vector2i(120 + 1, 60 + 1)
 var total_cells_in_grid : int
+
+var grid_radius : int

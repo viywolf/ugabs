@@ -118,6 +118,8 @@ func _ready() -> void:
 		return
 		
 	draw_shape_border(chosen_border_shape, border_radius)
+	
+	GlobalTravInfo.grid_radius = border_radius
 		
 	# quick dfs here to get grid size :>
 	var cells_in_grid : int = 0
@@ -139,6 +141,13 @@ func _ready() -> void:
 				stack.push_back(cur_node + direction)
 				
 		GlobalTravInfo.total_cells_in_grid = cells_in_grid
+		
+	# Check and change all cell data to filled
+	
+	for x in range(GlobalTravInfo.grid_size.x):
+		for y in range(GlobalTravInfo.grid_size.y):
+			if(get_cell_tile_data(Vector2i(x, y)) != null):
+				get_cell_tile_data(Vector2i(x, y)).set_custom_data("Colour", Vector2i(9, 0))
 	
 	if auto_add_travellers == true:
 		for traveller : Array[Variant] in travellers:
