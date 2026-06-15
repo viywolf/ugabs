@@ -19,6 +19,12 @@ var no_of_travellers : int
 
 var traveller_names : Array[String]
 
+# One vector for each colour (active colour)
+var traveller_teams : Dictionary[Vector2i, bool]
+# Can prob combine these?
+var team_cells_claimed : Dictionary[Vector2i, float]
+
+#Not sure what this is about
 var traveller_colours : Array[int]
 
 var is_traveller_disabled : Array[bool]

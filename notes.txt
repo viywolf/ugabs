@@ -1,12 +1,10 @@
-Check random seeker todo
-- RS gets stuck sometimes
-
-Border might not be updated?
-
 Make a mode that cahnges the percentage to colour ijnstead of type
+
+replayability
 
 
 ART
+
 
 change the remove button in contender info box to an image
 Change the colours so that those certain ones, the active vs passed dont blend in

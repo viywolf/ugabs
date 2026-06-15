@@ -205,6 +205,9 @@ func _ready() -> void:
 		
 		child.move_finished.connect(traveller_move_finished.bind(i))
 		
+		GlobalTravInfo.traveller_teams[child.active_colour] = true
+		GlobalTravInfo.team_cells_claimed[child.active_colour] = 0
+		
 		GlobalTravInfo.traveller_colours[i] = child.active_colour.x
 		GlobalTravInfo.is_traveller_disabled[i] = child.disabled
 		GlobalTravInfo.traveller_names[i] = child.name
@@ -250,8 +253,13 @@ func _physics_process(_delta: float) -> void:
 			update_solid_points(get_astar_grid(child.passed_colour), child.active_colour, child.passed_colour)
 	
 	var cur_cells_claimed : Array[int]
+	
+	for key in GlobalTravInfo.team_cells_claimed.keys():
+		GlobalTravInfo.team_cells_claimed[key] = 0
+	
 	for child : Traveller in get_children():
 		cur_cells_claimed.push_back(child.cells_claimed)
+		GlobalTravInfo.team_cells_claimed[child.active_colour] += child.cells_claimed
 	
 	update_cells_claimed.emit(cur_cells_claimed)
 	

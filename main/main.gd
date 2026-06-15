@@ -35,6 +35,11 @@ func update_cells_claimed_data(cur_cells_claimed : Array[int]):
 		%UI.cells_claimed_percentages[i] = cur_percentage
 		total_percentage += cur_percentage
 	
+	for key in GlobalTravInfo.team_cells_claimed.keys():
+		var cur_percentage : float = (float(GlobalTravInfo.team_cells_claimed[key]) / GlobalTravInfo.total_cells_in_grid)
+		GlobalTravInfo.team_cells_claimed[key] = cur_percentage
+		total_percentage += cur_percentage
+	
 	%UI.update_cell_claimed_labels()
 	%UI.update_cur_turn_label()
 	

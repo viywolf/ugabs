@@ -10,13 +10,6 @@ var index_in_path : int = -1
 @export var seek_null_cells_only : bool = true
 @export var seek_any_cell : bool = false
 
-"""
-To do
-
-(0,0) colour seems to be able to escape through walls for some reason
-
-"""
-
 func preparatory_actions() -> void:
 	name = "RandomSeeker"
 	get_new_target_cell()
@@ -26,7 +19,6 @@ func get_new_target_cell() -> void:
 		@warning_ignore("integer_division")
 		target_cell = Vector2i(rng.randi_range(-GlobalTravInfo.grid_radius, GlobalTravInfo.grid_radius),
 				rng.randi_range(-GlobalTravInfo.grid_radius, GlobalTravInfo.grid_radius))
-		#target_cell = Vector2i(rng.randi_range(-60, 60), rng.randi_range(-35, 35))
 		if seek_null_cells_only:
 			if is_cell_null(target_cell):
 				break
@@ -35,6 +27,7 @@ func get_new_target_cell() -> void:
 		else:
 			if is_cell_traveller_colour(target_cell):
 				break
+
 func reset_path() -> void:
 	index_in_path = -1
 	

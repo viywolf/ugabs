@@ -3,11 +3,23 @@ extends CanvasLayer
 var cells_claimed_data : Array[int]
 
 var label_base_text : Array[String]
+var label_base_text_coloured : Dictionary[Vector2i, String]
 
 var cells_claimed_percentages : Array[float]
+var cells_claimed_percentages_by_colour : Dictionary[Vector2i, float]
 
 func _ready() -> void:
 	Engine.physics_ticks_per_second = 12
+	
+	$SpeedSlider.min_value = 0
+	var screen_refresh_rate : float = DisplayServer.screen_get_refresh_rate()
+	if(screen_refresh_rate > 0):
+		$SpeedSlider.max_value = sqrt(screen_refresh_rate)
+	else:
+		$SpeedSlider.max_value = sqrt(60)
+	
+	$SpeedSlider.step = 0.1
+	$SpeedSlider.value = sqrt(12)
 
 func _on_speed_slider_value_changed(value: float) -> void:
 	var value_to_ticks : int = int(round(value*value))
@@ -28,12 +40,23 @@ func _on_speed_slider_value_changed(value: float) -> void:
 
 func update_no_of_labels() -> void:
 	label_base_text.resize(GlobalTravInfo.no_of_travellers)
+	
+	for key in GlobalTravInfo.team_cells_claimed.keys():
+		label_base_text_coloured[key] = ""
+	
 	cells_claimed_percentages.resize(GlobalTravInfo.no_of_travellers)
 	for i in GlobalTravInfo.no_of_travellers:
 		var new_label = Label.new()
 		label_base_text[i] = GlobalTravInfo.traveller_names[i] + ": "
 		new_label.add_theme_font_size_override("font_size", 20)
 		$PercentagedClaimedBox.add_child(new_label)
+		
+	for i in GlobalTravInfo.traveller_teams.keys().size():
+		var new_label = Label.new()
+		label_base_text_coloured[GlobalTravInfo.traveller_teams.keys()[i]] = CellColour.colour_names[CellColour.colours_in_tileset.find(GlobalTravInfo.traveller_teams.keys()[i])].capitalize() + ": "
+		new_label.add_theme_font_size_override("font_size", 20)
+		$PercentagedClaimedBoxColours.add_child(new_label)
+		
 	$CurrentTurnLabel.add_theme_font_size_override("font_size", 20)
 
 func update_cell_claimed_labels() -> void:
@@ -46,6 +69,23 @@ func update_cell_claimed_labels() -> void:
 		cells_claimed_percentages[i] = roundf(cells_claimed_percentages[i])
 		cells_claimed_percentages[i] /= 100
 		child.text = label_base_text[i] + str(cells_claimed_percentages[i]) + "%"
+		
+	var current_index : int = 0
+	for key in GlobalTravInfo.team_cells_claimed.keys():
+		var child : Label = $PercentagedClaimedBoxColours.get_child(current_index)
+		current_index += 1
+		# Convert number to percentage
+		GlobalTravInfo.team_cells_claimed[key] *= 100
+		# Round the percentage to 2 d.p
+		GlobalTravInfo.team_cells_claimed[key] *= 100
+		GlobalTravInfo.team_cells_claimed[key] = roundf(GlobalTravInfo.team_cells_claimed[key])
+		GlobalTravInfo.team_cells_claimed[key] /= 100
+		child.text = label_base_text_coloured[key] + str(GlobalTravInfo.team_cells_claimed[key]) + "%"
 
 func update_cur_turn_label() -> void:
 	$CurrentTurnLabel.text = "Turns Passed: " + str(GlobalTravInfo.current_turn)
+
+
+func _on_toggle_percentages_pressed() -> void:
+	$PercentagedClaimedBox.visible = !$PercentagedClaimedBox.visible
+	$PercentagedClaimedBoxColours.visible = !$PercentagedClaimedBoxColours.visible
