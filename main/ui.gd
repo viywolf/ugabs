@@ -20,6 +20,10 @@ func _ready() -> void:
 	
 	$SpeedSlider.step = 0.1
 	$SpeedSlider.value = sqrt(12)
+	
+func _input(event: InputEvent) -> void:
+	if(event.is_action_pressed("ToggleUI")):
+		self.visible = !self.visible
 
 func _on_speed_slider_value_changed(value: float) -> void:
 	var value_to_ticks : int = int(round(value*value))
@@ -85,7 +89,10 @@ func update_cell_claimed_labels() -> void:
 func update_cur_turn_label() -> void:
 	$CurrentTurnLabel.text = "Turns Passed: " + str(GlobalTravInfo.current_turn)
 
-
 func _on_toggle_percentages_pressed() -> void:
 	$PercentagedClaimedBox.visible = !$PercentagedClaimedBox.visible
 	$PercentagedClaimedBoxColours.visible = !$PercentagedClaimedBoxColours.visible
+	if $HBoxContainer/TogglePercentages.text == "Show Types":
+		$HBoxContainer/TogglePercentages.text = "Show Colours"
+	else:
+		$HBoxContainer/TogglePercentages.text = "Show Types"

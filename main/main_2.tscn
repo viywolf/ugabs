@@ -24,7 +24,6 @@ script = ExtResource("1_okaqm")
 
 [node name="OriginalTileMap" parent="." unique_id=48495168 instance=ExtResource("2_okaqm")]
 unique_name_in_owner = true
-visible = false
 auto_add_travellers = false
 
 [node name="Seeker" type="Node" parent="OriginalTileMap" unique_id=1384049201]
@@ -61,7 +60,7 @@ offset_left = 461.0
 offset_top = -236.0
 offset_right = 509.0
 offset_bottom = -213.0
-text = "Faster"
+text = "Faster (may lag at higher speeds)"
 
 [node name="SpeedSliderLabelSlow" type="Label" parent="UI" unique_id=1685134333]
 offset_left = 464.0
@@ -91,21 +90,29 @@ theme_override_font_sizes/font_size = 20
 text = "Cells Claimed"
 
 [node name="TogglePercentages" type="Button" parent="UI/HBoxContainer" unique_id=1328612271]
+custom_minimum_size = Vector2(130, 0)
 layout_mode = 2
 text = "Show Colours"
 
 [node name="PercentagedClaimedBox" type="VBoxContainer" parent="UI" unique_id=1224105923]
 offset_left = -557.0
-offset_top = -239.0
+offset_top = -266.0
 offset_right = -517.0
-offset_bottom = -199.0
+offset_bottom = -226.0
 
 [node name="PercentagedClaimedBoxColours" type="VBoxContainer" parent="UI" unique_id=1046901652]
 visible = false
 offset_left = -557.0
-offset_top = -239.0
+offset_top = -266.0
 offset_right = -517.0
-offset_bottom = -199.0
+offset_bottom = -226.0
+
+[node name="ToggleUILabel" type="Label" parent="UI" unique_id=94736854]
+offset_left = -560.0
+offset_top = 237.0
+offset_right = -398.0
+offset_bottom = 260.0
+text = "Press esc to toggle ui"
 
 [node name="CurrentTurnLabel" type="Label" parent="UI" unique_id=828856831]
 offset_left = 357.0
@@ -114,9 +121,18 @@ offset_right = 468.0
 offset_bottom = -292.0
 text = "Turns Passed: "
 
+[node name="BackButton" type="Button" parent="UI" unique_id=217521663]
+unique_name_in_owner = true
+offset_left = -562.0
+offset_top = 268.0
+offset_right = -427.0
+offset_bottom = 308.0
+text = "<- Back To Menu"
+
 [node name="Camera2D" type="Camera2D" parent="." unique_id=561495329]
 
 [node name="TravellerSetupMenu" parent="." unique_id=392752584 instance=ExtResource("7_e3y7d")]
 
 [connection signal="value_changed" from="UI/SpeedSlider" to="UI" method="_on_speed_slider_value_changed"]
 [connection signal="pressed" from="UI/HBoxContainer/TogglePercentages" to="UI" method="_on_toggle_percentages_pressed"]
+[connection signal="pressed" from="UI/BackButton" to="." method="_on_back_button_pressed"]

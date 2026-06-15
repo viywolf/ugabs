@@ -45,3 +45,18 @@ func update_cells_claimed_data(cur_cells_claimed : Array[int]):
 	
 	if(is_equal_approx(total_percentage, 1.0)):
 		print("Stop the simulation")
+
+var setup_res : PackedScene = load("res://main/traveller_setup_menu.tscn")
+
+func _on_back_button_pressed() -> void:
+	# Put a warning that it will clear current progress?
+	var setup_scene = setup_res.instantiate()
+	setup_scene.setup_done.connect(tilemap_created)
+	self.add_child(setup_scene)
+	%UI.hide()
+	remove_all_tilemaps()
+	
+func remove_all_tilemaps() -> void:
+	for child : Node in self.get_children():
+		if(child is TileMapLayer):
+			child.queue_free()

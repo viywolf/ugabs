@@ -1,7 +1,10 @@
-Make a mode that cahnges the percentage to colour ijnstead of type
+keep data when going bacak to menu
 
-replayability
+screen size adjustment
 
+make the ui better
+
+Random seeker pretty alggy at times ngl (when its looking for a null cell but its hard?)
 
 ART
 

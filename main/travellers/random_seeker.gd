@@ -46,13 +46,13 @@ func get_next_cell() -> Vector2i:
 
 func get_next_position() -> Vector2i:
 	if(current_position == target_cell):
-		print(name + " reached target")
+		#print(name + " reached target")
 		get_new_target_cell()
 		reset_path()
 		
 	# Impossible to go there
 	if(path_to_target.size() == 0):
-		print(name + " cannot go there")
+		#print(name + " cannot go there")
 		get_new_target_cell()
 		reset_path()
 		return current_position
@@ -61,11 +61,11 @@ func get_next_position() -> Vector2i:
 	
 	if(index_in_path < path_to_target.size()):
 		if(can_move(get_next_cell()) == false):
-			print(name + " cannot move to next cell")
+			#print(name + " cannot move to next cell")
 			reset_path()
 			return current_position
 		else:
 			return get_next_cell()
 	else:
-		print(name + " has finished the current path")
+		#print(name + " has finished the current path")
 		return current_position
