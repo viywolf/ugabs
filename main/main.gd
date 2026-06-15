@@ -26,6 +26,7 @@ func tilemap_created() -> void:
 			main_tilemap_scene = child
 			child.update_cells_claimed.connect(update_cells_claimed_data)
 	%UI.update_no_of_labels()
+	%UI.show()
 
 func update_cells_claimed_data(cur_cells_claimed : Array[int]):
 	var total_percentage : float = 0

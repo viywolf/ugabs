@@ -101,23 +101,38 @@ func remove_traveller(id : int) -> void:
 	printerr("Id " + str(id) + " was not found")
 
 func show_warning(message : String) -> void:
+	var warning_panel : Panel = Panel.new()
+	
 	var warning_label : Label = Label.new()
 	warning_label.text = message
-	warning_label.add_theme_color_override("font_color", Color(0.227, 0.0, 0.0, 0.784))
-	warning_label.custom_minimum_size.y = 500
+	warning_label.add_theme_color_override("font_color", Color(1.0, 0.151, 0.108, 1.0))
+	
+	warning_panel.size = warning_label.get_combined_minimum_size()
+	
+	var new_stylebox : StyleBoxFlat = StyleBoxFlat.new()
+	new_stylebox.bg_color = Color(0.107, 0.107, 0.107, 0.9)
+	new_stylebox.set_expand_margin_all(10)
+	new_stylebox.set_corner_radius_all(10)
+	new_stylebox.corner_detail = 5
+	
+	warning_panel.add_theme_stylebox_override("panel", new_stylebox)
+	
 	#warning_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	# Half of scrren width, temp val for nw
 	# Please center it somehow???
 	@warning_ignore("integer_division")
-	warning_label.position.x = 1152 /2 - (warning_label.custom_minimum_size.y / 4)
-	warning_label.position.y = 50
+	warning_panel.position.x = (1152 /2) - (1152 / 4)
+	warning_panel.position.y = 50
 	
-	add_child(warning_label)
+	warning_panel.add_child(warning_label)
+	add_child(warning_panel)
 	
 	await get_tree().create_timer(0.7).timeout
 	
 	var tween  = create_tween()
-	tween.tween_property(warning_label, "modulate:a", 0, 0.5)
-	await tween.parallel().tween_property(warning_label, "position:y", -100, 1).finished
+	tween.set_ease(Tween.EASE_IN)
+	tween.set_trans(Tween.TRANS_QUART)
+	tween.tween_property(warning_panel, "modulate:a", 0, 0.5)
+	await tween.parallel().tween_property(warning_panel, "position:y", -100, 1).finished
 	
-	warning_label.queue_free()
+	warning_panel.queue_free()
