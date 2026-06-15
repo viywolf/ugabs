@@ -1,1 +1,9 @@
-make it so you can choose whether the arena is sqaure or cirle and also the size I guess and I guess you would need a weird circle finding out perimeter equation for this so uh yeah 
+Rearrane the ui and camera so it is zoomed on the field thing and the data and other dials are on the side, out of the way
+
+Test the teams thing
+
+Change the colours so that those certain ones, the active vs passed dont blend in
+
+Check random seeker todo
+
+Border might not be updated?

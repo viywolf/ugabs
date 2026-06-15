@@ -39,10 +39,14 @@ func _ready() -> void:
 		$MainContainer/ColourContainer/OptionButton.add_item(colour.capitalize())
 	
 	# Position limits
+	# Make it so this updates as you change the radius size/square to circle
 	$MainContainer/StartingPosContainer/GridPosInputX.min_value = int(-GlobalTravInfo.grid_size.x / 2.0)
 	$MainContainer/StartingPosContainer/GridPosInputX.max_value = int(GlobalTravInfo.grid_size.x / 2.0)
 	$MainContainer/StartingPosContainer/GridPosInputY.min_value = int(-GlobalTravInfo.grid_size.y / 2.0)
 	$MainContainer/StartingPosContainer/GridPosInputY.max_value = int(GlobalTravInfo.grid_size.y / 2.0)
+	
+	$BorderInfo/SpinBox.min_value = 1
+	$BorderInfo/SpinBox.max_value = int(GlobalTravInfo.grid_size.y / 2.0)
 	
 func _on_add_new_traveller_button_pressed() -> void:
 	current_traveller_info[0] = type_select.get_item_text(type_select.get_selected_id())

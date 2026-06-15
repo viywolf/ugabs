@@ -9,6 +9,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
+	"""
 	if Input.is_action_just_pressed("ui_accept"):
 		for child : Node in get_children():
 			if child is TileMapLayer:
@@ -17,6 +18,7 @@ func _process(_delta: float) -> void:
 		instantiated_scene.name = "PlaybackScene"
 		add_child(instantiated_scene)
 		return
+	"""
 
 func tilemap_created() -> void:
 	for child : Node in get_children():
@@ -26,6 +28,14 @@ func tilemap_created() -> void:
 	%UI.update_no_of_labels()
 
 func update_cells_claimed_data(cur_cells_claimed : Array[int]):
+	var total_percentage : float = 0
 	for i in cur_cells_claimed.size():
-		%UI.cells_claimed_percentages[i] = (float(cur_cells_claimed[i]) / GlobalTravInfo.total_cells_in_grid)
+		var cur_percentage : float = (float(cur_cells_claimed[i]) / GlobalTravInfo.total_cells_in_grid)
+		%UI.cells_claimed_percentages[i] = cur_percentage
+		total_percentage += cur_percentage
+	
 	%UI.update_cell_claimed_labels()
+	%UI.update_cur_turn_label()
+	
+	if(is_equal_approx(total_percentage, 1.0)):
+		print("Stop the simulation")

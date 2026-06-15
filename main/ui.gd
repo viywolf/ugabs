@@ -32,8 +32,9 @@ func update_no_of_labels() -> void:
 	for i in GlobalTravInfo.no_of_travellers:
 		var new_label = Label.new()
 		label_base_text[i] = GlobalTravInfo.traveller_names[i] + ": "
-		new_label.add_theme_font_size_override("font_size", 10)
+		new_label.add_theme_font_size_override("font_size", 20)
 		$PercentagedClaimedBox.add_child(new_label)
+	$CurrentTurnLabel.add_theme_font_size_override("font_size", 20)
 
 func update_cell_claimed_labels() -> void:
 	for i in $PercentagedClaimedBox.get_child_count():
@@ -45,3 +46,6 @@ func update_cell_claimed_labels() -> void:
 		cells_claimed_percentages[i] = roundf(cells_claimed_percentages[i])
 		cells_claimed_percentages[i] /= 100
 		child.text = label_base_text[i] + str(cells_claimed_percentages[i]) + "%"
+
+func update_cur_turn_label() -> void:
+	$CurrentTurnLabel.text = "Turns Passed: " + str(GlobalTravInfo.current_turn)
