@@ -104,10 +104,12 @@ func get_astar_grid(current_passed_colour : Vector2i) -> AStarGrid2D:
 func update_solid_points(current_astar_grid : AStarGrid2D, good_active_colour : Vector2i, good_passed_colour : Vector2i) -> void:
 	for x in range(GlobalTravInfo.grid_size.x):
 		for y in range(GlobalTravInfo.grid_size.y):
+			@warning_ignore("integer_division")
 			var current_tile_data = get_cell_tile_data(Vector2i(x - GlobalTravInfo.grid_size.x / 2, y - GlobalTravInfo.grid_size.y / 2))
 			if(current_tile_data == null): continue
 			if(current_tile_data.get_custom_data("Colour") != good_active_colour 
 			and current_tile_data.get_custom_data("Colour") != good_passed_colour):
+				@warning_ignore("integer_division")
 				current_astar_grid.set_point_solid(Vector2i(x - GlobalTravInfo.grid_size.x / 2, y - GlobalTravInfo.grid_size.y / 2))
 
 func _ready() -> void:

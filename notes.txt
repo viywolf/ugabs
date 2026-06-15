@@ -1,9 +1,10 @@
-Rearrane the ui and camera so it is zoomed on the field thing and the data and other dials are on the side, out of the way
-
-Test the teams thing
-
 Change the colours so that those certain ones, the active vs passed dont blend in
 
 Check random seeker todo
+- RS gets stuck sometimes
 
 Border might not be updated?
+
+change the remove button in contender info box to an image
+
+Make a mode that cahnges the percentage to colour ijnstead of type

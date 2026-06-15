@@ -117,9 +117,7 @@ func show_warning(message : String) -> void:
 	
 	warning_panel.add_theme_stylebox_override("panel", new_stylebox)
 	
-	#warning_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	# Half of scrren width, temp val for nw
-	# Please center it somehow???
 	@warning_ignore("integer_division")
 	warning_panel.position.x = (1152 /2) - (1152 / 4)
 	warning_panel.position.y = 50

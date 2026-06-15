@@ -4,9 +4,17 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p13as"]
 bg_color = Color(0.78352344, 0.78352344, 0.78352326, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4yp6q"]
 bg_color = Color(0.96608883, 0.31720638, 0.63069326, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
 
 [node name="ContenderInfoBox" type="Panel" unique_id=159757742]
 custom_minimum_size = Vector2(400, 100)
@@ -15,10 +23,13 @@ script = ExtResource("1_21d6m")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=205008855]
 layout_mode = 0
-offset_top = 4.0
+offset_top = 8.0
 offset_right = 400.0
-offset_bottom = 27.0
+offset_bottom = 88.0
 theme_override_constants/separation = 10
+
+[node name="BufferSpace" type="Label" parent="HBoxContainer" unique_id=1671458389]
+layout_mode = 2
 
 [node name="ColourPanel" type="Panel" parent="HBoxContainer" unique_id=330236765]
 custom_minimum_size = Vector2(80, 80)
@@ -26,6 +37,7 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_4yp6q")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=2027180618]
+custom_minimum_size = Vector2(205, 0)
 layout_mode = 2
 
 [node name="TypeLabel" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=1751960688]
@@ -34,11 +46,16 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.11858138, 0.11858138, 0.11858138, 1)
 text = "Type: []"
 
-[node name="StartPosLabel" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=833577038]
+[node name="StartPosLabel" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=1788686427]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.11858138, 0.11858138, 0.11858138, 1)
-text = "Starting Position: []"
+text = "Starting Position:"
+
+[node name="StartPosCoordsLabel" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=833577038]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.11858138, 0.11858138, 0.11858138, 1)
 
 [node name="RemoveButton" type="Button" parent="HBoxContainer" unique_id=849866645]
 layout_mode = 2
