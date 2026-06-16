@@ -10,6 +10,7 @@ var cells_claimed_percentages_by_colour : Dictionary[Vector2i, float]
 
 func _ready() -> void:
 	Engine.physics_ticks_per_second = 12
+	self.hide()
 	
 	$SpeedSlider.min_value = 0
 	var screen_refresh_rate : float = DisplayServer.screen_get_refresh_rate()
@@ -49,6 +50,14 @@ func update_no_of_labels() -> void:
 		label_base_text_coloured[key] = ""
 	
 	cells_claimed_percentages.resize(GlobalTravInfo.no_of_travellers)
+	
+	# Remove labels currently in it
+	
+	for child in $PercentagedClaimedBox.get_children():
+		child.free()
+	for child in $PercentagedClaimedBoxColours.get_children():
+		child.free()
+	
 	for i in GlobalTravInfo.no_of_travellers:
 		var new_label = Label.new()
 		label_base_text[i] = GlobalTravInfo.traveller_names[i] + ": "

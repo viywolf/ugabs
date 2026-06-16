@@ -48,6 +48,17 @@ func _ready() -> void:
 	$BorderInfo/SpinBox.min_value = 1
 	$BorderInfo/SpinBox.max_value = int(GlobalTravInfo.grid_size.y / 2.0)
 	
+	# Get saved settings if any
+	if(SetupSettings.has_saved_settings == true):
+		current_trav_id = SetupSettings.saved_current_trav_id
+		positions_taken = SetupSettings.saved_positions_taken.duplicate()
+		temp_added_travs_storage = SetupSettings.saved_temp_added_travs_storage.duplicate()
+		
+		for i in current_trav_id:
+			if(temp_added_travs_storage[i] != []):
+				add_trav_box_info(temp_added_travs_storage[i][0], temp_added_travs_storage[i][1], temp_added_travs_storage[i][2], i)
+		
+	
 func _on_add_new_traveller_button_pressed() -> void:
 	current_traveller_info[0] = type_select.get_item_text(type_select.get_selected_id())
 	current_traveller_info[1] = CellColour.colours_in_tileset[colour_select.get_selected_id()]
@@ -63,18 +74,23 @@ func _on_add_new_traveller_button_pressed() -> void:
 		show_warning("Position value entered cannot be the same as a previously added position")
 		return
 	positions_taken[position_as_vector] = true
-		
-	var new_info_box : Node = info_box_resource.instantiate()
-	new_info_box.trav_type = current_traveller_info[0]
-	new_info_box.trav_colour = current_traveller_info[1]
-	new_info_box.trav_start_pos = current_traveller_info[2]
 	
-	new_info_box.node_id = current_trav_id
-	new_info_box.remove_this.connect(remove_traveller.bind(current_trav_id))
-	
-	temp_added_travs_storage[current_trav_id] = current_traveller_info.duplicate()
-	
+	add_trav_box_info(current_traveller_info[0], current_traveller_info[1], current_traveller_info[2], current_trav_id)
 	current_trav_id += 1
+
+func add_trav_box_info(type : String, colour : Vector2i, pos : Vector2i, cur_id) -> void:
+	var new_info_box : Node = info_box_resource.instantiate()
+	var this_box_info : Array = [type, colour, pos]
+	
+	new_info_box.trav_type = type
+	new_info_box.trav_colour = colour
+	new_info_box.trav_start_pos = pos
+	
+	new_info_box.node_id = cur_id
+	new_info_box.remove_this.connect(remove_traveller.bind(cur_id))
+	
+	temp_added_travs_storage[cur_id] = this_box_info.duplicate()
+	
 	%CurrentlySelectedOptions.add_child(new_info_box)
 
 func get_traveller_info() -> Array:
@@ -90,12 +106,23 @@ func _on_start_button_pressed() -> void:
 	
 	add_sibling(main_sim_instance)
 	setup_done.emit()
+	
+	# Save cur settings
+	SetupSettings.saved_current_trav_id = current_trav_id
+	SetupSettings.saved_positions_taken = positions_taken.duplicate()
+	SetupSettings.saved_temp_added_travs_storage = temp_added_travs_storage.duplicate()
+	SetupSettings.has_saved_settings = true
+	
+	# Reset cur turn
+	GlobalTravInfo.current_turn = 0
+	
 	queue_free()
 	
 func remove_traveller(id : int) -> void:
 	for child : Node in %CurrentlySelectedOptions.get_children():
 		if child.node_id == id:
 			child.queue_free()
+			positions_taken.erase(temp_added_travs_storage[id][2])
 			temp_added_travs_storage[id] = []
 			return
 	printerr("Id " + str(id) + " was not found")

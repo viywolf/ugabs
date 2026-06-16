@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 CellColour="*uid://bs61mlk7eojcc"
 GlobalTravInfo="*uid://eh51q6tmoepy"
+SetupSettings="*uid://btcyft7ffjy43"
 
 [display]
 
