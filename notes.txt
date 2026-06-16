@@ -1,10 +1,12 @@
-keep data when going bacak to menu
+add warning that the current progress will be cleared
 
 screen size adjustment
 
 make the ui better
 
 Random seeker pretty alggy at times ngl (when its looking for a null cell but its hard?)
+
+Potentially add a loading screen?
 
 ART
 

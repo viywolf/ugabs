@@ -6,10 +6,9 @@
 script = ExtResource("1_4yp6q")
 
 [node name="MainContainer" type="VBoxContainer" parent="." unique_id=1710508902]
-offset_left = 26.0
-offset_top = 23.0
-offset_right = 303.0
-offset_bottom = 234.0
+offset_top = 25.0
+offset_right = 313.0
+offset_bottom = 236.0
 theme_override_constants/separation = 20
 
 [node name="TitleLabel" type="Label" parent="MainContainer" unique_id=899254600]
@@ -58,17 +57,6 @@ prefix = "Y: "
 layout_mode = 2
 text = "Add"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=212116138]
-custom_minimum_size = Vector2(400, 600)
-offset_left = 652.0
-offset_top = 18.0
-offset_right = 1052.0
-offset_bottom = 618.0
-
-[node name="CurrentlySelectedOptions" type="VBoxContainer" parent="ScrollContainer" unique_id=1528176738]
-unique_name_in_owner = true
-layout_mode = 2
-
 [node name="BorderInfo" type="HBoxContainer" parent="." unique_id=1286213096]
 offset_left = 27.0
 offset_top = 308.0
@@ -102,10 +90,20 @@ value = 10.0
 [node name="StartButton" type="Button" parent="." unique_id=368410278]
 offset_left = 43.0
 offset_top = 553.0
-offset_right = 209.0
-offset_bottom = 584.0
+offset_right = 355.0
+offset_bottom = 603.0
 theme_override_font_sizes/font_size = 30
 text = "Start The Simulation!"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=212116138]
+custom_minimum_size = Vector2(400, 600)
+offset_top = 25.0
+offset_right = 400.0
+offset_bottom = 625.0
+
+[node name="CurrentlySelectedOptions" type="VBoxContainer" parent="ScrollContainer" unique_id=1528176738]
+unique_name_in_owner = true
+layout_mode = 2
 
 [connection signal="pressed" from="MainContainer/AddNewTravellerButton" to="." method="_on_add_new_traveller_button_pressed"]
 [connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]

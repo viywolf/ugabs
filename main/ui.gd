@@ -12,6 +12,16 @@ func _ready() -> void:
 	Engine.physics_ticks_per_second = 12
 	self.hide()
 	
+	# Positioning
+	
+	# Too far out - camera?
+	
+	%BackButton.position.y = MetaInfo.screen_size.y - %BackButton.size.y - (MetaInfo.screen_size.y / MetaInfo.fraction_of_screen)
+	$ToggleUILabel.position.y = %BackButton.position.y - $ToggleUILabel.size.y - 5
+	
+	$CurrentTurnLabel.position.x = MetaInfo.screen_size.x - $CurrentTurnLabel.size.x - 50 - (MetaInfo.screen_size.x / MetaInfo.fraction_of_screen)
+	
+	
 	$SpeedSlider.min_value = 0
 	var screen_refresh_rate : float = DisplayServer.screen_get_refresh_rate()
 	if(screen_refresh_rate > 0):

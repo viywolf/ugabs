@@ -29,6 +29,14 @@ var temp_added_travs_storage : Dictionary[int, Array]
 func _ready() -> void:
 	main_sim_instance = main_sim_res.instantiate()
 	
+	# Positioning nodes
+	$MainContainer.position.x = MetaInfo.screen_size.x / MetaInfo.fraction_of_screen
+	$BorderInfo.position.x = MetaInfo.screen_size.x / MetaInfo.fraction_of_screen
+	$StartButton.position.x = MetaInfo.screen_size.x / MetaInfo.fraction_of_screen
+	$StartButton.position.y = MetaInfo.screen_size.y - $StartButton.size.y - (MetaInfo.screen_size.y / MetaInfo.fraction_of_screen)
+	
+	$ScrollContainer.position.x = MetaInfo.screen_size.x - $ScrollContainer.size.x - (MetaInfo.screen_size.x / MetaInfo.fraction_of_screen)
+	
 	# Set up
 	for type : String in GlobalTravInfo.all_traveller_types.keys():
 		$MainContainer/TypeContainer/OptionButton.add_item(type.capitalize())
@@ -64,8 +72,7 @@ func _ready() -> void:
 		for i in current_trav_id:
 			if(temp_added_travs_storage[i] != []):
 				add_trav_box_info(temp_added_travs_storage[i][0], temp_added_travs_storage[i][1], temp_added_travs_storage[i][2], i)
-		
-	
+
 func _on_add_new_traveller_button_pressed() -> void:
 	current_traveller_info[0] = type_select.get_item_text(type_select.get_selected_id())
 	current_traveller_info[1] = CellColour.colours_in_tileset[colour_select.get_selected_id()]
@@ -99,9 +106,6 @@ func add_trav_box_info(type : String, colour : Vector2i, pos : Vector2i, cur_id)
 	temp_added_travs_storage[cur_id] = this_box_info.duplicate()
 	
 	%CurrentlySelectedOptions.add_child(new_info_box)
-
-func get_traveller_info() -> Array:
-	return current_traveller_info
 
 func _on_start_button_pressed() -> void:
 	for key in temp_added_travs_storage.keys():
