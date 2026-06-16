@@ -54,6 +54,13 @@ func _ready() -> void:
 		positions_taken = SetupSettings.saved_positions_taken.duplicate()
 		temp_added_travs_storage = SetupSettings.saved_temp_added_travs_storage.duplicate()
 		
+		match SetupSettings.saved_border_type:
+			"Square": $BorderInfo/OptionButton.selected = 0
+			"Circle": $BorderInfo/OptionButton.selected = 1
+			_: printerr("Shape not found: " + str(SetupSettings.saved_border_type))
+			
+		$BorderInfo/SpinBox.value = SetupSettings.saved_border_radius
+		
 		for i in current_trav_id:
 			if(temp_added_travs_storage[i] != []):
 				add_trav_box_info(temp_added_travs_storage[i][0], temp_added_travs_storage[i][1], temp_added_travs_storage[i][2], i)
@@ -108,6 +115,9 @@ func _on_start_button_pressed() -> void:
 	setup_done.emit()
 	
 	# Save cur settings
+	SetupSettings.saved_border_type = $BorderInfo/OptionButton.text
+	SetupSettings.saved_border_radius = $BorderInfo/SpinBox.value
+	
 	SetupSettings.saved_current_trav_id = current_trav_id
 	SetupSettings.saved_positions_taken = positions_taken.duplicate()
 	SetupSettings.saved_temp_added_travs_storage = temp_added_travs_storage.duplicate()
