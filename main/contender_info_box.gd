@@ -18,7 +18,6 @@ func _ready() -> void:
 	coloured_stylebox.bg_color = Color(0.75, 0.75, 0.75, 1.0)
 	coloured_stylebox.set_border_width_all(5)
 	coloured_stylebox.border_color = CellColour.colours_rgba[CellColour.colours_in_tileset.find(trav_colour)]
-	#coloured_stylebox.border_blend = true
 	coloured_stylebox.set_corner_radius_all(3)
 	
 	self.add_theme_stylebox_override("panel", coloured_stylebox)

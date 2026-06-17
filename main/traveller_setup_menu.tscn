@@ -2,6 +2,33 @@
 
 [ext_resource type="Script" uid="uid://dakg8d7rqrbsf" path="res://main/traveller_setup_menu.gd" id="1_4yp6q"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4yp6q"]
+bg_color = Color(0.48962224, 0.48962224, 0.48962206, 1)
+border_width_right = 3
+border_width_bottom = 3
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p13as"]
+bg_color = Color(0.25565886, 0.25565878, 0.25565875, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_draxb"]
+bg_color = Color(0.48962224, 0.48962224, 0.48962206, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="Theme" id="Theme_6cm6s"]
+LineEdit/styles/focus = SubResource("StyleBoxFlat_draxb")
+LineEdit/styles/normal = SubResource("StyleBoxFlat_4yp6q")
+
 [node name="TravellerSetupMenu" type="CanvasLayer" unique_id=392752584]
 script = ExtResource("1_4yp6q")
 
@@ -26,6 +53,9 @@ text = "Type:"
 
 [node name="OptionButton" type="OptionButton" parent="MainContainer/TypeContainer" unique_id=939569510]
 layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_4yp6q")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_p13as")
+theme_override_styles/hover = SubResource("StyleBoxFlat_draxb")
 
 [node name="ColourContainer" type="HBoxContainer" parent="MainContainer" unique_id=353664610]
 layout_mode = 2
@@ -37,6 +67,9 @@ text = "Colour:"
 
 [node name="OptionButton" type="OptionButton" parent="MainContainer/ColourContainer" unique_id=1863843716]
 layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_4yp6q")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_p13as")
+theme_override_styles/hover = SubResource("StyleBoxFlat_draxb")
 
 [node name="StartingPosContainer" type="HBoxContainer" parent="MainContainer" unique_id=1901411660]
 layout_mode = 2
@@ -47,14 +80,19 @@ text = "Starting Position:"
 
 [node name="GridPosInputX" type="SpinBox" parent="MainContainer/StartingPosContainer" unique_id=138117840]
 layout_mode = 2
+theme = SubResource("Theme_6cm6s")
 prefix = "X: "
 
 [node name="GridPosInputY" type="SpinBox" parent="MainContainer/StartingPosContainer" unique_id=469497494]
 layout_mode = 2
+theme = SubResource("Theme_6cm6s")
 prefix = "Y: "
 
 [node name="AddNewTravellerButton" type="Button" parent="MainContainer" unique_id=906707842]
 layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_4yp6q")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_p13as")
+theme_override_styles/hover = SubResource("StyleBoxFlat_draxb")
 text = "Add"
 
 [node name="BorderInfo" type="HBoxContainer" parent="." unique_id=1286213096]
@@ -70,6 +108,9 @@ text = "Border Type:"
 
 [node name="OptionButton" type="OptionButton" parent="BorderInfo" unique_id=966220343]
 layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_4yp6q")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_p13as")
+theme_override_styles/hover = SubResource("StyleBoxFlat_draxb")
 selected = 0
 item_count = 2
 popup/item_0/text = "Square"
@@ -83,6 +124,7 @@ text = "Radius: "
 
 [node name="SpinBox" type="SpinBox" parent="BorderInfo" unique_id=1153893608]
 layout_mode = 2
+theme = SubResource("Theme_6cm6s")
 min_value = 1.0
 max_value = 35.0
 value = 10.0
@@ -93,6 +135,9 @@ offset_top = 553.0
 offset_right = 355.0
 offset_bottom = 603.0
 theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_4yp6q")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_p13as")
+theme_override_styles/hover = SubResource("StyleBoxFlat_draxb")
 text = "Start The Simulation!"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=212116138]

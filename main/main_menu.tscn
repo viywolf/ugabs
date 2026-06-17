@@ -2,11 +2,33 @@
 
 [ext_resource type="Script" uid="uid://yq6c42b7seap" path="res://main/main_menu.gd" id="1_4l7av"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4l7av"]
+bg_color = Color(0.48962224, 0.48962224, 0.48962206, 1)
+border_width_right = 3
+border_width_bottom = 3
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dhah8"]
+bg_color = Color(0.25565886, 0.25565878, 0.25565875, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w2mlq"]
+bg_color = Color(0.48962224, 0.48962224, 0.48962206, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
 [node name="MainMenu" type="CanvasLayer" unique_id=1268563488]
 script = ExtResource("1_4l7av")
 
 [node name="Label" type="Label" parent="." unique_id=110489807]
-visible = false
 offset_left = 32.0
 offset_top = 34.0
 offset_right = 467.0
@@ -26,6 +48,9 @@ pivot_offset = Vector2(43, 22)
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_4l7av")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_dhah8")
+theme_override_styles/hover = SubResource("StyleBoxFlat_w2mlq")
 text = "Start"
 
 [connection signal="pressed" from="VBoxContainer/Start" to="." method="_on_start_pressed"]

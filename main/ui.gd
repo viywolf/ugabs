@@ -20,9 +20,9 @@ func _ready() -> void:
 	$ToggleUILabel.position.y = %BackButton.position.y - $ToggleUILabel.size.y - 5
 	
 	$CurrentTurnLabel.position.x = this_screen_size.x / 2.2 - $CurrentTurnLabel.size.x - 50
-	$SpeedSlider.position.x = this_screen_size.x / 2.2
-	$SpeedSliderLabelFast.position.x = $SpeedSlider.position.x + 20
-	$SpeedSliderLabelSlow.position.x = $SpeedSlider.position.x + 20
+	$SpeedSlider.position.x = this_screen_size.x / 2.5
+	$SpeedSliderLabelFast.position.x = $SpeedSlider.position.x + 10
+	$SpeedSliderLabelSlow.position.x = $SpeedSlider.position.x + 10
 	
 	$SpeedSlider.min_value = 0
 	var screen_refresh_rate : float = DisplayServer.screen_get_refresh_rate()

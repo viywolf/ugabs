@@ -8,15 +8,59 @@
 [ext_resource type="PackedScene" uid="uid://dwau6iyp5vnxc" path="res://main/traveller_setup_menu.tscn" id="7_e3y7d"]
 [ext_resource type="Script" uid="uid://dbrjx5asp3h1g" path="res://main/ui.gd" id="7_xx02v"]
 
+[sub_resource type="Gradient" id="Gradient_4dugh"]
+offsets = PackedFloat32Array(0.95033115)
+colors = PackedColorArray(0.27022207, 0.27022186, 0.27022186, 0.78431374)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_67ri8"]
+gradient = SubResource("Gradient_4dugh")
+width = 20
+fill_to = Vector2(0.9883721, 0.011627907)
+
+[sub_resource type="Gradient" id="Gradient_grrlh"]
+offsets = PackedFloat32Array(0.95033115)
+colors = PackedColorArray(0.22670737, 0.22670755, 0.22670743, 0.78431374)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_0i4oc"]
+gradient = SubResource("Gradient_grrlh")
+width = 20
+fill_to = Vector2(0.9883721, 0.011627907)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_okaqm"]
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bsumw"]
+bg_color = Color(0.36862746, 0.36862746, 0.36862746, 0.5019608)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4dugh"]
+bg_color = Color(0.48962224, 0.48962224, 0.48962206, 1)
+border_width_right = 3
+border_width_bottom = 3
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_67ri8"]
+bg_color = Color(0.25565886, 0.25565878, 0.25565875, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_grrlh"]
+bg_color = Color(0.48962224, 0.48962224, 0.48962206, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
 
 [node name="Main" type="Node2D" unique_id=801575902]
 process_mode = 3
@@ -57,26 +101,29 @@ script = ExtResource("7_xx02v")
 
 [node name="SpeedSliderLabelFast" type="Label" parent="UI" unique_id=1288369320]
 offset_left = 461.0
-offset_top = -236.0
-offset_right = 509.0
-offset_bottom = -213.0
-text = "Faster (may lag at higher speeds)"
+offset_top = -244.0
+offset_right = 716.0
+offset_bottom = -221.0
+text = "Faster"
 
 [node name="SpeedSliderLabelSlow" type="Label" parent="UI" unique_id=1685134333]
 offset_left = 464.0
-offset_top = 278.0
+offset_top = 252.0
 offset_right = 517.0
-offset_bottom = 301.0
+offset_bottom = 275.0
 text = "Slower"
 
 [node name="SpeedSlider" type="HSlider" parent="UI" unique_id=394646945]
-custom_minimum_size = Vector2(400, 0)
 offset_left = 523.0
-offset_top = 304.0
-offset_right = 1073.0
-offset_bottom = 320.0
+offset_top = 221.0
+offset_right = 923.0
+offset_bottom = 285.0
 rotation = 4.712389
+theme_override_icons/grabber = SubResource("GradientTexture2D_67ri8")
+theme_override_icons/grabber_highlight = SubResource("GradientTexture2D_0i4oc")
 theme_override_styles/slider = SubResource("StyleBoxFlat_okaqm")
+theme_override_styles/grabber_area = SubResource("StyleBoxFlat_bsumw")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_bsumw")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="UI" unique_id=166180865]
 offset_left = -565.0
@@ -92,6 +139,9 @@ text = "Cells Claimed"
 [node name="TogglePercentages" type="Button" parent="UI/HBoxContainer" unique_id=1328612271]
 custom_minimum_size = Vector2(130, 0)
 layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_4dugh")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_67ri8")
+theme_override_styles/hover = SubResource("StyleBoxFlat_grrlh")
 text = "Show Colours"
 
 [node name="PercentagedClaimedBox" type="VBoxContainer" parent="UI" unique_id=1224105923]
@@ -128,6 +178,9 @@ offset_top = 268.0
 offset_right = -427.0
 offset_bottom = 308.0
 tooltip_text = "This will clear all current progress"
+theme_override_styles/normal = SubResource("StyleBoxFlat_4dugh")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_67ri8")
+theme_override_styles/hover = SubResource("StyleBoxFlat_grrlh")
 text = "<- Back To Menu"
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=561495329]

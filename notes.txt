@@ -10,3 +10,5 @@ ART
 
 change the remove button in contender info box to an image
 Change the colours so that those certain ones, the active vs passed dont blend in
+
+Make an icon
