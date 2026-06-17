@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://b84n1pq7y7d1w"]
 
 [ext_resource type="Script" uid="uid://bru07g80new0w" path="res://main/main.gd" id="1_okaqm"]
+[ext_resource type="AudioStream" uid="uid://dnm47n8tkvpm2" path="res://main/sfx/BeepBoxBeep.mp3" id="2_67ri8"]
 [ext_resource type="PackedScene" uid="uid://bfg16urhg15om" path="res://main/main_simulation.tscn" id="2_okaqm"]
 [ext_resource type="Script" uid="uid://d2xm80qsd2d3q" path="res://main/travellers/random_seeker.gd" id="3_m1m65"]
 [ext_resource type="Script" uid="uid://h1dbfjrjw4gg" path="res://main/travellers/user.gd" id="4_u8quh"]
@@ -65,6 +66,10 @@ corner_radius_bottom_left = 2
 [node name="Main" type="Node2D" unique_id=801575902]
 process_mode = 3
 script = ExtResource("1_okaqm")
+
+[node name="Beep" type="AudioStreamPlayer" parent="." unique_id=878784143]
+unique_name_in_owner = true
+stream = ExtResource("2_67ri8")
 
 [node name="OriginalTileMap" parent="." unique_id=48495168 instance=ExtResource("2_okaqm")]
 unique_name_in_owner = true

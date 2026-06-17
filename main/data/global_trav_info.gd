@@ -8,9 +8,9 @@ var directions : Array[Vector2i] = [
 ]
 
 var all_traveller_types : Dictionary[String, Resource] = {
-#	"user" : load("res://main/travellers/user.gd"),
 	"random" : load("res://main/travellers/random.gd"),
 	"random location" : load("res://main/travellers/random_seeker.gd"),
+	"user" : load("res://main/travellers/user.gd"),
 }
 
 var global_move_log : Array[Array]

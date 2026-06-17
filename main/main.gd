@@ -25,6 +25,7 @@ func tilemap_created() -> void:
 		if child is TileMapLayer:
 			main_tilemap_scene = child
 			child.update_cells_claimed.connect(update_cells_claimed_data)
+			child.beep.connect(make_a_beep)
 	%UI.update_no_of_labels()
 	%UI.show()
 
@@ -60,3 +61,7 @@ func remove_all_tilemaps() -> void:
 	for child : Node in self.get_children():
 		if(child is TileMapLayer):
 			child.queue_free()
+
+func make_a_beep() -> void:
+	if(%Beep.playing == false):
+		%Beep.play()

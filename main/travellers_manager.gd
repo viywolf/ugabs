@@ -3,6 +3,8 @@ extends TileMapLayer
 # Emits every turn, with a Array[int] of cells claimed
 signal update_cells_claimed
 
+signal beep
+
 @export_category("Travellers")
 
 @export var auto_add_travellers : bool = true
@@ -204,6 +206,7 @@ func _ready() -> void:
 		var child : Traveller = self.get_child(i)
 		
 		child.move_finished.connect(traveller_move_finished.bind(i))
+		child.can_beep.connect(emit_signal_beep)
 		
 		GlobalTravInfo.traveller_teams[child.active_colour] = true
 		GlobalTravInfo.team_cells_claimed[child.active_colour] = 0
@@ -272,3 +275,6 @@ func is_all_travellers_finished() -> bool:
 			return false
 	moves_finished.fill(false)
 	return true
+
+func emit_signal_beep() -> void:
+	beep.emit()

@@ -1,8 +1,8 @@
 # Unnamed Grid Algorithm Battle Simulator
 
-Hi welcome this readme is very unfished so keep that in mind when you read.
+A customisable simulation of algorithms colouring a grid.
 
-Try it out at [link]!
+Try it out at [itch.io](https://viywolf.itch.io/ugabs)!
 
 ## What is it?
 
@@ -18,17 +18,21 @@ UGABS is a simulation of various algorithms on a 2d grid, following the followin
 
 ## Features
 
-UGABS features (insert a hopefully respectable number here) of different algorithms. You may customise the colours for each one of the algorithm grid people, as well as choose where they start on the grid.
+UGABS features (insert a hopefully respectable number here) of different algorithms. 
+
+You may customise the colours for each one of the algorithm grid people, as well as choose where they start on the grid.
+
+The grid itself can also be customised, with the ability to choose a square/circle based shape, and the radius/size of it.
 
 (another gif???)
 
 ## Inspiration
 
-I made this based on all of the grid algorithm battle videos I've seen on a certain online video-sharing platform owned by a multinational technology corporation focused on information technology, online advertising, search engine technology, email, cloud computing, software, quantum computing, e-commerce, consumer electronics, and artificial intelligence (AI) (description by a free online encyclopedia written and maintained by a community of volunteers). Anyways. Basically I thought they were pretty cool and what if coding YouTubers didn't have a monopoly on making grid algorithm battle thingy videos (or, territory wars I guess?). So yeah with this anyone can make a low quality grid battle video with bad algorithms. I guess if you want the algorithms to be better make a pull request??
+I made this based on all of the grid algorithm battle videos I've seen on the internet, wanting to make one that was highly customisable. New algorithms can be added relatively easily, allowing simple exapansion of this game!
 
 ## Other Info
 
-The primary tool I used to make this was Godot with GDScript. Special mention to Aseprite, GitHub, and VSCode.
+The primary tool I used to make this was Godot with GDScript. Special mention to Aseprite and BeepBox.
 
 This project was made for Horizons by Hack Club.
 
