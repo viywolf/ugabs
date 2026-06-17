@@ -15,6 +15,11 @@ func preparatory_actions() -> void:
 	get_new_target_cell()
 
 func get_new_target_cell() -> void:
+	if seek_null_cells_only:
+		if(tilemap.empty_cells_in_grid.keys().size() == 0):
+			return
+		target_cell = tilemap.empty_cells_in_grid.keys()[rng.randi_range(0, tilemap.empty_cells_in_grid.keys().size() - 1)]
+	
 	for i in 100:
 		@warning_ignore("integer_division")
 		target_cell = Vector2i(rng.randi_range(-GlobalTravInfo.grid_radius, GlobalTravInfo.grid_radius),

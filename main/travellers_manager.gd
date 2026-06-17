@@ -30,6 +30,8 @@ var astar_grid : AStarGrid2D = AStarGrid2D.new()
 # Position : colour
 var filled_cells_in_grid : Dictionary
 
+var empty_cells_in_grid : Dictionary[Vector2i, bool]
+
 # making an astar grid for each colour
 # which allows teams
 
@@ -137,12 +139,13 @@ func _ready() -> void:
 		else:
 			visited[cur_node] = true
 			cells_in_grid += 1
+			empty_cells_in_grid[cur_node] = true
 			
 		for direction in GlobalTravInfo.directions:
 			if(get_cell_tile_data(cur_node + direction) == null):
 				stack.push_back(cur_node + direction)
 				
-		GlobalTravInfo.total_cells_in_grid = cells_in_grid
+	GlobalTravInfo.total_cells_in_grid = cells_in_grid
 		
 	# Check and change all cell data to filled
 	
@@ -174,6 +177,8 @@ func _ready() -> void:
 			new_traveller_node.passed_colour = Vector2i(trav_colour.x, 1)
 			
 			new_traveller_node.current_position = traveller[TravInfo.START_POS]
+			
+			empty_cells_in_grid.erase(new_traveller_node.current_position)
 			
 			add_child(new_traveller_node)
 					

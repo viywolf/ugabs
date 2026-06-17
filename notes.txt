@@ -1,7 +1,0 @@
-make the ui better
-
-Random seeker pretty alggy at times ngl (when its looking for a null cell but its hard?)
-
-Potentially add a loading screen?
-
-make clear warning more clear?

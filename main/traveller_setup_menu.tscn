@@ -95,6 +95,19 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_p13as")
 theme_override_styles/hover = SubResource("StyleBoxFlat_draxb")
 text = "Add"
 
+[node name="ExplanationBox" type="ScrollContainer" parent="." unique_id=580387083]
+offset_left = 379.0
+offset_top = 30.0
+offset_right = 379.0
+offset_bottom = 30.0
+horizontal_scroll_mode = 3
+
+[node name="Label" type="Label" parent="ExplanationBox" unique_id=661271342]
+layout_mode = 2
+text = "place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text "
+horizontal_alignment = 1
+autowrap_mode = 3
+
 [node name="BorderInfo" type="HBoxContainer" parent="." unique_id=1286213096]
 offset_left = 27.0
 offset_top = 308.0
@@ -150,5 +163,6 @@ offset_bottom = 625.0
 unique_name_in_owner = true
 layout_mode = 2
 
+[connection signal="item_selected" from="MainContainer/TypeContainer/OptionButton" to="." method="_on_option_button_item_selected"]
 [connection signal="pressed" from="MainContainer/AddNewTravellerButton" to="." method="_on_add_new_traveller_button_pressed"]
 [connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]

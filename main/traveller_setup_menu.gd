@@ -8,6 +8,13 @@ var current_traveller_info : Array[Variant] = [
 	Vector2i.ZERO, # Position (vector2i),
 ]
 
+var trav_types_desc : Array[String] = [
+	"'Random' chooses a random direction to travel in every turn. This includes directions which it cannot move to, causing it to skip a turn.", # random
+	"'Random Location' chooses a random cell on the grid, which it will then attempt to travel to in the shortest route possible.", # seeker
+	"'User' is controlled by you. Use arrow keys to control its movement. If no input is detected, its turn is skipped.", # user
+	"Placeholder",
+]
+
 @onready var type_select : OptionButton = $MainContainer/TypeContainer/OptionButton
 @onready var colour_select : OptionButton = $MainContainer/ColourContainer/OptionButton
 @onready var position_select_x : SpinBox = $MainContainer/StartingPosContainer/GridPosInputX
@@ -35,7 +42,14 @@ func _ready() -> void:
 	$StartButton.position.x = MetaInfo.screen_size.x / MetaInfo.fraction_of_screen
 	$StartButton.position.y = MetaInfo.screen_size.y - $StartButton.size.y - (MetaInfo.screen_size.y / MetaInfo.fraction_of_screen)
 	
+	$ExplanationBox.position.x = $MainContainer.position.x + $MainContainer.size.x + MetaInfo.screen_size.x / MetaInfo.fraction_of_screen
+	$ExplanationBox.position.y = $MainContainer.position.y
+	
 	$ScrollContainer.position.x = MetaInfo.screen_size.x - $ScrollContainer.size.x - (MetaInfo.screen_size.x / MetaInfo.fraction_of_screen)
+	
+	$ExplanationBox/Label.custom_minimum_size.x = MetaInfo.screen_size.x - $ScrollContainer.custom_minimum_size.x - $MainContainer.size.x - (MetaInfo.screen_size.x / MetaInfo.fraction_of_screen * 4)
+	$ExplanationBox.custom_minimum_size.x = $ExplanationBox/Label.custom_minimum_size.x
+	$ExplanationBox.custom_minimum_size.y = $MainContainer.size.y + $BorderInfo.size.y
 	
 	# Set up
 	for type : String in GlobalTravInfo.all_traveller_types.keys():
@@ -45,6 +59,8 @@ func _ready() -> void:
 	for colour : String in CellColour.colour_names:
 		if colour == "BLACK": break
 		$MainContainer/ColourContainer/OptionButton.add_item(colour.capitalize())
+	
+	$ExplanationBox/Label.text = trav_types_desc[0]
 	
 	# Position limits
 	# Make it so this updates as you change the radius size/square to circle
@@ -175,3 +191,6 @@ func show_warning(message : String) -> void:
 	await tween.parallel().tween_property(warning_panel, "position:y", -100, 1).finished
 	
 	warning_panel.queue_free()
+
+func _on_option_button_item_selected(index: int) -> void:
+	$ExplanationBox/Label.text = trav_types_desc[index]

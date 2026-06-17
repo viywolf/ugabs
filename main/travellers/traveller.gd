@@ -81,6 +81,7 @@ func set_cell_colour(cell_coords: Vector2i, colour : Vector2i) -> void:
 	tilemap.set_cell(cell_coords, 0, colour)
 	tilemap.get_cell_tile_data(cell_coords).set_custom_data("Colour", colour)
 	tilemap.filled_cells_in_grid[cell_coords] = colour
+	tilemap.empty_cells_in_grid.erase(cell_coords)
 
 func is_cell_null(cell_coords : Vector2i) -> bool:
 	if(tilemap.get_cell_tile_data(cell_coords) == null):
