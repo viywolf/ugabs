@@ -28,6 +28,12 @@ corner_radius_bottom_left = 2
 [node name="MainMenu" type="CanvasLayer" unique_id=1268563488]
 script = ExtResource("1_4l7av")
 
+[node name="Tutorial" type="Label" parent="." unique_id=2016602099]
+offset_left = 32.0
+offset_top = 34.0
+offset_right = 72.0
+offset_bottom = 57.0
+
 [node name="Label" type="Label" parent="." unique_id=110489807]
 offset_left = 32.0
 offset_top = 34.0

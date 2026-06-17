@@ -5,10 +5,3 @@ Random seeker pretty alggy at times ngl (when its looking for a null cell but it
 Potentially add a loading screen?
 
 make clear warning more clear?
-
-ART
-
-change the remove button in contender info box to an image
-Change the colours so that those certain ones, the active vs passed dont blend in
-
-Make an icon

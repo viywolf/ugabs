@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://6q4gff5shxoi"]
 
 [ext_resource type="Script" uid="uid://12slp35x0ary" path="res://main/contender_info_box.gd" id="1_21d6m"]
-[ext_resource type="Texture2D" uid="uid://dumwfdviqrfqh" path="res://main/Colours1.png" id="2_a346g"]
+[ext_resource type="Texture2D" uid="uid://0lih7kicsbys" path="res://main/bin_a_long_time_since_ive_seen_you.png" id="2_albkv"]
+[ext_resource type="Texture2D" uid="uid://dmblaf0ga24gc" path="res://main/bin_oh_hello_there.png" id="3_6cgo2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p13as"]
 bg_color = Color(0.78352344, 0.78352344, 0.78352326, 1)
@@ -50,7 +51,9 @@ text = "                   "
 [node name="RemoveButton" type="TextureButton" parent="HBoxContainer" unique_id=455580056]
 custom_minimum_size = Vector2(75, 0)
 layout_mode = 2
-texture_normal = ExtResource("2_a346g")
+texture_normal = ExtResource("2_albkv")
+texture_pressed = ExtResource("3_6cgo2")
+texture_hover = ExtResource("3_6cgo2")
 ignore_texture_size = true
 stretch_mode = 0
 

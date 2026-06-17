@@ -13,7 +13,9 @@ config_version=5
 config/name="UGABS"
 run/main_scene="uid://dvaesujbn6vba"
 config/features=PackedStringArray("4.6", "GL Compatibility")
-config/icon="res://icon.svg"
+boot_splash/stretch_mode=3
+boot_splash/image="uid://yaj84t2uhn8a"
+config/icon="uid://qdyw6euequka"
 
 [autoload]
 
