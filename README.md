@@ -14,7 +14,7 @@ UGABS is a simulation of various algorithms on a 2d grid, following the followin
 
 -The blocky beings move according to their algorithm
 
-(insert gif here i guess?)
+![](https://github.com/viywolf/ugabs/blob/main/misc/RealDemoUGABS.gif)
 
 ## Features
 
@@ -24,7 +24,7 @@ You may customise the colours for each one of the algorithm grid people, as well
 
 The grid itself can also be customised, with the ability to choose a square/circle based shape, and the radius/size of it.
 
-(another gif???)
+![](https://github.com/viywolf/ugabs/blob/main/misc/CustomisationDemoUGABS.gif)
 
 ## Inspiration
 
