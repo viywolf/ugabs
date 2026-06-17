@@ -127,6 +127,7 @@ offset_left = -562.0
 offset_top = 268.0
 offset_right = -427.0
 offset_bottom = 308.0
+tooltip_text = "This will clear all current progress"
 text = "<- Back To Menu"
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=561495329]

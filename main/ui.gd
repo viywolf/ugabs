@@ -14,13 +14,15 @@ func _ready() -> void:
 	
 	# Positioning
 	
-	# Too far out - camera?
+	var this_screen_size : Vector2i = get_viewport().get_visible_rect().size
 	
-	%BackButton.position.y = MetaInfo.screen_size.y - %BackButton.size.y - (MetaInfo.screen_size.y / MetaInfo.fraction_of_screen)
+	%BackButton.position.y = this_screen_size.y / 2.2 - %BackButton.size.y
 	$ToggleUILabel.position.y = %BackButton.position.y - $ToggleUILabel.size.y - 5
 	
-	$CurrentTurnLabel.position.x = MetaInfo.screen_size.x - $CurrentTurnLabel.size.x - 50 - (MetaInfo.screen_size.x / MetaInfo.fraction_of_screen)
-	
+	$CurrentTurnLabel.position.x = this_screen_size.x / 2.2 - $CurrentTurnLabel.size.x - 50
+	$SpeedSlider.position.x = this_screen_size.x / 2.2
+	$SpeedSliderLabelFast.position.x = $SpeedSlider.position.x + 20
+	$SpeedSliderLabelSlow.position.x = $SpeedSlider.position.x + 20
 	
 	$SpeedSlider.min_value = 0
 	var screen_refresh_rate : float = DisplayServer.screen_get_refresh_rate()
@@ -38,7 +40,7 @@ func _input(event: InputEvent) -> void:
 
 func _on_speed_slider_value_changed(value: float) -> void:
 	var value_to_ticks : int = int(round(value*value))
-	if value_to_ticks == 0:
+	if is_equal_approx(value, 0):
 		for node in get_tree().current_scene.get_children():
 			if node == TileMapLayer:
 				node.set_physics_process(false)
@@ -49,7 +51,10 @@ func _on_speed_slider_value_changed(value: float) -> void:
 			if node == TileMapLayer:
 				node.set_physics_process(true)
 		get_tree().paused = false
-		Engine.physics_ticks_per_second = value_to_ticks
+		if(value_to_ticks != 0):
+			Engine.physics_ticks_per_second = value_to_ticks
+		else:
+			Engine.physics_ticks_per_second = 1
 
 # Process : mode : always/pausable
 

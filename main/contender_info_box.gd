@@ -11,13 +11,17 @@ var node_id : int
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	%TypeLabel.text = "Type: " + trav_type
-	%StartPosCoordsLabel.text = "(" + str(trav_start_pos.x) + ", " + str(trav_start_pos.y) + ")"
+	%StartPosLabel.text += " (" + str(trav_start_pos.x) + ", " + str(trav_start_pos.y) + ")"
 	
 	# Set up box colour
 	var coloured_stylebox : StyleBoxFlat = StyleBoxFlat.new()
-	coloured_stylebox.bg_color = CellColour.colours_rgba[CellColour.colours_in_tileset.find(trav_colour)]
+	coloured_stylebox.bg_color = Color(0.75, 0.75, 0.75, 1.0)
+	coloured_stylebox.set_border_width_all(5)
+	coloured_stylebox.border_color = CellColour.colours_rgba[CellColour.colours_in_tileset.find(trav_colour)]
+	#coloured_stylebox.border_blend = true
+	coloured_stylebox.set_corner_radius_all(3)
 	
-	$HBoxContainer/ColourPanel.add_theme_stylebox_override("panel", coloured_stylebox)
+	self.add_theme_stylebox_override("panel", coloured_stylebox)
 
 func _on_remove_button_pressed() -> void:
 	remove_this.emit()

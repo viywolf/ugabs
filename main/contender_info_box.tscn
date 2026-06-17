@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://6q4gff5shxoi"]
 
 [ext_resource type="Script" uid="uid://12slp35x0ary" path="res://main/contender_info_box.gd" id="1_21d6m"]
+[ext_resource type="Texture2D" uid="uid://dumwfdviqrfqh" path="res://main/Colours1.png" id="2_a346g"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p13as"]
 bg_color = Color(0.78352344, 0.78352344, 0.78352326, 1)
@@ -8,13 +9,6 @@ corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4yp6q"]
-bg_color = Color(0.96608883, 0.31720638, 0.63069326, 1)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
 
 [node name="ContenderInfoBox" type="Panel" unique_id=159757742]
 custom_minimum_size = Vector2(400, 100)
@@ -30,11 +24,6 @@ theme_override_constants/separation = 10
 
 [node name="BufferSpace" type="Label" parent="HBoxContainer" unique_id=1671458389]
 layout_mode = 2
-
-[node name="ColourPanel" type="Panel" parent="HBoxContainer" unique_id=330236765]
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_4yp6q")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=2027180618]
 custom_minimum_size = Vector2(205, 0)
@@ -52,13 +41,15 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.11858138, 0.11858138, 0.11858138, 1)
 text = "Starting Position:"
 
-[node name="StartPosCoordsLabel" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=833577038]
-unique_name_in_owner = true
+[node name="BufferSpace2" type="Label" parent="HBoxContainer" unique_id=1391910925]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.11858138, 0.11858138, 0.11858138, 1)
+text = "                   "
 
-[node name="RemoveButton" type="Button" parent="HBoxContainer" unique_id=849866645]
+[node name="RemoveButton" type="TextureButton" parent="HBoxContainer" unique_id=455580056]
+custom_minimum_size = Vector2(75, 0)
 layout_mode = 2
-text = "Remove"
+texture_normal = ExtResource("2_a346g")
+ignore_texture_size = true
+stretch_mode = 0
 
 [connection signal="pressed" from="HBoxContainer/RemoveButton" to="." method="_on_remove_button_pressed"]
