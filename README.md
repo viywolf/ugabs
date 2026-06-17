@@ -1,14 +1,14 @@
 # Unnamed Grid Algorithm Battle Simulator
 
-A customisable simulation of algorithms colouring a grid.
-
-Try it out at [itch.io](https://viywolf.itch.io/ugabs)!
+A customisable simulation of algorithms colouring a grid. Try it out at [itch.io](https://viywolf.itch.io/ugabs)!
 
 ## What is it?
 
 UGABS is a simulation of various algorithms on a 2d grid, following the following rules:
 
 -Each lil guy can only move on an empty cell or a cell of their colour.
+
+-When one of them travels over an uncoloured cell, that cell is coloured in their colour.
 
 -When a cell thing creates an enclosed space without any other creatures inside it, this space automatically gets filled in (to save time, as no other traveller can go inside of that area)
 
@@ -32,7 +32,7 @@ I made this based on all of the grid algorithm battle videos I've seen on the in
 
 ## Other Info
 
-The primary tool I used to make this was Godot with GDScript. Special mention to Aseprite and BeepBox.
+The primary tool I used to make this was Godot with GDScript. Special mention to Aseprite, BeepBox, and itch.io.
 
 This project was made for Horizons by Hack Club.
 
