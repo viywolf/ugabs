@@ -24,7 +24,14 @@ var colours_in_tileset : Array[Vector2i] = [
 	Vector2i(9, 4), 
 ]
 
-# Rough colours, change later
 var colours_rgba : Array[Color] = [
-	Color.RED, Color.ORANGE, Color.YELLOW, Color.LIME, Color.GREEN, Color.CYAN, Color.BLUE, Color.PURPLE, Color.PINK,
+	Color(255/255.0, 0, 0), 
+	Color(173/255.0, 108/255.0, 0), 
+	Color(202/255.0, 183/255.0, 27/255.0), 
+	Color(73/255.0, 189/255.0, 0), 
+	Color(9/255.0, 156/255.0, 44/255.0), 
+	Color(0, 189/255.0, 218/255.0), 
+	Color(24/255.0, 66/255.0, 202/255.0), 
+	Color(131/255.0, 34/255.0, 206/255.0), 
+	Color(189/255.0, 11/255.0, 171/255.0),
 ]
