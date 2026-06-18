@@ -37,7 +37,8 @@ func _ready() -> void:
 	$SpeedSlider.value = sqrt(12)
 	
 func _input(event: InputEvent) -> void:
-	if(event.is_action_pressed("ToggleUI")):
+	# not on the setup menu
+	if(event.is_action_pressed("ToggleUI") && Global.setup_open == false):
 		self.visible = !self.visible
 
 func _on_speed_slider_value_changed(value: float) -> void:

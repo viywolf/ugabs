@@ -143,6 +143,8 @@ func _on_start_button_pressed() -> void:
 	# Reset cur turn
 	GlobalTravInfo.current_turn = 0
 	
+	Global.setup_open = false
+	
 	queue_free()
 	
 func remove_traveller(id : int) -> void:

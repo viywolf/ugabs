@@ -53,7 +53,10 @@ func update_cells_claimed_data(cur_cells_claimed : Array[int]):
 var setup_res : PackedScene = load("res://main/traveller_setup_menu.tscn")
 
 func _on_back_button_pressed() -> void:
-	# Put a warning that it will clear current progress?
+	if(Global.setup_open == false):
+		Global.setup_open = true
+	else:
+		return
 	var setup_scene = setup_res.instantiate()
 	setup_scene.setup_done.connect(tilemap_created)
 	self.add_child(setup_scene)
