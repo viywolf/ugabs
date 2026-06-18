@@ -142,6 +142,15 @@ min_value = 1.0
 max_value = 35.0
 value = 10.0
 
+[node name="WarningLabel" type="Label" parent="." unique_id=1467416956]
+unique_name_in_owner = true
+offset_left = 30.0
+offset_top = 378.0
+offset_right = 343.0
+offset_bottom = 453.0
+text = "Warning: Currently added selection positions may not fit in the border. Please increase the border radius."
+autowrap_mode = 3
+
 [node name="StartButton" type="Button" parent="." unique_id=368410278]
 offset_left = 43.0
 offset_top = 553.0
@@ -165,4 +174,5 @@ layout_mode = 2
 
 [connection signal="item_selected" from="MainContainer/TypeContainer/OptionButton" to="." method="_on_option_button_item_selected"]
 [connection signal="pressed" from="MainContainer/AddNewTravellerButton" to="." method="_on_add_new_traveller_button_pressed"]
+[connection signal="value_changed" from="BorderInfo/SpinBox" to="." method="_on_spin_box_value_changed"]
 [connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]

@@ -41,7 +41,6 @@ text = "Quick start guide:
 - Optionally change the shape border type and size"
 
 [node name="Label" type="Label" parent="." unique_id=110489807]
-visible = false
 offset_left = 32.0
 offset_top = 34.0
 offset_right = 467.0

@@ -168,7 +168,8 @@ func move(to_next_position : Vector2i) -> void:
 		
 	# Cannot move to the next location
 	else:
-		print(name + " cannot move to this location")
+		pass
+		#print(name + " cannot move to this location")
 
 func can_move(to_next_position : Vector2i) -> bool:
 	if(can_travel_to_cell(to_next_position)):

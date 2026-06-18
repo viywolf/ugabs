@@ -9,9 +9,18 @@ var directions : Array[Vector2i] = [
 
 var all_traveller_types : Dictionary[String, Resource] = {
 	"random" : load("res://main/travellers/random.gd"),
-	"random location" : load("res://main/travellers/random_seeker.gd"),
+	"random router" : load("res://main/travellers/random_seeker.gd"),
 	"user" : load("res://main/travellers/user.gd"),
+	"stationary" : load("res://main/travellers/does_not_move.gd")
 }
+
+var trav_types_desc : Array[String] = [
+	"'Random' chooses a random direction to travel in every turn. This includes directions which it cannot move to, causing it to skip a turn.", # random
+	"'Random Router' chooses a random cell on the grid, which it will then attempt to travel to in the shortest route possible.", # seeker
+	"'User' is controlled by you. Use arrow keys to control its movement. If no input is detected, its turn is skipped.", # user
+	"'Stationary' will never move. Not to be confused with 'stationery'.",
+	"Placeholder",
+]
 
 var global_move_log : Array[Array]
 

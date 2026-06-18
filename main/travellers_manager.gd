@@ -47,9 +47,10 @@ var empty_cells_in_grid : Dictionary[Vector2i, bool]
 
 var moves_finished : Array[bool]
 
-func draw_shape_border(shape : String, radius : int):
+func draw_shape_border(shape : String, radius : int) -> void:
 	if(radius <= 0):
 		printerr("Radius must be greater than 0")
+		return
 	
 	var middle : Vector2i = Vector2i(0, 0)
 	var min_y : int = middle.y - radius
@@ -60,7 +61,8 @@ func draw_shape_border(shape : String, radius : int):
 	shape = shape.to_lower()
 	
 	var colour_black : Vector2i = CellColour.colours_in_tileset[CellColour.TilesetColour.BLACK]
-	
+	if(shape != "logo"):
+		clear()
 	if(shape == "square"):
 		# Draw top and bottom lines
 		for i in abs(min_x) + max_x + 1:
@@ -98,7 +100,8 @@ func draw_shape_border(shape : String, radius : int):
 			x += 1
 			
 			continue_loop = (x <= y)
-		
+	elif(shape == "logo"):
+		print("logo")
 	else:
 		printerr("Unknown shape: " + shape)
 		
@@ -117,35 +120,33 @@ func update_solid_points(current_astar_grid : AStarGrid2D, good_active_colour : 
 				current_astar_grid.set_point_solid(Vector2i(x - GlobalTravInfo.grid_size.x / 2, y - GlobalTravInfo.grid_size.y / 2))
 
 func _ready() -> void:
-	if name == "OriginalTileMap":
-		queue_free()
-		return
-		
 	draw_shape_border(chosen_border_shape, border_radius)
 	
 	GlobalTravInfo.grid_radius = border_radius
 		
 	# quick dfs here to get grid size :>
-	var cells_in_grid : int = 0
 	
-	var stack : Array[Vector2i]
-	stack.push_back(Vector2i(0,0))
-	var visited : Dictionary[Vector2i, bool]
-	
-	while(stack.is_empty() == false):
-		var cur_node = stack.pop_back()
-		if(visited.get_or_add(cur_node, false) == true):
-			continue
-		else:
-			visited[cur_node] = true
-			cells_in_grid += 1
-			empty_cells_in_grid[cur_node] = true
-			
-		for direction in GlobalTravInfo.directions:
-			if(get_cell_tile_data(cur_node + direction) == null):
-				stack.push_back(cur_node + direction)
+	if(chosen_border_shape != "logo"):
+		var cells_in_grid : int = 0
+		
+		var stack : Array[Vector2i]
+		stack.push_back(Vector2i(0,0))
+		var visited : Dictionary[Vector2i, bool]
+		
+		while(stack.is_empty() == false):
+			var cur_node = stack.pop_back()
+			if(visited.get_or_add(cur_node, false) == true):
+				continue
+			else:
+				visited[cur_node] = true
+				cells_in_grid += 1
+				empty_cells_in_grid[cur_node] = true
 				
-	GlobalTravInfo.total_cells_in_grid = cells_in_grid
+			for direction in GlobalTravInfo.directions:
+				if(get_cell_tile_data(cur_node + direction) == null):
+					stack.push_back(cur_node + direction)
+					
+		GlobalTravInfo.total_cells_in_grid = cells_in_grid
 		
 	# Check and change all cell data to filled
 	
@@ -156,22 +157,17 @@ func _ready() -> void:
 	
 	if auto_add_travellers == true:
 		for traveller : Array[Variant] in travellers:
-			var traveller_type = traveller[TravInfo.TYPE]
+			var traveller_type : String = traveller[TravInfo.TYPE]
 			traveller_type = traveller_type.to_lower()
 			var trav_colour : Vector2i = traveller[TravInfo.COLOUR]
 			
 			var new_traveller_node = Node.new()
 			
-			match traveller_type:
-				"user":
-					new_traveller_node.set_script(load("res://main/travellers/user.gd"))
-				"random":
-					new_traveller_node.set_script(load("res://main/travellers/random.gd"))
-				"random location":
-					new_traveller_node.set_script(load("res://main/travellers/random_seeker.gd"))
-				_:
-					printerr("Invalid traveller type entered")
-					assert(false)
+			if(GlobalTravInfo.all_traveller_types.get(traveller_type) != null):
+				new_traveller_node.set_script(GlobalTravInfo.all_traveller_types[traveller_type])
+			else:
+				printerr("Invalid traveller type entered")
+				continue
 			
 			new_traveller_node.active_colour = Vector2i(trav_colour.x, 0)
 			new_traveller_node.passed_colour = Vector2i(trav_colour.x, 1)

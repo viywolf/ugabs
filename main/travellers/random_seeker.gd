@@ -11,7 +11,7 @@ var index_in_path : int = -1
 @export var seek_any_cell : bool = false
 
 func preparatory_actions() -> void:
-	name = "RandomSeeker"
+	name = "Random Router "
 	get_new_target_cell()
 
 func get_new_target_cell() -> void:

@@ -1,0 +1,1 @@
+make trav pos be restricted by radius

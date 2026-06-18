@@ -48,3 +48,5 @@ func _physics_process(_delta: float) -> void:
 				set_cell_colour(position_of_trav, Vector2i(GlobalTravInfo.traveller_colours[i], 0))
 			
 	cur_turn += 1
+	if cur_turn == 1: 
+		print(move_log)

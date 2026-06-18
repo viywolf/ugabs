@@ -8,6 +8,8 @@ var label_base_text_coloured : Dictionary[Vector2i, String]
 var cells_claimed_percentages : Array[float]
 var cells_claimed_percentages_by_colour : Dictionary[Vector2i, float]
 
+var stop_updating_turns : bool = false
+
 func _ready() -> void:
 	Engine.physics_ticks_per_second = 12
 	self.hide()
@@ -111,7 +113,8 @@ func update_cell_claimed_labels() -> void:
 		child.text = label_base_text_coloured[key] + str(GlobalTravInfo.team_cells_claimed[key]) + "%"
 
 func update_cur_turn_label() -> void:
-	$CurrentTurnLabel.text = "Turns Passed: " + str(GlobalTravInfo.current_turn)
+	if(stop_updating_turns == false):
+		$CurrentTurnLabel.text = "Turns Passed: " + str(GlobalTravInfo.current_turn)
 
 func _on_toggle_percentages_pressed() -> void:
 	$PercentagedClaimedBox.visible = !$PercentagedClaimedBox.visible

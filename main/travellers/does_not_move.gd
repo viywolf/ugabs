@@ -1,7 +1,7 @@
 extends Traveller
 
 func preparatory_actions() -> void:
-	pass
+	name = "Stationary "
 
 func get_next_position() -> Vector2i:
 	return current_position

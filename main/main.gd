@@ -9,6 +9,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
+	# Replay options (kinda incompatible cause you mgiht press enter when typing stuff)
 	"""
 	if Input.is_action_just_pressed("ui_accept"):
 		for child : Node in get_children():
@@ -39,13 +40,15 @@ func update_cells_claimed_data(cur_cells_claimed : Array[int]):
 	for key in GlobalTravInfo.team_cells_claimed.keys():
 		var cur_percentage : float = (float(GlobalTravInfo.team_cells_claimed[key]) / GlobalTravInfo.total_cells_in_grid)
 		GlobalTravInfo.team_cells_claimed[key] = cur_percentage
-		total_percentage += cur_percentage
 	
 	%UI.update_cell_claimed_labels()
 	%UI.update_cur_turn_label()
 	
 	if(is_equal_approx(total_percentage, 1.0)):
-		print("Stop the simulation")
+		# maybe do a message saying its stopped?
+		for child : Traveller in main_tilemap_scene.get_children():
+			child.disabled = true
+		%UI.stop_updating_turns = true
 
 var setup_res : PackedScene = load("res://main/traveller_setup_menu.tscn")
 

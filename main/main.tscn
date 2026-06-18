@@ -2,10 +2,6 @@
 
 [ext_resource type="Script" uid="uid://bru07g80new0w" path="res://main/main.gd" id="1_okaqm"]
 [ext_resource type="AudioStream" uid="uid://dnm47n8tkvpm2" path="res://main/sfx/BeepBoxBeep.mp3" id="2_67ri8"]
-[ext_resource type="PackedScene" uid="uid://bfg16urhg15om" path="res://main/main_simulation.tscn" id="2_okaqm"]
-[ext_resource type="Script" uid="uid://d2xm80qsd2d3q" path="res://main/travellers/random_seeker.gd" id="3_m1m65"]
-[ext_resource type="Script" uid="uid://h1dbfjrjw4gg" path="res://main/travellers/user.gd" id="4_u8quh"]
-[ext_resource type="Script" uid="uid://c1nbhk70rxxwr" path="res://main/travellers/does_not_move.gd" id="5_1fsht"]
 [ext_resource type="PackedScene" uid="uid://dwau6iyp5vnxc" path="res://main/traveller_setup_menu.tscn" id="7_e3y7d"]
 [ext_resource type="Script" uid="uid://dbrjx5asp3h1g" path="res://main/ui.gd" id="7_xx02v"]
 
@@ -70,34 +66,6 @@ script = ExtResource("1_okaqm")
 [node name="Beep" type="AudioStreamPlayer" parent="." unique_id=878784143]
 unique_name_in_owner = true
 stream = ExtResource("2_67ri8")
-
-[node name="OriginalTileMap" parent="." unique_id=48495168 instance=ExtResource("2_okaqm")]
-unique_name_in_owner = true
-auto_add_travellers = false
-
-[node name="Seeker" type="Node" parent="OriginalTileMap" unique_id=1384049201]
-script = ExtResource("3_m1m65")
-active_colour = Vector2i(1, 0)
-passed_colour = Vector2i(1, 1)
-disabled = true
-
-[node name="Seeker2" type="Node" parent="OriginalTileMap" unique_id=287361683]
-script = ExtResource("3_m1m65")
-active_colour = Vector2i(6, 0)
-passed_colour = Vector2i(6, 1)
-current_position = Vector2i(-15, 0)
-disabled = true
-
-[node name="User" type="Node" parent="OriginalTileMap" unique_id=1048561479]
-script = ExtResource("4_u8quh")
-hold_to_continue_mode = true
-active_colour = Vector2i(7, 0)
-passed_colour = Vector2i(7, 1)
-disabled = true
-
-[node name="DoesNotMove" type="Node" parent="OriginalTileMap" unique_id=1015791877]
-script = ExtResource("5_1fsht")
-current_position = Vector2i(3, 0)
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=1404329723]
 unique_name_in_owner = true

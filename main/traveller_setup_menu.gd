@@ -8,13 +8,6 @@ var current_traveller_info : Array[Variant] = [
 	Vector2i.ZERO, # Position (vector2i),
 ]
 
-var trav_types_desc : Array[String] = [
-	"'Random' chooses a random direction to travel in every turn. This includes directions which it cannot move to, causing it to skip a turn.", # random
-	"'Random Location' chooses a random cell on the grid, which it will then attempt to travel to in the shortest route possible.", # seeker
-	"'User' is controlled by you. Use arrow keys to control its movement. If no input is detected, its turn is skipped.", # user
-	"Placeholder",
-]
-
 @onready var type_select : OptionButton = $MainContainer/TypeContainer/OptionButton
 @onready var colour_select : OptionButton = $MainContainer/ColourContainer/OptionButton
 @onready var position_select_x : SpinBox = $MainContainer/StartingPosContainer/GridPosInputX
@@ -32,6 +25,8 @@ var current_trav_id : int = 0
 
 var temp_added_travs_storage : Dictionary[int, Array]
 
+@onready var cur_radius : int = $BorderInfo/SpinBox.value
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	main_sim_instance = main_sim_res.instantiate()
@@ -39,8 +34,14 @@ func _ready() -> void:
 	# Positioning nodes
 	$MainContainer.position.x = MetaInfo.screen_size.x / MetaInfo.fraction_of_screen
 	$BorderInfo.position.x = MetaInfo.screen_size.x / MetaInfo.fraction_of_screen
+	
 	$StartButton.position.x = MetaInfo.screen_size.x / MetaInfo.fraction_of_screen
 	$StartButton.position.y = MetaInfo.screen_size.y - $StartButton.size.y - (MetaInfo.screen_size.y / MetaInfo.fraction_of_screen)
+	
+	%WarningLabel.size.x = $MainContainer.size.x
+	%WarningLabel.position.x = $MainContainer.position.x
+	%WarningLabel.position.y = $StartButton.position.y - (MetaInfo.fraction_of_screen * 5)
+	%WarningLabel.hide()
 	
 	$ExplanationBox.position.x = $MainContainer.position.x + $MainContainer.size.x + MetaInfo.screen_size.x / MetaInfo.fraction_of_screen
 	$ExplanationBox.position.y = $MainContainer.position.y
@@ -60,14 +61,9 @@ func _ready() -> void:
 		if colour == "BLACK": break
 		$MainContainer/ColourContainer/OptionButton.add_item(colour.capitalize())
 	
-	$ExplanationBox/Label.text = trav_types_desc[0]
+	$ExplanationBox/Label.text = GlobalTravInfo.trav_types_desc[0]
 	
-	# Position limits
-	# Make it so this updates as you change the radius size/square to circle
-	$MainContainer/StartingPosContainer/GridPosInputX.min_value = int(-GlobalTravInfo.grid_size.x / 2.0)
-	$MainContainer/StartingPosContainer/GridPosInputX.max_value = int(GlobalTravInfo.grid_size.x / 2.0)
-	$MainContainer/StartingPosContainer/GridPosInputY.min_value = int(-GlobalTravInfo.grid_size.y / 2.0)
-	$MainContainer/StartingPosContainer/GridPosInputY.max_value = int(GlobalTravInfo.grid_size.y / 2.0)
+	update_coords_limits()
 	
 	$BorderInfo/SpinBox.min_value = 1
 	$BorderInfo/SpinBox.max_value = int(GlobalTravInfo.grid_size.y / 2.0)
@@ -78,10 +74,11 @@ func _ready() -> void:
 		positions_taken = SetupSettings.saved_positions_taken.duplicate()
 		temp_added_travs_storage = SetupSettings.saved_temp_added_travs_storage.duplicate()
 		
-		match SetupSettings.saved_border_type:
+		match SetupSettings.saved_border_type.capitalize():
 			"Square": $BorderInfo/OptionButton.selected = 0
 			"Circle": $BorderInfo/OptionButton.selected = 1
-			_: printerr("Shape not found: " + str(SetupSettings.saved_border_type))
+			"Logo": $BorderInfo/OptionButton.selected = 2
+			_: printerr("Shape not found: " + str(SetupSettings.saved_border_type)) 
 			
 		$BorderInfo/SpinBox.value = SetupSettings.saved_border_radius
 		
@@ -193,4 +190,26 @@ func show_warning(message : String) -> void:
 	warning_panel.queue_free()
 
 func _on_option_button_item_selected(index: int) -> void:
-	$ExplanationBox/Label.text = trav_types_desc[index]
+	$ExplanationBox/Label.text = GlobalTravInfo.trav_types_desc[index]
+
+func update_coords_limits() -> void:
+	# Position limits
+	$MainContainer/StartingPosContainer/GridPosInputX.min_value = int(-cur_radius + 1)
+	$MainContainer/StartingPosContainer/GridPosInputX.max_value = int(cur_radius - 1)
+	$MainContainer/StartingPosContainer/GridPosInputY.min_value = int(-cur_radius + 1)
+	$MainContainer/StartingPosContainer/GridPosInputY.max_value = int(cur_radius - 1)
+	
+	var has_coords_more_than_rad : bool = false
+	for child in %CurrentlySelectedOptions.get_children():
+		if(abs(child.trav_start_pos.x) >= cur_radius
+			or abs(child.trav_start_pos.y) >= cur_radius):
+			has_coords_more_than_rad = true
+			
+	if has_coords_more_than_rad: 
+		%WarningLabel.show()
+	else:
+		%WarningLabel.hide()
+
+func _on_spin_box_value_changed(value: float) -> void:
+	cur_radius = int(value)
+	update_coords_limits()
