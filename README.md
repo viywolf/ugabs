@@ -32,7 +32,7 @@ I made this based on all of the grid algorithm battle videos I've seen on the in
 
 ## Other Info
 
-The primary tool I used to make this was Godot with GDScript. Special mention to Aseprite, BeepBox, and itch.io.
+The primary tool I used to make this was Godot with GDScript. Special mention to Aseprite, BeepBox, and itch.io. No AI was used in this project.
 
 This project was made for Horizons by Hack Club.
 
