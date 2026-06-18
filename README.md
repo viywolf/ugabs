@@ -18,7 +18,7 @@ UGABS is a simulation of various algorithms on a 2d grid, following the followin
 
 ## Features
 
-UGABS features (insert a hopefully respectable number here) of different algorithms. 
+UGABS currently features 2 (technically four?) different algorithms. More are planned to be added.
 
 You may customise the colours for each one of the algorithm grid people, as well as choose where they start on the grid.
 
