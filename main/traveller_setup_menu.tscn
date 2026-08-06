@@ -1,33 +1,7 @@
 [gd_scene format=3 uid="uid://dwau6iyp5vnxc"]
 
 [ext_resource type="Script" uid="uid://dakg8d7rqrbsf" path="res://main/traveller_setup_menu.gd" id="1_4yp6q"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4yp6q"]
-bg_color = Color(0.48962224, 0.48962224, 0.48962206, 1)
-border_width_right = 3
-border_width_bottom = 3
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p13as"]
-bg_color = Color(0.25565886, 0.25565878, 0.25565875, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_draxb"]
-bg_color = Color(0.48962224, 0.48962224, 0.48962206, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
-
-[sub_resource type="Theme" id="Theme_6cm6s"]
-LineEdit/styles/focus = SubResource("StyleBoxFlat_draxb")
-LineEdit/styles/normal = SubResource("StyleBoxFlat_4yp6q")
+[ext_resource type="Theme" uid="uid://catc1h0cw3ny2" path="res://main/ui/main_theme.tres" id="2_p13as"]
 
 [node name="TravellerSetupMenu" type="CanvasLayer" unique_id=392752584]
 script = ExtResource("1_4yp6q")
@@ -40,25 +14,27 @@ theme_override_constants/separation = 20
 
 [node name="TitleLabel" type="Label" parent="MainContainer" unique_id=899254600]
 layout_mode = 2
+theme = ExtResource("2_p13as")
 text = "Add New Traveller"
 horizontal_alignment = 1
 
 [node name="TypeContainer" type="HBoxContainer" parent="MainContainer" unique_id=794769522]
 layout_mode = 2
+theme = ExtResource("2_p13as")
 theme_override_constants/separation = 10
 
 [node name="Label" type="Label" parent="MainContainer/TypeContainer" unique_id=1880961291]
 layout_mode = 2
+theme = ExtResource("2_p13as")
 text = "Type:"
 
 [node name="OptionButton" type="OptionButton" parent="MainContainer/TypeContainer" unique_id=939569510]
 layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_4yp6q")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_p13as")
-theme_override_styles/hover = SubResource("StyleBoxFlat_draxb")
+theme = ExtResource("2_p13as")
 
 [node name="ColourContainer" type="HBoxContainer" parent="MainContainer" unique_id=353664610]
 layout_mode = 2
+theme = ExtResource("2_p13as")
 theme_override_constants/separation = 10
 
 [node name="Label" type="Label" parent="MainContainer/ColourContainer" unique_id=1928831216]
@@ -67,12 +43,11 @@ text = "Colour:"
 
 [node name="OptionButton" type="OptionButton" parent="MainContainer/ColourContainer" unique_id=1863843716]
 layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_4yp6q")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_p13as")
-theme_override_styles/hover = SubResource("StyleBoxFlat_draxb")
+theme = ExtResource("2_p13as")
 
 [node name="StartingPosContainer" type="HBoxContainer" parent="MainContainer" unique_id=1901411660]
 layout_mode = 2
+theme = ExtResource("2_p13as")
 
 [node name="Label" type="Label" parent="MainContainer/StartingPosContainer" unique_id=1649894888]
 layout_mode = 2
@@ -80,19 +55,17 @@ text = "Starting Position:"
 
 [node name="GridPosInputX" type="SpinBox" parent="MainContainer/StartingPosContainer" unique_id=138117840]
 layout_mode = 2
-theme = SubResource("Theme_6cm6s")
+theme = ExtResource("2_p13as")
 prefix = "X: "
 
 [node name="GridPosInputY" type="SpinBox" parent="MainContainer/StartingPosContainer" unique_id=469497494]
 layout_mode = 2
-theme = SubResource("Theme_6cm6s")
+theme = ExtResource("2_p13as")
 prefix = "Y: "
 
 [node name="AddNewTravellerButton" type="Button" parent="MainContainer" unique_id=906707842]
 layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_4yp6q")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_p13as")
-theme_override_styles/hover = SubResource("StyleBoxFlat_draxb")
+theme = ExtResource("2_p13as")
 text = "Add"
 
 [node name="ExplanationBox" type="ScrollContainer" parent="." unique_id=580387083]
@@ -100,10 +73,12 @@ offset_left = 379.0
 offset_top = 30.0
 offset_right = 379.0
 offset_bottom = 30.0
+theme = ExtResource("2_p13as")
 horizontal_scroll_mode = 3
 
 [node name="Label" type="Label" parent="ExplanationBox" unique_id=661271342]
 layout_mode = 2
+theme = ExtResource("2_p13as")
 text = "place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text "
 horizontal_alignment = 1
 autowrap_mode = 3
@@ -113,6 +88,7 @@ offset_left = 27.0
 offset_top = 308.0
 offset_right = 390.0
 offset_bottom = 348.0
+theme = ExtResource("2_p13as")
 theme_override_constants/separation = 10
 
 [node name="Label" type="Label" parent="BorderInfo" unique_id=1902496587]
@@ -121,9 +97,7 @@ text = "Border Type:"
 
 [node name="OptionButton" type="OptionButton" parent="BorderInfo" unique_id=966220343]
 layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_4yp6q")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_p13as")
-theme_override_styles/hover = SubResource("StyleBoxFlat_draxb")
+theme = ExtResource("2_p13as")
 selected = 0
 item_count = 2
 popup/item_0/text = "Square"
@@ -133,11 +107,12 @@ popup/item_1/id = 1
 
 [node name="Label2" type="Label" parent="BorderInfo" unique_id=971946379]
 layout_mode = 2
+theme = ExtResource("2_p13as")
 text = "Radius: "
 
 [node name="SpinBox" type="SpinBox" parent="BorderInfo" unique_id=1153893608]
 layout_mode = 2
-theme = SubResource("Theme_6cm6s")
+theme = ExtResource("2_p13as")
 min_value = 1.0
 max_value = 35.0
 value = 10.0
@@ -148,7 +123,8 @@ offset_left = 30.0
 offset_top = 378.0
 offset_right = 343.0
 offset_bottom = 453.0
-text = "Warning: Currently added selection positions may not fit in the border. Please increase the border radius."
+theme = ExtResource("2_p13as")
+text = "Warning: Currently added positions may not fit in the border. Please increase the border radius or adjust starting positions."
 autowrap_mode = 3
 
 [node name="StartButton" type="Button" parent="." unique_id=368410278]
@@ -156,10 +132,8 @@ offset_left = 43.0
 offset_top = 553.0
 offset_right = 355.0
 offset_bottom = 603.0
+theme = ExtResource("2_p13as")
 theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_4yp6q")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_p13as")
-theme_override_styles/hover = SubResource("StyleBoxFlat_draxb")
 text = "Start The Simulation!"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=212116138]
@@ -167,10 +141,12 @@ custom_minimum_size = Vector2(400, 600)
 offset_top = 25.0
 offset_right = 400.0
 offset_bottom = 625.0
+theme = ExtResource("2_p13as")
 
 [node name="CurrentlySelectedOptions" type="VBoxContainer" parent="ScrollContainer" unique_id=1528176738]
 unique_name_in_owner = true
 layout_mode = 2
+theme = ExtResource("2_p13as")
 
 [connection signal="item_selected" from="MainContainer/TypeContainer/OptionButton" to="." method="_on_option_button_item_selected"]
 [connection signal="pressed" from="MainContainer/AddNewTravellerButton" to="." method="_on_add_new_traveller_button_pressed"]

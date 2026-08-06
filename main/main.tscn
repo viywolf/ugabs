@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bru07g80new0w" path="res://main/main.gd" id="1_okaqm"]
 [ext_resource type="AudioStream" uid="uid://dnm47n8tkvpm2" path="res://main/sfx/BeepBoxBeep.mp3" id="2_67ri8"]
+[ext_resource type="Theme" uid="uid://catc1h0cw3ny2" path="res://main/ui/main_theme.tres" id="4_3wy1v"]
 [ext_resource type="PackedScene" uid="uid://dwau6iyp5vnxc" path="res://main/traveller_setup_menu.tscn" id="7_e3y7d"]
 [ext_resource type="Script" uid="uid://dbrjx5asp3h1g" path="res://main/ui.gd" id="7_xx02v"]
 
@@ -77,6 +78,7 @@ offset_left = 461.0
 offset_top = -244.0
 offset_right = 716.0
 offset_bottom = -221.0
+theme = ExtResource("4_3wy1v")
 text = "Faster"
 
 [node name="SpeedSliderLabelSlow" type="Label" parent="UI" unique_id=1685134333]
@@ -84,6 +86,7 @@ offset_left = 464.0
 offset_top = 252.0
 offset_right = 517.0
 offset_bottom = 275.0
+theme = ExtResource("4_3wy1v")
 text = "Slower"
 
 [node name="SpeedSlider" type="HSlider" parent="UI" unique_id=394646945]
@@ -92,6 +95,7 @@ offset_top = 221.0
 offset_right = 923.0
 offset_bottom = 285.0
 rotation = 4.712389
+theme = ExtResource("4_3wy1v")
 theme_override_icons/grabber = SubResource("GradientTexture2D_67ri8")
 theme_override_icons/grabber_highlight = SubResource("GradientTexture2D_0i4oc")
 theme_override_styles/slider = SubResource("StyleBoxFlat_okaqm")
@@ -106,12 +110,14 @@ offset_bottom = -276.0
 
 [node name="Label" type="Label" parent="UI/HBoxContainer" unique_id=1269789862]
 layout_mode = 2
+theme = ExtResource("4_3wy1v")
 theme_override_font_sizes/font_size = 20
 text = "Cells Claimed"
 
 [node name="TogglePercentages" type="Button" parent="UI/HBoxContainer" unique_id=1328612271]
 custom_minimum_size = Vector2(130, 0)
 layout_mode = 2
+theme = ExtResource("4_3wy1v")
 theme_override_styles/normal = SubResource("StyleBoxFlat_4dugh")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_67ri8")
 theme_override_styles/hover = SubResource("StyleBoxFlat_grrlh")
@@ -122,6 +128,7 @@ offset_left = -557.0
 offset_top = -266.0
 offset_right = -517.0
 offset_bottom = -226.0
+theme = ExtResource("4_3wy1v")
 
 [node name="PercentagedClaimedBoxColours" type="VBoxContainer" parent="UI" unique_id=1046901652]
 visible = false
@@ -129,12 +136,14 @@ offset_left = -557.0
 offset_top = -266.0
 offset_right = -517.0
 offset_bottom = -226.0
+theme = ExtResource("4_3wy1v")
 
 [node name="ToggleUILabel" type="Label" parent="UI" unique_id=94736854]
 offset_left = -560.0
 offset_top = 237.0
 offset_right = -398.0
 offset_bottom = 260.0
+theme = ExtResource("4_3wy1v")
 text = "Press esc to toggle ui"
 
 [node name="CurrentTurnLabel" type="Label" parent="UI" unique_id=828856831]
@@ -142,6 +151,7 @@ offset_left = 357.0
 offset_top = -315.0
 offset_right = 468.0
 offset_bottom = -292.0
+theme = ExtResource("4_3wy1v")
 text = "Turns Passed: "
 
 [node name="BackButton" type="Button" parent="UI" unique_id=217521663]
@@ -151,6 +161,7 @@ offset_top = 268.0
 offset_right = -427.0
 offset_bottom = 308.0
 tooltip_text = "This will clear all current progress"
+theme = ExtResource("4_3wy1v")
 theme_override_styles/normal = SubResource("StyleBoxFlat_4dugh")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_67ri8")
 theme_override_styles/hover = SubResource("StyleBoxFlat_grrlh")

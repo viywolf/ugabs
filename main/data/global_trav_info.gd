@@ -11,7 +11,8 @@ var all_traveller_types : Dictionary[String, Resource] = {
 	"random" : load("res://main/travellers/random.gd"),
 	"random router" : load("res://main/travellers/random_seeker.gd"),
 	"user" : load("res://main/travellers/user.gd"),
-	"stationary" : load("res://main/travellers/does_not_move.gd")
+	"stationary" : load("res://main/travellers/does_not_move.gd"),
+	"left hand" : load("res://main/travellers/left_hand_rule.gd"),
 }
 
 var trav_types_desc : Array[String] = [
@@ -19,6 +20,7 @@ var trav_types_desc : Array[String] = [
 	"'Random Router' chooses a random cell on the grid, which it will then attempt to travel to in the shortest route possible.", # seeker
 	"'User' is controlled by you. Use arrow keys to control its movement. If no input is detected, its turn is skipped.", # user
 	"'Stationary' will never move. Not to be confused with 'stationery'.",
+	"Left hand rule",
 	"Placeholder",
 ]
 

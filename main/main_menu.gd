@@ -8,4 +8,5 @@ func _ready() -> void:
 	$VBoxContainer.position.x = MetaInfo.screen_size.x / MetaInfo.fraction_of_screen
 
 func _on_start_pressed() -> void:
+	$VBoxContainer/LoadingLabel.show()
 	get_tree().change_scene_to_file("res://main/main.tscn")

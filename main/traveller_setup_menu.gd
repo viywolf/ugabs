@@ -153,6 +153,8 @@ func remove_traveller(id : int) -> void:
 			child.queue_free()
 			positions_taken.erase(temp_added_travs_storage[id][2])
 			temp_added_travs_storage[id] = []
+			##await get_tree().process_frame
+			##show_or_hide_warning_label()
 			return
 	printerr("Id " + str(id) + " was not found")
 
@@ -201,6 +203,9 @@ func update_coords_limits() -> void:
 	$MainContainer/StartingPosContainer/GridPosInputY.min_value = int(-cur_radius + 1)
 	$MainContainer/StartingPosContainer/GridPosInputY.max_value = int(cur_radius - 1)
 	
+	show_or_hide_warning_label()
+
+func show_or_hide_warning_label() -> void:
 	var has_coords_more_than_rad : bool = false
 	for child in %CurrentlySelectedOptions.get_children():
 		if(abs(child.trav_start_pos.x) >= cur_radius

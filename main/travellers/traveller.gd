@@ -40,10 +40,6 @@ var max_pos : Array[int] = [
 	0, # down
 ]
 
-enum MaxPosDirections {
-	LEFT, RIGHT, UP, DOWN
-}
-
 var is_new_position : Dictionary[Vector2i, bool]
 
 var move_log : Array[Vector2i]
@@ -54,8 +50,22 @@ var child_no : int = -1
 
 var cells_claimed : int = 0
 
+# Relative directions
+
+var relative_direction : Array[Vector2i] = [
+	Vector2i.LEFT,
+	Vector2i.RIGHT,
+	Vector2i.UP,
+	Vector2i.DOWN,
+]
+
+enum Direction {
+	LEFT, RIGHT, UP, DOWN
+}
+
 # Functions start here
 
+## Returns the traveller speed
 func get_speed() -> float:
 	return traveller_speed
 
@@ -72,8 +82,14 @@ func _ready() -> void:
 	max_pos[2] = current_position.y
 	max_pos[3] = current_position.y
 	
+	recalculate_relative_directions()
+	
 	preparatory_actions()
 
+## 'Moves' this traveller to the given position, 
+## changing the cell at the position to the given colour.
+## If the cell was previously null, emit the signal to create a 'beep' sound
+## and increases the cells claimed of this traveller
 func set_cell_colour(cell_coords: Vector2i, colour : Vector2i) -> void:
 	if(is_cell_null(cell_coords) == true):
 		cells_claimed += 1
@@ -83,12 +99,12 @@ func set_cell_colour(cell_coords: Vector2i, colour : Vector2i) -> void:
 	tilemap.filled_cells_in_grid[cell_coords] = colour
 	tilemap.empty_cells_in_grid.erase(cell_coords)
 
+## Checks if the cell is null, returning true if so, otherwise returns false
 func is_cell_null(cell_coords : Vector2i) -> bool:
-	if(tilemap.get_cell_tile_data(cell_coords) == null):
-		return true
-	else:
-		return false
+	return tilemap.get_cell_tile_data(cell_coords) == null
 
+## Checks if the cell is the traveller's active or passed colours.
+## Also first calls the function is_cell_null, returning false if it is true.
 func is_cell_traveller_colour(cell_coords: Vector2i) -> bool:
 	if(is_cell_null(cell_coords)):
 		return false
@@ -99,12 +115,11 @@ func is_cell_traveller_colour(cell_coords: Vector2i) -> bool:
 		
 	
 	# Replaced check with separate dictionay to make it quicker?
-	if(tilemap.filled_cells_in_grid.get_or_add(cell_coords, null) == passed_colour
-			or tilemap.filled_cells_in_grid.get_or_add(cell_coords, null) == active_colour):
-		return true
-	else:
-		return false
+	return (tilemap.filled_cells_in_grid.get_or_add(cell_coords, null) == passed_colour
+			or tilemap.filled_cells_in_grid.get_or_add(cell_coords, null) == active_colour)
 
+## Checks if the traveller is disabled, if so, skip the turn.
+## Else, call the move function alongside the get_next_position function.
 func start_moving() -> void:
 	if disabled:
 		move_finished.emit()
@@ -113,6 +128,9 @@ func start_moving() -> void:
 		move(get_next_position())
 	move_finished.emit()
 
+## Attempts to move to the given position,
+## calls the function to fill in the next cell,
+## and checks if the position is enclosed.
 func move(to_next_position : Vector2i) -> void:
 	next_position = to_next_position
 	
@@ -170,16 +188,32 @@ func move(to_next_position : Vector2i) -> void:
 	else:
 		pass
 		#print(name + " cannot move to this location")
+		
+	recalculate_relative_directions()
 
+## Returns the result of can_travel_to_cell
 func can_move(to_next_position : Vector2i) -> bool:
 	if(can_travel_to_cell(to_next_position)):
 		return true
 	else:
 		return false
 
+## Returns if the traveller can move to the next cell.
+## The traveller can move to the next cell if the cell is null or of the traveller colour.
 func can_travel_to_cell(cell_coords: Vector2i) -> bool:
 	return(is_cell_null(cell_coords) or is_cell_traveller_colour(cell_coords))
 
+## Recalculates all values in the relative_direction array according to their direction.
+func recalculate_relative_directions() -> void:
+	relative_direction[Direction.LEFT] = current_position + Vector2i.LEFT
+	relative_direction[Direction.RIGHT] = current_position + Vector2i.RIGHT
+	relative_direction[Direction.UP] = current_position + Vector2i.UP
+	relative_direction[Direction.DOWN] = current_position + Vector2i.DOWN
+
+## Checks if the drawn cell causes an enclosure,
+## checking row by row, column by column, and using dfs.
+## Also fills in the cells if it is enclosed.
+## Temporarily disables the traveller while calculating (but this shouldn't have a big effect).
 func check_if_enclosed(_current_next_position : Vector2i) -> void:
 	
 	disabled = true
@@ -187,13 +221,13 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 	var cells_to_fill_1 : Dictionary[Vector2i, bool]
 	# This goes through column by column
 
-	for i in range(max_pos[MaxPosDirections.LEFT], max_pos[MaxPosDirections.RIGHT] + 1):
+	for i in range(max_pos[Direction.LEFT], max_pos[Direction.RIGHT] + 1):
 		# Checking each x position
 		
 		var found_cell_front : bool = false
 		var found_cell_back : bool = false
 		var empty_cells : Array[Vector2i]
-		for j in range(max_pos[MaxPosDirections.UP], max_pos[MaxPosDirections.DOWN] + 1):
+		for j in range(max_pos[Direction.UP], max_pos[Direction.DOWN] + 1):
 			# Checking each y position
 			if(is_cell_traveller_colour(Vector2i(i, j))):
 				
@@ -221,12 +255,12 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 	
 	var cells_to_fill_2 : Dictionary[Vector2i, bool]
 	
-	for i in range(max_pos[MaxPosDirections.UP], max_pos[MaxPosDirections.DOWN] + 1):
+	for i in range(max_pos[Direction.UP], max_pos[Direction.DOWN] + 1):
 		# Checking each y position
 		var found_cell_front : bool = false
 		var found_cell_back : bool = false
 		var empty_cells : Array[Vector2i]
-		for j in range(max_pos[MaxPosDirections.LEFT], max_pos[MaxPosDirections.RIGHT] + 1):
+		for j in range(max_pos[Direction.LEFT], max_pos[Direction.RIGHT] + 1):
 			# Checking each x position
 			
 			if(is_cell_traveller_colour(Vector2i(j, i))):
@@ -332,6 +366,10 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 	
 	disabled = false
 
+## Customisable function to get the next position
+## the algorithm would move to.
 @abstract func get_next_position() -> Vector2i
 
+## This function is called during the ready function of
+## the traveller class. Set up the traveller's name here.
 @abstract func preparatory_actions() -> void
