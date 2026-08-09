@@ -1,21 +1,13 @@
 [gd_scene format=3 uid="uid://6q4gff5shxoi"]
 
+[ext_resource type="Theme" uid="uid://catc1h0cw3ny2" path="res://main/ui/main_theme.tres" id="1_6cgo2"]
 [ext_resource type="Script" uid="uid://12slp35x0ary" path="res://main/contender_info_box.gd" id="1_21d6m"]
 [ext_resource type="Texture2D" uid="uid://0lih7kicsbys" path="res://main/bin_a_long_time_since_ive_seen_you.png" id="2_albkv"]
 [ext_resource type="Texture2D" uid="uid://dmblaf0ga24gc" path="res://main/bin_oh_hello_there.png" id="3_6cgo2"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p13as"]
-bg_color = Color(0.78352344, 0.78352344, 0.78352326, 1)
-border_width_top = 3
-border_color = Color(0.39308548, 0.39308557, 0.39308518, 1)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-
 [node name="ContenderInfoBox" type="Panel" unique_id=159757742]
 custom_minimum_size = Vector2(400, 100)
-theme_override_styles/panel = SubResource("StyleBoxFlat_p13as")
+theme = ExtResource("1_6cgo2")
 script = ExtResource("1_21d6m")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=205008855]
@@ -23,7 +15,7 @@ layout_mode = 0
 offset_top = 8.0
 offset_right = 400.0
 offset_bottom = 88.0
-theme_override_constants/separation = 10
+theme = ExtResource("1_6cgo2")
 
 [node name="BufferSpace" type="Label" parent="HBoxContainer" unique_id=1671458389]
 layout_mode = 2
@@ -31,17 +23,18 @@ layout_mode = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=2027180618]
 custom_minimum_size = Vector2(205, 0)
 layout_mode = 2
+theme = ExtResource("1_6cgo2")
 
 [node name="TypeLabel" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=1751960688]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.11858138, 0.11858138, 0.11858138, 1)
+theme = ExtResource("1_6cgo2")
 text = "Type: []"
 
 [node name="StartPosLabel" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=1788686427]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.11858138, 0.11858138, 0.11858138, 1)
+theme = ExtResource("1_6cgo2")
 text = "Starting Position:"
 
 [node name="BufferSpace2" type="Label" parent="HBoxContainer" unique_id=1391910925]
@@ -51,6 +44,7 @@ text = "                   "
 [node name="RemoveButton" type="TextureButton" parent="HBoxContainer" unique_id=455580056]
 custom_minimum_size = Vector2(75, 0)
 layout_mode = 2
+theme = ExtResource("1_6cgo2")
 texture_normal = ExtResource("2_albkv")
 texture_pressed = ExtResource("3_6cgo2")
 texture_hover = ExtResource("3_6cgo2")

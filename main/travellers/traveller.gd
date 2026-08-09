@@ -76,6 +76,8 @@ func _ready() -> void:
 		printerr("No tile map layer to reference!")
 		assert(false)
 		
+	# Make it easier to use
+	name = name + ' '
 		
 	max_pos[0] = current_position.x
 	max_pos[1] = current_position.x
@@ -369,6 +371,7 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 ## Customisable function to get the next position
 ## the algorithm would move to.
 @abstract func get_next_position() -> Vector2i
+
 
 ## This function is called during the ready function of
 ## the traveller class. Set up the traveller's name here.

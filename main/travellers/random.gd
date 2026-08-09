@@ -3,7 +3,7 @@ extends Traveller
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 
 func preparatory_actions() -> void:
-	name = "Random "
+	name = "Random"
 	# Sometimes it has the same rng on web?
 	rng = RandomNumberGenerator.new()
 
