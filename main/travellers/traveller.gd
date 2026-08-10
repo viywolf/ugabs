@@ -8,6 +8,7 @@ signal can_beep
 
 var tilemap : TileMapLayer
 
+## A list of every Vector direction (UP, DOWN, LEFT, RIGHT)
 var directions : Array[Vector2i] = [
 	Vector2i.UP,
 	Vector2i.DOWN,

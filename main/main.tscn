@@ -121,9 +121,10 @@ theme = ExtResource("4_3wy1v")
 theme_override_styles/normal = SubResource("StyleBoxFlat_4dugh")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_67ri8")
 theme_override_styles/hover = SubResource("StyleBoxFlat_grrlh")
-text = "Show Colours"
+text = "Show Types"
 
 [node name="PercentagedClaimedBox" type="VBoxContainer" parent="UI" unique_id=1224105923]
+visible = false
 offset_left = -557.0
 offset_top = -266.0
 offset_right = -517.0
@@ -131,7 +132,6 @@ offset_bottom = -226.0
 theme = ExtResource("4_3wy1v")
 
 [node name="PercentagedClaimedBoxColours" type="VBoxContainer" parent="UI" unique_id=1046901652]
-visible = false
 offset_left = -557.0
 offset_top = -266.0
 offset_right = -517.0
