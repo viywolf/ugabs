@@ -5,7 +5,7 @@ var is_path_complete : bool = true
 var target_cell : Vector2i
 var path_to_target : PackedVector2Array
 
-var index_in_path : int = -1
+var index_in_path : int = 0
 
 func preparatory_actions() -> void:
 	pass
@@ -91,6 +91,7 @@ func bfs() -> void:
 		# Else, continue the search
 		else:
 			for direction in directions:
-				if(is_cell_traveller_colour(current_position + direction) 
-						or is_cell_null(current_position + direction)):
-					q.push_back(current_position + direction)
+				if((is_cell_traveller_colour(cur_pos + direction) 
+						or is_cell_null(cur_pos + direction))):
+					q.push_back(cur_pos + direction)
+					print("add new cell " + str(direction) + ' ' + str(cur_index))
