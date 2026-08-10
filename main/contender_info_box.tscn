@@ -2,8 +2,8 @@
 
 [ext_resource type="Theme" uid="uid://catc1h0cw3ny2" path="res://main/ui/main_theme.tres" id="1_6cgo2"]
 [ext_resource type="Script" uid="uid://12slp35x0ary" path="res://main/contender_info_box.gd" id="1_21d6m"]
-[ext_resource type="Texture2D" uid="uid://0lih7kicsbys" path="res://main/bin_a_long_time_since_ive_seen_you.png" id="2_albkv"]
-[ext_resource type="Texture2D" uid="uid://dmblaf0ga24gc" path="res://main/bin_oh_hello_there.png" id="3_6cgo2"]
+[ext_resource type="Texture2D" uid="uid://0lih7kicsbys" path="res://main/assets/images/bin_a_long_time_since_ive_seen_you.png" id="2_albkv"]
+[ext_resource type="Texture2D" uid="uid://dmblaf0ga24gc" path="res://main/assets/images/bin_oh_hello_there.png" id="3_6cgo2"]
 
 [node name="ContenderInfoBox" type="Panel" unique_id=159757742]
 custom_minimum_size = Vector2(400, 100)

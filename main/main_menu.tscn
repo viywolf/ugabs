@@ -46,6 +46,7 @@ text = "Start"
 visible = false
 layout_mode = 2
 theme = ExtResource("2_dhah8")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Now loading..."
 
 [connection signal="pressed" from="VBoxContainer/Start" to="." method="_on_start_pressed"]

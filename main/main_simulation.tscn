@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://bfg16urhg15om"]
 
-[ext_resource type="Texture2D" uid="uid://dumwfdviqrfqh" path="res://main/Colours1.png" id="1_53kue"]
+[ext_resource type="Texture2D" uid="uid://dumwfdviqrfqh" path="res://main/assets/images/Colours1.png" id="1_53kue"]
 [ext_resource type="Script" uid="uid://bqxunvqtxkirg" path="res://main/travellers_manager.gd" id="2_hxkkb"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qdc3n"]

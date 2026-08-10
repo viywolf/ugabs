@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dmblaf0ga24gc"
-path="res://.godot/imported/bin_oh_hello_there.png-1c7c3e56e5c7aeaabf4fd6fb80032d49.ctex"
+uid="uid://twmuklrhsniu"
+path="res://.godot/imported/cover_page_ugabs.png-5a75378ff48572113ed6b9956a40ecf6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://main/bin_oh_hello_there.png"
-dest_files=["res://.godot/imported/bin_oh_hello_there.png-1c7c3e56e5c7aeaabf4fd6fb80032d49.ctex"]
+source_file="res://main/assets/images/cover_page_ugabs.png"
+dest_files=["res://.godot/imported/cover_page_ugabs.png-5a75378ff48572113ed6b9956a40ecf6.ctex"]
 
 [params]
 

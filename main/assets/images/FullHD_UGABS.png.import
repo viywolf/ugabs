@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://twmuklrhsniu"
-path="res://.godot/imported/cover_page_ugabs.png-debacd50dd65201ac1bb2359af43c19b.ctex"
+uid="uid://ck8lycsdyvq24"
+path="res://.godot/imported/FullHD_UGABS.png-771cbf13a595445853c579bef4694165.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://misc/cover_page_ugabs.png"
-dest_files=["res://.godot/imported/cover_page_ugabs.png-debacd50dd65201ac1bb2359af43c19b.ctex"]
+source_file="res://main/assets/images/FullHD_UGABS.png"
+dest_files=["res://.godot/imported/FullHD_UGABS.png-771cbf13a595445853c579bef4694165.ctex"]
 
 [params]
 

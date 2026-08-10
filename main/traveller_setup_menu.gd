@@ -208,6 +208,12 @@ func update_coords_limits() -> void:
 func show_or_hide_warning_label() -> void:
 	var has_coords_more_than_rad : bool = false
 	for child in %CurrentlySelectedOptions.get_children():
+		# TODO
+		# If its a circle, do a special boundary check
+		if($BorderInfo/OptionButton.selected == 1):
+			if(abs(child.trav_start_pos.x) + abs(child.trav_start_pos.y) >= cur_radius):
+				has_coords_more_than_rad = true
+				break
 		if(abs(child.trav_start_pos.x) >= cur_radius
 			or abs(child.trav_start_pos.y) >= cur_radius):
 			has_coords_more_than_rad = true

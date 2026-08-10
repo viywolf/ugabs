@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b84n1pq7y7d1w"]
 
 [ext_resource type="Script" uid="uid://bru07g80new0w" path="res://main/main.gd" id="1_okaqm"]
-[ext_resource type="AudioStream" uid="uid://dnm47n8tkvpm2" path="res://main/sfx/BeepBoxBeep.mp3" id="2_67ri8"]
+[ext_resource type="AudioStream" uid="uid://dnm47n8tkvpm2" path="res://main/assets/sfx/BeepBoxBeep.mp3" id="2_67ri8"]
 [ext_resource type="Theme" uid="uid://catc1h0cw3ny2" path="res://main/ui/main_theme.tres" id="4_3wy1v"]
 [ext_resource type="PackedScene" uid="uid://dwau6iyp5vnxc" path="res://main/traveller_setup_menu.tscn" id="7_e3y7d"]
 [ext_resource type="Script" uid="uid://dbrjx5asp3h1g" path="res://main/ui.gd" id="7_xx02v"]

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://0lih7kicsbys"
-path="res://.godot/imported/bin_a_long_time_since_ive_seen_you.png-0715d4eea9ae8f2caf6053405bb243a7.ctex"
+uid="uid://dumwfdviqrfqh"
+path="res://.godot/imported/Colours1.png-06a98f261200f5cbf78df96965397d70.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://main/bin_a_long_time_since_ive_seen_you.png"
-dest_files=["res://.godot/imported/bin_a_long_time_since_ive_seen_you.png-0715d4eea9ae8f2caf6053405bb243a7.ctex"]
+source_file="res://main/assets/images/Colours1.png"
+dest_files=["res://.godot/imported/Colours1.png-06a98f261200f5cbf78df96965397d70.ctex"]
 
 [params]
 

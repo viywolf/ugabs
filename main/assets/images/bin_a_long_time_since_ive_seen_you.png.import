@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ck8lycsdyvq24"
-path="res://.godot/imported/FullHD_UGABS.png-1604d0140408d968c8f19409876f04ef.ctex"
+uid="uid://0lih7kicsbys"
+path="res://.godot/imported/bin_a_long_time_since_ive_seen_you.png-c5fd8fac0edfd618c0f41581c9509eb4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://main/FullHD_UGABS.png"
-dest_files=["res://.godot/imported/FullHD_UGABS.png-1604d0140408d968c8f19409876f04ef.ctex"]
+source_file="res://main/assets/images/bin_a_long_time_since_ive_seen_you.png"
+dest_files=["res://.godot/imported/bin_a_long_time_since_ive_seen_you.png-c5fd8fac0edfd618c0f41581c9509eb4.ctex"]
 
 [params]
 
