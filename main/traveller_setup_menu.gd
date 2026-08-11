@@ -121,6 +121,10 @@ func add_trav_box_info(type : String, colour : Vector2i, pos : Vector2i, cur_id)
 	%CurrentlySelectedOptions.add_child(new_info_box)
 
 func _on_start_button_pressed() -> void:
+	if(%CurrentlySelectedOptions.get_child_count() == 0):
+		show_warning("Add travellers before starting the simulation!")
+		return
+	
 	for key in temp_added_travs_storage.keys():
 		if(temp_added_travs_storage[key] != []):
 			main_sim_instance.travellers.push_back(temp_added_travs_storage[key].duplicate())
@@ -163,22 +167,21 @@ func show_warning(message : String) -> void:
 	
 	var warning_label : Label = Label.new()
 	warning_label.text = message
-	warning_label.add_theme_color_override("font_color", Color(1.0, 0.151, 0.108, 1.0))
+	warning_label.add_theme_color_override("font_color", Color(1.0, 0.556, 0.493, 1.0))
 	
 	warning_panel.size = warning_label.get_combined_minimum_size()
 	
 	var new_stylebox : StyleBoxFlat = StyleBoxFlat.new()
-	new_stylebox.bg_color = Color(0.107, 0.107, 0.107, 0.9)
+	new_stylebox.bg_color = Color(0.169, 0.169, 0.169, 0.9)
 	new_stylebox.set_expand_margin_all(10)
 	new_stylebox.set_corner_radius_all(10)
 	new_stylebox.corner_detail = 5
 	
 	warning_panel.add_theme_stylebox_override("panel", new_stylebox)
 	
-	# Half of scrren width, temp val for nw
 	@warning_ignore("integer_division")
-	warning_panel.position.x = (1152 /2) - (1152 / 4)
-	warning_panel.position.y = 50
+	warning_panel.position.x = (MetaInfo.screen_size.x /2) - (warning_panel.size.x / 2)
+	warning_panel.position.y = MetaInfo.screen_size.y / MetaInfo.fraction_of_screen
 	
 	warning_panel.add_child(warning_label)
 	add_child(warning_panel)

@@ -69,6 +69,10 @@ func bfs() -> void:
 	while(cur_index != q.size()):
 		var cur_pos: Vector2i = q[cur_index]
 		cur_index += 1
+		
+		# If the bfs goes too deep, stop it
+		if(cur_index > GlobalTravInfo.grid_radius * 100): break
+		
 		if(visited.get_or_add(cur_pos, false) == false):
 			visited[cur_pos] = true
 		else:
@@ -84,9 +88,6 @@ func bfs() -> void:
 			path_to_target = tilemap.get_astar_grid(passed_colour).get_point_path(current_position, cur_pos)
 			index_in_path = 0
 			target_cell = cur_pos
-			
-			print(path_to_target)
-			
 			break
 		# Else, continue the search
 		else:
@@ -94,4 +95,4 @@ func bfs() -> void:
 				if((is_cell_traveller_colour(cur_pos + direction) 
 						or is_cell_null(cur_pos + direction))):
 					q.push_back(cur_pos + direction)
-					print("add new cell " + str(direction) + ' ' + str(cur_index))
+					print(cur_index)

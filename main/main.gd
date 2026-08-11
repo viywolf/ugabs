@@ -29,6 +29,7 @@ func tilemap_created() -> void:
 			child.beep.connect(make_a_beep)
 	%UI.update_no_of_labels()
 	%UI.show()
+	%UI.stop_updating_turns = false
 
 func update_cells_claimed_data(cur_cells_claimed : Array[int]):
 	var total_percentage : float = 0
