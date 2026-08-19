@@ -63,6 +63,21 @@ layout_mode = 2
 theme = ExtResource("2_p13as")
 prefix = "Y: "
 
+[node name="NameContainer" type="HBoxContainer" parent="MainContainer" unique_id=233380966]
+layout_mode = 2
+theme = ExtResource("2_p13as")
+
+[node name="Label" type="Label" parent="MainContainer/NameContainer" unique_id=1955412531]
+layout_mode = 2
+theme = ExtResource("2_p13as")
+text = "Name:"
+
+[node name="NameLineEdit" type="LineEdit" parent="MainContainer/NameContainer" unique_id=1114881429]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+theme = ExtResource("2_p13as")
+placeholder_text = "[Optional]"
+
 [node name="AddNewTravellerButton" type="Button" parent="MainContainer" unique_id=906707842]
 layout_mode = 2
 theme = ExtResource("2_p13as")

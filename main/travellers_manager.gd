@@ -190,11 +190,11 @@ func _ready() -> void:
 	GlobalTravInfo.is_traveller_disabled.resize(GlobalTravInfo.no_of_travellers)
 	GlobalTravInfo.traveller_names.resize(GlobalTravInfo.no_of_travellers)
 	
-	# index 0 for empty space
-	GlobalTravInfo.traveller_cells_claimed.resize(GlobalTravInfo.no_of_travellers + 1)
-	GlobalTravInfo.traveller_cells_claimed.fill(0)
-	# The number of empty cells in the grid (placehodl valeu)
-	GlobalTravInfo.traveller_cells_claimed[0] = 832409
+	## index 0 for empty space
+	#GlobalTravInfo.traveller_cells_claimed.resize(GlobalTravInfo.no_of_travellers + 1)
+	#GlobalTravInfo.traveller_cells_claimed.fill(0)
+	## The number of empty cells in the grid (placehodl valeu)
+	#GlobalTravInfo.traveller_cells_claimed[0] = 832409
 	
 	for arr : Array in GlobalTravInfo.global_move_log:
 		arr.push_back([])
@@ -209,7 +209,7 @@ func _ready() -> void:
 		child.move_finished.connect(traveller_move_finished.bind(i))
 		child.can_beep.connect(emit_signal_beep)
 		
-		GlobalTravInfo.traveller_teams[child.active_colour] = true
+		#GlobalTravInfo.traveller_teams[child.active_colour] = true
 		GlobalTravInfo.team_cells_claimed[child.active_colour] = 0
 		
 		GlobalTravInfo.traveller_colours[i] = child.active_colour.x

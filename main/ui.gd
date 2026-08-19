@@ -8,6 +8,7 @@ var label_base_text_coloured : Dictionary[Vector2i, String]
 var cells_claimed_percentages : Array[float]
 var cells_claimed_percentages_by_colour : Dictionary[Vector2i, float]
 
+## If percentages claimed add up to 1.0, stop updating turns is set to true from main.gd.
 var stop_updating_turns : bool = false
 
 func _ready() -> void:
@@ -19,12 +20,16 @@ func _ready() -> void:
 	var this_screen_size : Vector2i = get_viewport().get_visible_rect().size
 	
 	%BackButton.position.y = this_screen_size.y / 2.2 - %BackButton.size.y
+	$ReplayButton.position.y = %BackButton.position.y
 	$ToggleUILabel.position.y = %BackButton.position.y - $ToggleUILabel.size.y - 5
 	
 	$CurrentTurnLabel.position.x = this_screen_size.x / 2.2 - $CurrentTurnLabel.size.x - 50
 	$SpeedSlider.position.x = this_screen_size.x / 2.5
 	$SpeedSliderLabelFast.position.x = $SpeedSlider.position.x + 10
 	$SpeedSliderLabelSlow.position.x = $SpeedSlider.position.x + 10
+	
+	$EndOfSimLabel.position.x = ($EndOfSimLabel.size.x / 2) - (this_screen_size.x / 2)
+	$EndOfSimLabel.position.y = (this_screen_size.y / 2) - ($EndOfSimLabel.size.y / 2)
 	
 	$SpeedSlider.min_value = 0
 	var screen_refresh_rate : float = DisplayServer.screen_get_refresh_rate()
@@ -82,9 +87,9 @@ func update_no_of_labels() -> void:
 		new_label.add_theme_font_size_override("font_size", 20)
 		$PercentagedClaimedBox.add_child(new_label)
 		
-	for i in GlobalTravInfo.traveller_teams.keys().size():
+	for i in GlobalTravInfo.team_cells_claimed.keys().size():
 		var new_label = Label.new()
-		label_base_text_coloured[GlobalTravInfo.traveller_teams.keys()[i]] = CellColour.colour_names[CellColour.colours_in_tileset.find(GlobalTravInfo.traveller_teams.keys()[i])].capitalize() + ": "
+		label_base_text_coloured[GlobalTravInfo.team_cells_claimed.keys()[i]] = CellColour.colour_names[CellColour.colours_in_tileset.find(GlobalTravInfo.team_cells_claimed.keys()[i])].capitalize() + ": "
 		new_label.add_theme_font_size_override("font_size", 20)
 		$PercentagedClaimedBoxColours.add_child(new_label)
 		

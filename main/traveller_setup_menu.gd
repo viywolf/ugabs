@@ -31,7 +31,7 @@ var temp_added_travs_storage : Dictionary[int, Array]
 func _ready() -> void:
 	main_sim_instance = main_sim_res.instantiate()
 	
-	# Positioning nodes
+	#region positioning ui nodes
 	$MainContainer.position.x = MetaInfo.screen_size.x / MetaInfo.fraction_of_screen
 	$BorderInfo.position.x = MetaInfo.screen_size.x / MetaInfo.fraction_of_screen
 	
@@ -51,6 +51,7 @@ func _ready() -> void:
 	$ExplanationBox/Label.custom_minimum_size.x = MetaInfo.screen_size.x - $ScrollContainer.custom_minimum_size.x - $MainContainer.size.x - (MetaInfo.screen_size.x / MetaInfo.fraction_of_screen * 4)
 	$ExplanationBox.custom_minimum_size.x = $ExplanationBox/Label.custom_minimum_size.x
 	$ExplanationBox.custom_minimum_size.y = $MainContainer.size.y + $BorderInfo.size.y
+	#endregion
 	
 	# Set up
 	for type : String in GlobalTravInfo.all_traveller_types.keys():
@@ -73,6 +74,12 @@ func _ready() -> void:
 		current_trav_id = SetupSettings.saved_current_trav_id
 		positions_taken = SetupSettings.saved_positions_taken.duplicate()
 		temp_added_travs_storage = SetupSettings.saved_temp_added_travs_storage.duplicate()
+		
+		# TODO test this
+		for i in range(GlobalTravInfo.all_traveller_types.keys().size()):
+			var trav_type: String = GlobalTravInfo.all_traveller_types.keys()[i]
+			if(SetupSettings.saved_current_trav_type_selected.to_lower() == trav_type):
+				$MainContainer/TypeContainer/OptionButton.selected = i
 		
 		match SetupSettings.saved_border_type.capitalize():
 			"Square": $BorderInfo/OptionButton.selected = 0
@@ -109,6 +116,7 @@ func add_trav_box_info(type : String, colour : Vector2i, pos : Vector2i, cur_id)
 	var new_info_box : Node = info_box_resource.instantiate()
 	var this_box_info : Array = [type, colour, pos]
 	
+	new_info_box.trav_name = "palcehodler"
 	new_info_box.trav_type = type
 	new_info_box.trav_colour = colour
 	new_info_box.trav_start_pos = pos
@@ -139,6 +147,7 @@ func _on_start_button_pressed() -> void:
 	SetupSettings.saved_border_type = $BorderInfo/OptionButton.text
 	SetupSettings.saved_border_radius = $BorderInfo/SpinBox.value
 	
+	SetupSettings.saved_current_trav_type_selected = $MainContainer/TypeContainer/OptionButton.selected
 	SetupSettings.saved_current_trav_id = current_trav_id
 	SetupSettings.saved_positions_taken = positions_taken.duplicate()
 	SetupSettings.saved_temp_added_travs_storage = temp_added_travs_storage.duplicate()

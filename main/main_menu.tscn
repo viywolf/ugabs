@@ -2,9 +2,49 @@
 
 [ext_resource type="Script" uid="uid://yq6c42b7seap" path="res://main/main_menu.gd" id="1_4l7av"]
 [ext_resource type="Theme" uid="uid://catc1h0cw3ny2" path="res://main/ui/main_theme.tres" id="2_dhah8"]
+[ext_resource type="Texture2D" uid="uid://qdyw6euequka" path="res://main/assets/images/UGABS_Logo.png" id="2_w2mlq"]
+[ext_resource type="Script" uid="uid://fgvisp4e5j3l" path="res://main/background_animation.gd" id="3_4u0aa"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4u0aa"]
+texture = ExtResource("2_w2mlq")
+texture_region_size = Vector2i(100, 100)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+4:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+4:2/0 = 0
+0:3/0 = 0
+1:3/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+4:3/0 = 0
+0:4/0 = 0
+1:4/0 = 0
+2:4/0 = 0
+3:4/0 = 0
+4:4/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_8cpu2"]
+tile_size = Vector2i(100, 100)
+sources/0 = SubResource("TileSetAtlasSource_4u0aa")
 
 [node name="MainMenu" type="CanvasLayer" unique_id=1268563488]
 script = ExtResource("1_4l7av")
+
+[node name="BackgroundAnimation" type="TileMapLayer" parent="." unique_id=1752036734]
+scale = Vector2(1.3, 1.3)
+tile_set = SubResource("TileSet_8cpu2")
+script = ExtResource("3_4u0aa")
 
 [node name="Tutorial" type="Label" parent="." unique_id=2016602099]
 offset_left = 35.0
@@ -38,6 +78,7 @@ pivot_offset = Vector2(43, 22)
 
 [node name="Start" type="Button" parent="VBoxContainer" unique_id=1155231699]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 40)
 layout_mode = 2
 theme = ExtResource("2_dhah8")
 text = "Start"

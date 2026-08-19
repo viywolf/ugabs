@@ -7,6 +7,8 @@
 
 [node name="ContenderInfoBox" type="Panel" unique_id=159757742]
 custom_minimum_size = Vector2(400, 100)
+offset_right = 400.0
+offset_bottom = 110.0
 theme = ExtResource("1_6cgo2")
 script = ExtResource("1_21d6m")
 
@@ -24,6 +26,11 @@ layout_mode = 2
 custom_minimum_size = Vector2(205, 0)
 layout_mode = 2
 theme = ExtResource("1_6cgo2")
+
+[node name="NameLabel" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=471128785]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Name: []"
 
 [node name="TypeLabel" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=1751960688]
 unique_name_in_owner = true

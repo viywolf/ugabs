@@ -24,7 +24,6 @@ var directions : Array[Vector2i] = [
 @export_category("Position")
 
 @export var current_position : Vector2i = Vector2i(0, 0)
-var previous_position : Vector2i = Vector2i(0, 0)
 var next_position : Vector2i = Vector2i(0, 0)
 
 @export_category("Modifiers")
@@ -70,6 +69,7 @@ enum Direction {
 func get_speed() -> float:
 	return traveller_speed
 
+
 func _ready() -> void:
 	if(get_parent() is TileMapLayer):
 		tilemap = get_parent()
@@ -89,6 +89,7 @@ func _ready() -> void:
 	
 	preparatory_actions()
 
+
 ## 'Moves' this traveller to the given position, 
 ## changing the cell at the position to the given colour.
 ## If the cell was previously null, emit the signal to create a 'beep' sound
@@ -102,9 +103,11 @@ func set_cell_colour(cell_coords: Vector2i, colour : Vector2i) -> void:
 	tilemap.filled_cells_in_grid[cell_coords] = colour
 	tilemap.empty_cells_in_grid.erase(cell_coords)
 
+
 ## Checks if the cell is null, returning true if so, otherwise returns false
 func is_cell_null(cell_coords : Vector2i) -> bool:
 	return tilemap.get_cell_tile_data(cell_coords) == null
+
 
 ## Checks if the cell is the traveller's active or passed colours.
 ## Also first calls the function is_cell_null, returning false if it is true.
@@ -121,6 +124,7 @@ func is_cell_traveller_colour(cell_coords: Vector2i) -> bool:
 	return (tilemap.filled_cells_in_grid.get_or_add(cell_coords, null) == passed_colour
 			or tilemap.filled_cells_in_grid.get_or_add(cell_coords, null) == active_colour)
 
+
 ## Checks if the traveller is disabled, if so, skip the turn.
 ## Else, call the move function alongside the get_next_position function.
 func start_moving() -> void:
@@ -130,6 +134,7 @@ func start_moving() -> void:
 	else:
 		move(get_next_position())
 	move_finished.emit()
+
 
 ## Attempts to move to the given position,
 ## calls the function to fill in the next cell,
@@ -141,7 +146,6 @@ func move(to_next_position : Vector2i) -> void:
 		return
 	
 	if(can_move(next_position)):
-		previous_position = current_position
 		
 		# Find the direction it is moving in
 		direction_of_movement = next_position - current_position
@@ -194,6 +198,7 @@ func move(to_next_position : Vector2i) -> void:
 		
 	recalculate_relative_directions()
 
+
 ## Returns the result of can_travel_to_cell
 func can_move(to_next_position : Vector2i) -> bool:
 	if(can_travel_to_cell(to_next_position)):
@@ -201,10 +206,12 @@ func can_move(to_next_position : Vector2i) -> bool:
 	else:
 		return false
 
+
 ## Returns if the traveller can move to the next cell.
 ## The traveller can move to the next cell if the cell is null or of the traveller colour.
 func can_travel_to_cell(cell_coords: Vector2i) -> bool:
 	return(is_cell_null(cell_coords) or is_cell_traveller_colour(cell_coords))
+
 
 ## Recalculates all values in the relative_direction array according to their direction.
 func recalculate_relative_directions() -> void:
@@ -212,6 +219,7 @@ func recalculate_relative_directions() -> void:
 	relative_direction[Direction.RIGHT] = current_position + Vector2i.RIGHT
 	relative_direction[Direction.UP] = current_position + Vector2i.UP
 	relative_direction[Direction.DOWN] = current_position + Vector2i.DOWN
+
 
 ## Checks if the drawn cell causes an enclosure,
 ## checking row by row, column by column, and using dfs.
@@ -368,6 +376,7 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 		set_cell_colour(current_position, active_colour)
 	
 	disabled = false
+
 
 ## Customisable function to get the next position
 ## the algorithm would move to.

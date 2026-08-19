@@ -8,7 +8,9 @@ var load_status: Array
 func _ready() -> void:
 	MetaInfo.screen_size = get_viewport().get_visible_rect().size
 	$Label.position.x = MetaInfo.screen_size.x / MetaInfo.fraction_of_screen
+	
 	$VBoxContainer.position.x = MetaInfo.screen_size.x / MetaInfo.fraction_of_screen
+	$VBoxContainer.size.x = MetaInfo.screen_size.x / 4
 	
 	ResourceLoader.load_threaded_request("res://main/main.tscn")
 
