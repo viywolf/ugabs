@@ -1,16 +1,16 @@
 extends Node2D
 
-var playback_scene : PackedScene = preload("res://main/board_playback.tscn")
-var setup_res : PackedScene = load("res://main/traveller_setup_menu.tscn")
+var playback_scene: PackedScene = preload("res://main/board_playback.tscn")
+var setup_res: PackedScene = load("res://main/traveller_setup_menu.tscn")
 
-var main_tilemap_scene : TileMapLayer
+var main_tilemap_scene: TileMapLayer
 
 func _ready() -> void:
 	$TravellerSetupMenu.setup_done.connect(tilemap_created)
 
 
 func tilemap_created() -> void:
-	for child : Node in get_children():
+	for child: Node in get_children():
 		if child is TileMapLayer:
 			main_tilemap_scene = child
 			child.update_cells_claimed.connect(update_cells_percentage_claimed_data)
@@ -21,22 +21,22 @@ func tilemap_created() -> void:
 
 
 func end_of_sim_actions() -> void:
-	for child : Traveller in main_tilemap_scene.get_children():
+	for child: Traveller in main_tilemap_scene.get_children():
 		child.disabled = true
 	%UI.stop_updating_turns = true
 	$UI/ReplayButton.show()
 	$UI/EndOfSimLabel.show()
 
 
-func update_cells_percentage_claimed_data(cur_cells_claimed : Array[int]):
-	var total_percentage : float = 0
+func update_cells_percentage_claimed_data(cur_cells_claimed: Array[int]):
+	var total_percentage: float = 0
 	for i in cur_cells_claimed.size():
-		var cur_percentage : float = (float(cur_cells_claimed[i]) / GlobalTravInfo.total_cells_in_grid)
+		var cur_percentage: float = (float(cur_cells_claimed[i]) / GlobalTravInfo.total_cells_in_grid)
 		%UI.cells_claimed_percentages[i] = cur_percentage
 		total_percentage += cur_percentage
 	
 	for key in GlobalTravInfo.team_cells_claimed.keys():
-		var cur_percentage : float = (float(GlobalTravInfo.team_cells_claimed[key]) / GlobalTravInfo.total_cells_in_grid)
+		var cur_percentage: float = (float(GlobalTravInfo.team_cells_claimed[key]) / GlobalTravInfo.total_cells_in_grid)
 		GlobalTravInfo.team_cells_claimed[key] = cur_percentage
 	
 	%UI.update_cell_claimed_labels()
@@ -47,7 +47,7 @@ func update_cells_percentage_claimed_data(cur_cells_claimed : Array[int]):
 
 
 func remove_all_tilemaps() -> void:
-	for child : Node in self.get_children():
+	for child: Node in self.get_children():
 		if(child is TileMapLayer):
 			child.queue_free()
 
@@ -71,7 +71,7 @@ func make_a_beep() -> void:
 
 func _on_replay_button_pressed() -> void:
 	remove_all_tilemaps()
-	var instantiated_scene : TileMapLayer = playback_scene.instantiate()
+	var instantiated_scene: TileMapLayer = playback_scene.instantiate()
 	instantiated_scene.name = "PlaybackScene"
-	#instantiated_scene.scale = Vector2(2, 2)
+	instantiated_scene.scale = Vector2(10, 10)
 	add_child(instantiated_scene)

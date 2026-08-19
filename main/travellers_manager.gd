@@ -7,30 +7,30 @@ signal beep
 
 @export_category("Travellers")
 
-@export var auto_add_travellers : bool = true
+@export var auto_add_travellers: bool = true
 
 # arr = ["traveller type", vector2i colour, vector2i start pos]
 
-@export var travellers : Array
+@export var travellers: Array
 
 enum TravInfo {
-	TYPE, COLOUR, START_POS
+	NAME, TYPE, COLOUR, START_POS
 }
 
 # Border making stuff
 
-var chosen_border_shape : String
-var border_radius : int
+var chosen_border_shape: String
+var border_radius: int
 
 # Colour -> astar grid
-var all_astar_grids : Dictionary[Vector2i, AStarGrid2D]
+var all_astar_grids: Dictionary[Vector2i, AStarGrid2D]
 
-var astar_grid : AStarGrid2D = AStarGrid2D.new()
+var astar_grid: AStarGrid2D = AStarGrid2D.new()
 
-# Position : colour
-var filled_cells_in_grid : Dictionary
+# Position: colour
+var filled_cells_in_grid: Dictionary
 
-var empty_cells_in_grid : Dictionary[Vector2i, bool]
+var empty_cells_in_grid: Dictionary[Vector2i, bool]
 
 # making an astar grid for each colour
 # which allows teams
@@ -45,22 +45,22 @@ var empty_cells_in_grid : Dictionary[Vector2i, bool]
 
 """
 
-var moves_finished : Array[bool]
+var moves_finished: Array[bool]
 
-func draw_shape_border(shape : String, radius : int) -> void:
+func draw_shape_border(shape: String, radius: int) -> void:
 	if(radius <= 0):
 		printerr("Radius must be greater than 0")
 		return
 	
-	var middle : Vector2i = Vector2i(0, 0)
-	var min_y : int = middle.y - radius
-	var max_y : int = middle.y + radius
-	var min_x : int = middle.x - radius
-	var max_x : int = middle.x + radius
+	var middle: Vector2i = Vector2i(0, 0)
+	var min_y: int = middle.y - radius
+	var max_y: int = middle.y + radius
+	var min_x: int = middle.x - radius
+	var max_x: int = middle.x + radius
 	
 	shape = shape.to_lower()
 	
-	var colour_black : Vector2i = CellColour.colours_in_tileset[CellColour.TilesetColour.BLACK]
+	var colour_black: Vector2i = CellColour.colours_in_tileset[CellColour.TilesetColour.BLACK]
 	if(shape != "logo"):
 		clear()
 	if(shape == "square"):
@@ -74,11 +74,11 @@ func draw_shape_border(shape : String, radius : int) -> void:
 			set_cell(Vector2i(min_x, i - radius), 0, colour_black)
 			set_cell(Vector2i(max_x, i - radius), 0, colour_black)
 	elif(shape == "circle"):
-		var d : int = floori(3 - (2 * radius))
-		var x : int = 0
-		var y : int = radius
+		var d: int = floori(3 - (2 * radius))
+		var x: int = 0
+		var y: int = radius
 		
-		var continue_loop : bool = true
+		var continue_loop: bool = true
 		
 		while(continue_loop == true):
 			# Midpoint circle algorithm
@@ -105,10 +105,10 @@ func draw_shape_border(shape : String, radius : int) -> void:
 	else:
 		printerr("Unknown shape: " + shape)
 		
-func get_astar_grid(current_passed_colour : Vector2i) -> AStarGrid2D:
+func get_astar_grid(current_passed_colour: Vector2i) -> AStarGrid2D:
 	return all_astar_grids[current_passed_colour]
 
-func update_solid_points(current_astar_grid : AStarGrid2D, good_active_colour : Vector2i, good_passed_colour : Vector2i) -> void:
+func update_solid_points(current_astar_grid: AStarGrid2D, good_active_colour: Vector2i, good_passed_colour: Vector2i) -> void:
 	for x in range(GlobalTravInfo.grid_size.x):
 		for y in range(GlobalTravInfo.grid_size.y):
 			@warning_ignore("integer_division")
@@ -124,14 +124,14 @@ func _ready() -> void:
 	
 	GlobalTravInfo.grid_radius = border_radius
 		
-	# quick dfs here to get grid size :>
+	# quick dfs here to get grid size:>
 	
 	if(chosen_border_shape != "logo"):
-		var cells_in_grid : int = 0
+		var cells_in_grid: int = 0
 		
-		var stack : Array[Vector2i]
+		var stack: Array[Vector2i]
 		stack.push_back(Vector2i(0,0))
-		var visited : Dictionary[Vector2i, bool]
+		var visited: Dictionary[Vector2i, bool]
 		
 		while(stack.is_empty() == false):
 			var cur_node = stack.pop_back()
@@ -156,10 +156,10 @@ func _ready() -> void:
 				get_cell_tile_data(Vector2i(x, y)).set_custom_data("Colour", Vector2i(9, 0))
 	
 	if auto_add_travellers == true:
-		for traveller : Array[Variant] in travellers:
-			var traveller_type : String = traveller[TravInfo.TYPE]
+		for traveller: Array[Variant] in travellers:
+			var traveller_type: String = traveller[TravInfo.TYPE]
 			traveller_type = traveller_type.to_lower()
-			var trav_colour : Vector2i = traveller[TravInfo.COLOUR]
+			var trav_colour: Vector2i = traveller[TravInfo.COLOUR]
 			
 			var new_traveller_node = Node.new()
 			
@@ -168,6 +168,8 @@ func _ready() -> void:
 			else:
 				printerr("Invalid traveller type entered")
 				continue
+			
+			new_traveller_node.trav_name = traveller[TravInfo.NAME]
 			
 			new_traveller_node.active_colour = Vector2i(trav_colour.x, 0)
 			new_traveller_node.passed_colour = Vector2i(trav_colour.x, 1)
@@ -178,7 +180,7 @@ func _ready() -> void:
 			
 			add_child(new_traveller_node)
 					
-		for child : Traveller in get_children():
+		for child: Traveller in get_children():
 			child.disabled = false
 	
 	GlobalTravInfo.global_move_log.resize(self.get_child_count())
@@ -190,21 +192,15 @@ func _ready() -> void:
 	GlobalTravInfo.is_traveller_disabled.resize(GlobalTravInfo.no_of_travellers)
 	GlobalTravInfo.traveller_names.resize(GlobalTravInfo.no_of_travellers)
 	
-	## index 0 for empty space
-	#GlobalTravInfo.traveller_cells_claimed.resize(GlobalTravInfo.no_of_travellers + 1)
-	#GlobalTravInfo.traveller_cells_claimed.fill(0)
-	## The number of empty cells in the grid (placehodl valeu)
-	#GlobalTravInfo.traveller_cells_claimed[0] = 832409
-	
-	for arr : Array in GlobalTravInfo.global_move_log:
+	for arr: Array in GlobalTravInfo.global_move_log:
 		arr.push_back([])
 	
 	if self.get_child_count() == 0:
 		printerr(name, " has no children")
 	
 	for i in range(self.get_child_count()):
-	#for child : Traveller in self.get_children():
-		var child : Traveller = self.get_child(i)
+	#for child: Traveller in self.get_children():
+		var child: Traveller = self.get_child(i)
 		
 		child.move_finished.connect(traveller_move_finished.bind(i))
 		child.can_beep.connect(emit_signal_beep)
@@ -218,7 +214,7 @@ func _ready() -> void:
 		child.child_no = i
 		
 		if(child.disabled): continue
-		var new_astar_grid : AStarGrid2D = AStarGrid2D.new()
+		var new_astar_grid: AStarGrid2D = AStarGrid2D.new()
 		@warning_ignore("integer_division")
 		new_astar_grid.region = Rect2i(Vector2i(-GlobalTravInfo.grid_size.x / 2, -GlobalTravInfo.grid_size.y / 2), GlobalTravInfo.grid_size)
 		new_astar_grid.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_NEVER
@@ -240,11 +236,11 @@ func _physics_process(_delta: float) -> void:
 		return
 	GlobalTravInfo.current_turn += 1
 	
-	for arr : Array in GlobalTravInfo.global_move_log:
+	for arr: Array in GlobalTravInfo.global_move_log:
 		arr.push_back([])
 	
 	for i in range(get_child_count()):
-		var child : Traveller = self.get_child(i)
+		var child: Traveller = self.get_child(i)
 		if(GlobalTravInfo.current_turn % int(child.get_speed()) == 0):
 			child.start_moving()
 		child.move_log.push_back(child.current_position)
@@ -252,22 +248,22 @@ func _physics_process(_delta: float) -> void:
 		GlobalTravInfo.global_move_log[i][GlobalTravInfo.current_turn].push_back(arr_to_be_added)
 	# Re calculate astar grids
 	if(GlobalTravInfo.current_turn % 10 == 0):
-		for child : Traveller in self.get_children():
+		for child: Traveller in self.get_children():
 			if child.disabled: continue
 			update_solid_points(get_astar_grid(child.passed_colour), child.active_colour, child.passed_colour)
 	
-	var cur_cells_claimed : Array[int]
+	var cur_cells_claimed: Array[int]
 	
 	for key in GlobalTravInfo.team_cells_claimed.keys():
 		GlobalTravInfo.team_cells_claimed[key] = 0
 	
-	for child : Traveller in get_children():
+	for child: Traveller in get_children():
 		cur_cells_claimed.push_back(child.cells_claimed)
 		GlobalTravInfo.team_cells_claimed[child.active_colour] += child.cells_claimed
 	
 	update_cells_claimed.emit(cur_cells_claimed)
 	
-func traveller_move_finished(traveller_no : int) -> void:
+func traveller_move_finished(traveller_no: int) -> void:
 	moves_finished[traveller_no] = true
 	
 func is_all_travellers_finished() -> bool:

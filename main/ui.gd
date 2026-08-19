@@ -1,15 +1,15 @@
 extends CanvasLayer
 
-var cells_claimed_data : Array[int]
+var cells_claimed_data: Array[int]
 
-var label_base_text : Array[String]
-var label_base_text_coloured : Dictionary[Vector2i, String]
+var label_base_text: Array[String]
+var label_base_text_coloured: Dictionary[Vector2i, String]
 
-var cells_claimed_percentages : Array[float]
-var cells_claimed_percentages_by_colour : Dictionary[Vector2i, float]
+var cells_claimed_percentages: Array[float]
+var cells_claimed_percentages_by_colour: Dictionary[Vector2i, float]
 
 ## If percentages claimed add up to 1.0, stop updating turns is set to true from main.gd.
-var stop_updating_turns : bool = false
+var stop_updating_turns: bool = false
 
 func _ready() -> void:
 	Engine.physics_ticks_per_second = 12
@@ -17,7 +17,7 @@ func _ready() -> void:
 	
 	# Positioning
 	
-	var this_screen_size : Vector2i = get_viewport().get_visible_rect().size
+	var this_screen_size: Vector2i = get_viewport().get_visible_rect().size
 	
 	%BackButton.position.y = this_screen_size.y / 2.2 - %BackButton.size.y
 	$ReplayButton.position.y = %BackButton.position.y
@@ -32,7 +32,7 @@ func _ready() -> void:
 	$EndOfSimLabel.position.y = (this_screen_size.y / 2) - ($EndOfSimLabel.size.y / 2)
 	
 	$SpeedSlider.min_value = 0
-	var screen_refresh_rate : float = DisplayServer.screen_get_refresh_rate()
+	var screen_refresh_rate: float = DisplayServer.screen_get_refresh_rate()
 	if(screen_refresh_rate > 0):
 		$SpeedSlider.max_value = sqrt(screen_refresh_rate)
 	else:
@@ -47,7 +47,7 @@ func _input(event: InputEvent) -> void:
 		self.visible = !self.visible
 
 func _on_speed_slider_value_changed(value: float) -> void:
-	var value_to_ticks : int = int(round(value*value))
+	var value_to_ticks: int = int(round(value*value))
 	if is_equal_approx(value, 0):
 		for node in get_tree().current_scene.get_children():
 			if node == TileMapLayer:
@@ -64,7 +64,7 @@ func _on_speed_slider_value_changed(value: float) -> void:
 		else:
 			Engine.physics_ticks_per_second = 1
 
-# Process : mode : always/pausable
+# Process: mode: always/pausable
 
 func update_no_of_labels() -> void:
 	label_base_text.resize(GlobalTravInfo.no_of_travellers)
@@ -97,7 +97,7 @@ func update_no_of_labels() -> void:
 
 func update_cell_claimed_labels() -> void:
 	for i in $PercentagedClaimedBox.get_child_count():
-		var child : Label = $PercentagedClaimedBox.get_child(i)
+		var child: Label = $PercentagedClaimedBox.get_child(i)
 		# Convert number to percentage
 		cells_claimed_percentages[i] *= 100
 		# Round the percentage to 2 d.p
@@ -106,9 +106,9 @@ func update_cell_claimed_labels() -> void:
 		cells_claimed_percentages[i] /= 100
 		child.text = label_base_text[i] + str(cells_claimed_percentages[i]) + "%"
 		
-	var current_index : int = 0
+	var current_index: int = 0
 	for key in GlobalTravInfo.team_cells_claimed.keys():
-		var child : Label = $PercentagedClaimedBoxColours.get_child(current_index)
+		var child: Label = $PercentagedClaimedBoxColours.get_child(current_index)
 		current_index += 1
 		# Convert number to percentage
 		GlobalTravInfo.team_cells_claimed[key] *= 100

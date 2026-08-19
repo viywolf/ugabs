@@ -2,30 +2,31 @@ extends CanvasLayer
 
 signal setup_done
 
-var current_traveller_info : Array[Variant] = [
+var current_traveller_info: Array[Variant] = [
+	"", #Name (string)
 	"", # Type (string),
 	Vector2i.ZERO, # Colour (vector2i), 
 	Vector2i.ZERO, # Position (vector2i),
 ]
 
-@onready var type_select : OptionButton = $MainContainer/TypeContainer/OptionButton
-@onready var colour_select : OptionButton = $MainContainer/ColourContainer/OptionButton
-@onready var position_select_x : SpinBox = $MainContainer/StartingPosContainer/GridPosInputX
-@onready var position_select_y : SpinBox = $MainContainer/StartingPosContainer/GridPosInputY
+@onready var type_select: OptionButton = $MainContainer/TypeContainer/OptionButton
+@onready var colour_select: OptionButton = $MainContainer/ColourContainer/OptionButton
+@onready var position_select_x: SpinBox = $MainContainer/StartingPosContainer/GridPosInputX
+@onready var position_select_y: SpinBox = $MainContainer/StartingPosContainer/GridPosInputY
 
-var info_box_resource : PackedScene = preload("res://main/contender_info_box.tscn")
+var info_box_resource: PackedScene = preload("res://main/contender_info_box.tscn")
 
-var main_sim_res : PackedScene = preload("res://main/main_simulation.tscn")
+var main_sim_res: PackedScene = preload("res://main/main_simulation.tscn")
 
-var main_sim_instance : TileMapLayer
+var main_sim_instance: TileMapLayer
 
-var positions_taken : Dictionary
+var positions_taken: Dictionary
 
-var current_trav_id : int = 0
+var current_trav_id: int = 0
 
-var temp_added_travs_storage : Dictionary[int, Array]
+var temp_added_travs_storage: Dictionary[int, Array]
 
-@onready var cur_radius : int = $BorderInfo/SpinBox.value
+@onready var cur_radius: int = $BorderInfo/SpinBox.value
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -54,11 +55,11 @@ func _ready() -> void:
 	#endregion
 	
 	# Set up
-	for type : String in GlobalTravInfo.all_traveller_types.keys():
+	for type: String in GlobalTravInfo.all_traveller_types.keys():
 		$MainContainer/TypeContainer/OptionButton.add_item(type.capitalize())
 		
 	# Only add the main colours?
-	for colour : String in CellColour.colour_names:
+	for colour: String in CellColour.colour_names:
 		if colour == "BLACK": break
 		$MainContainer/ColourContainer/OptionButton.add_item(colour.capitalize())
 	
@@ -75,11 +76,10 @@ func _ready() -> void:
 		positions_taken = SetupSettings.saved_positions_taken.duplicate()
 		temp_added_travs_storage = SetupSettings.saved_temp_added_travs_storage.duplicate()
 		
-		# TODO test this
-		for i in range(GlobalTravInfo.all_traveller_types.keys().size()):
-			var trav_type: String = GlobalTravInfo.all_traveller_types.keys()[i]
-			if(SetupSettings.saved_current_trav_type_selected.to_lower() == trav_type):
-				$MainContainer/TypeContainer/OptionButton.selected = i
+		$MainContainer/TypeContainer/OptionButton.selected = SetupSettings.saved_current_trav_type_selected
+		$MainContainer/StartingPosContainer/GridPosInputX.value = SetupSettings.saved_starting_pos.x
+		$MainContainer/StartingPosContainer/GridPosInputY.value = SetupSettings.saved_starting_pos.y
+		$MainContainer/ColourContainer/OptionButton.selected = SetupSettings.saved_trav_colour
 		
 		match SetupSettings.saved_border_type.capitalize():
 			"Square": $BorderInfo/OptionButton.selected = 0
@@ -91,16 +91,17 @@ func _ready() -> void:
 		
 		for i in current_trav_id:
 			if(temp_added_travs_storage[i] != []):
-				add_trav_box_info(temp_added_travs_storage[i][0], temp_added_travs_storage[i][1], temp_added_travs_storage[i][2], i)
+				add_trav_box_info(temp_added_travs_storage[i][0], temp_added_travs_storage[i][1], temp_added_travs_storage[i][2], temp_added_travs_storage[i][3], i)
 
 func _on_add_new_traveller_button_pressed() -> void:
-	current_traveller_info[0] = type_select.get_item_text(type_select.get_selected_id())
-	current_traveller_info[1] = CellColour.colours_in_tileset[colour_select.get_selected_id()]
-	var position_as_vector : Vector2i
+	current_traveller_info[0] = $MainContainer/NameContainer/NameLineEdit.text
+	current_traveller_info[1] = type_select.get_item_text(type_select.get_selected_id())
+	current_traveller_info[2] = CellColour.colours_in_tileset[colour_select.get_selected_id()]
+	var position_as_vector: Vector2i
 		
 	position_as_vector.x = int(position_select_x.value)
 	position_as_vector.y = int(position_select_y.value)
-	current_traveller_info[2] = position_as_vector
+	current_traveller_info[3] = position_as_vector
 	@warning_ignore("integer_division")
 	
 	if (positions_taken.get_or_add(position_as_vector, false) == true):
@@ -109,14 +110,14 @@ func _on_add_new_traveller_button_pressed() -> void:
 		return
 	positions_taken[position_as_vector] = true
 	
-	add_trav_box_info(current_traveller_info[0], current_traveller_info[1], current_traveller_info[2], current_trav_id)
+	add_trav_box_info(current_traveller_info[0], current_traveller_info[1], current_traveller_info[2], current_traveller_info[3], current_trav_id)
 	current_trav_id += 1
 
-func add_trav_box_info(type : String, colour : Vector2i, pos : Vector2i, cur_id) -> void:
-	var new_info_box : Node = info_box_resource.instantiate()
-	var this_box_info : Array = [type, colour, pos]
+func add_trav_box_info(trav_name: String, type: String, colour: Vector2i, pos: Vector2i, cur_id: int) -> void:
+	var new_info_box: Node = info_box_resource.instantiate()
+	var this_box_info: Array = [trav_name, type, colour, pos]
 	
-	new_info_box.trav_name = "palcehodler"
+	new_info_box.trav_name = trav_name
 	new_info_box.trav_type = type
 	new_info_box.trav_colour = colour
 	new_info_box.trav_start_pos = pos
@@ -149,6 +150,9 @@ func _on_start_button_pressed() -> void:
 	
 	SetupSettings.saved_current_trav_type_selected = $MainContainer/TypeContainer/OptionButton.selected
 	SetupSettings.saved_current_trav_id = current_trav_id
+	SetupSettings.saved_starting_pos = Vector2i($MainContainer/StartingPosContainer/GridPosInputX.value, $MainContainer/StartingPosContainer/GridPosInputY.value)
+	SetupSettings.saved_trav_colour = $MainContainer/ColourContainer/OptionButton.selected
+	
 	SetupSettings.saved_positions_taken = positions_taken.duplicate()
 	SetupSettings.saved_temp_added_travs_storage = temp_added_travs_storage.duplicate()
 	SetupSettings.has_saved_settings = true
@@ -160,8 +164,8 @@ func _on_start_button_pressed() -> void:
 	
 	queue_free()
 	
-func remove_traveller(id : int) -> void:
-	for child : Node in %CurrentlySelectedOptions.get_children():
+func remove_traveller(id: int) -> void:
+	for child: Node in %CurrentlySelectedOptions.get_children():
 		if child.node_id == id:
 			child.queue_free()
 			positions_taken.erase(temp_added_travs_storage[id][2])
@@ -171,16 +175,16 @@ func remove_traveller(id : int) -> void:
 			return
 	printerr("Id " + str(id) + " was not found")
 
-func show_warning(message : String) -> void:
-	var warning_panel : Panel = Panel.new()
+func show_warning(message: String) -> void:
+	var warning_panel: Panel = Panel.new()
 	
-	var warning_label : Label = Label.new()
+	var warning_label: Label = Label.new()
 	warning_label.text = message
 	warning_label.add_theme_color_override("font_color", Color(1.0, 0.556, 0.493, 1.0))
 	
 	warning_panel.size = warning_label.get_combined_minimum_size()
 	
-	var new_stylebox : StyleBoxFlat = StyleBoxFlat.new()
+	var new_stylebox: StyleBoxFlat = StyleBoxFlat.new()
 	new_stylebox.bg_color = Color(0.169, 0.169, 0.169, 0.9)
 	new_stylebox.set_expand_margin_all(10)
 	new_stylebox.set_corner_radius_all(10)
@@ -218,7 +222,7 @@ func update_coords_limits() -> void:
 	show_or_hide_warning_label()
 
 func show_or_hide_warning_label() -> void:
-	var has_coords_more_than_rad : bool = false
+	var has_coords_more_than_rad: bool = false
 	for child in %CurrentlySelectedOptions.get_children():
 		# TODO
 		# If its a circle, do a special boundary check

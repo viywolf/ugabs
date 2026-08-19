@@ -6,10 +6,10 @@ signal move_finished
 
 signal can_beep
 
-var tilemap : TileMapLayer
+var tilemap: TileMapLayer
 
 ## A list of every Vector direction (UP, DOWN, LEFT, RIGHT)
-var directions : Array[Vector2i] = [
+var directions: Array[Vector2i] = [
 	Vector2i.UP,
 	Vector2i.DOWN,
 	Vector2i.LEFT,
@@ -18,41 +18,42 @@ var directions : Array[Vector2i] = [
 
 @export_category("Colours")
 
-@export var active_colour : Vector2i = CellColour.colours_in_tileset[CellColour.TilesetColour.RED]
-@export var passed_colour : Vector2i = CellColour.colours_in_tileset[CellColour.TilesetColour.DESATURATED_RED]
+@export var active_colour: Vector2i = CellColour.colours_in_tileset[CellColour.TilesetColour.RED]
+@export var passed_colour: Vector2i = CellColour.colours_in_tileset[CellColour.TilesetColour.DESATURATED_RED]
 
 @export_category("Position")
 
-@export var current_position : Vector2i = Vector2i(0, 0)
-var next_position : Vector2i = Vector2i(0, 0)
+@export var current_position: Vector2i = Vector2i(0, 0)
+var next_position: Vector2i = Vector2i(0, 0)
 
 @export_category("Modifiers")
 
-@export var traveller_speed : float = 1
-@export var traveller_modifier : String
-@export var disabled : bool = false
-@export var filling_disabled : bool = false
+var trav_name: String
+@export var traveller_speed: float = 1
+@export var traveller_modifier: String
+@export var disabled: bool = false
+@export var filling_disabled: bool = false
 
-var max_pos : Array[int] = [
+var max_pos: Array[int] = [
 	0, # left
 	0, # right
 	0, # up
 	0, # down
 ]
 
-var is_new_position : Dictionary[Vector2i, bool]
+var is_new_position: Dictionary[Vector2i, bool]
 
-var move_log : Array[Vector2i]
+var move_log: Array[Vector2i]
 
-var direction_of_movement : Vector2i
+var direction_of_movement: Vector2i
 
-var child_no : int = -1
+var child_no: int = -1
 
-var cells_claimed : int = 0
+var cells_claimed: int = 0
 
 # Relative directions
 
-var relative_direction : Array[Vector2i] = [
+var relative_direction: Array[Vector2i] = [
 	Vector2i.LEFT,
 	Vector2i.RIGHT,
 	Vector2i.UP,
@@ -77,8 +78,11 @@ func _ready() -> void:
 		printerr("No tile map layer to reference!")
 		assert(false)
 		
-	# Make it easier to use
-	name = name + ' '
+	# TODO
+	if(trav_name != ""):
+		name = trav_name
+	else:
+		name = name + ' '
 		
 	max_pos[0] = current_position.x
 	max_pos[1] = current_position.x
@@ -94,7 +98,7 @@ func _ready() -> void:
 ## changing the cell at the position to the given colour.
 ## If the cell was previously null, emit the signal to create a 'beep' sound
 ## and increases the cells claimed of this traveller
-func set_cell_colour(cell_coords: Vector2i, colour : Vector2i) -> void:
+func set_cell_colour(cell_coords: Vector2i, colour: Vector2i) -> void:
 	if(is_cell_null(cell_coords) == true):
 		cells_claimed += 1
 		can_beep.emit()
@@ -105,7 +109,7 @@ func set_cell_colour(cell_coords: Vector2i, colour : Vector2i) -> void:
 
 
 ## Checks if the cell is null, returning true if so, otherwise returns false
-func is_cell_null(cell_coords : Vector2i) -> bool:
+func is_cell_null(cell_coords: Vector2i) -> bool:
 	return tilemap.get_cell_tile_data(cell_coords) == null
 
 
@@ -139,7 +143,7 @@ func start_moving() -> void:
 ## Attempts to move to the given position,
 ## calls the function to fill in the next cell,
 ## and checks if the position is enclosed.
-func move(to_next_position : Vector2i) -> void:
+func move(to_next_position: Vector2i) -> void:
 	next_position = to_next_position
 	
 	if(next_position == current_position):
@@ -151,7 +155,7 @@ func move(to_next_position : Vector2i) -> void:
 		direction_of_movement = next_position - current_position
 		
 		# CHeck if its not goinf dialogn bc that abd
-		var valid_dirt : bool = false
+		var valid_dirt: bool = false
 		for direction in directions:
 			if direction_of_movement == direction:
 				valid_dirt = true
@@ -165,7 +169,7 @@ func move(to_next_position : Vector2i) -> void:
 					check_if_enclosed(next_position)
 			is_new_position[current_position] = false
 			
-		for direction : Vector2i in directions:
+		for direction: Vector2i in directions:
 			if direction == -direction_of_movement:
 				continue
 			else:
@@ -200,7 +204,7 @@ func move(to_next_position : Vector2i) -> void:
 
 
 ## Returns the result of can_travel_to_cell
-func can_move(to_next_position : Vector2i) -> bool:
+func can_move(to_next_position: Vector2i) -> bool:
 	if(can_travel_to_cell(to_next_position)):
 		return true
 	else:
@@ -225,19 +229,19 @@ func recalculate_relative_directions() -> void:
 ## checking row by row, column by column, and using dfs.
 ## Also fills in the cells if it is enclosed.
 ## Temporarily disables the traveller while calculating (but this shouldn't have a big effect).
-func check_if_enclosed(_current_next_position : Vector2i) -> void:
+func check_if_enclosed(_current_next_position: Vector2i) -> void:
 	
 	disabled = true
 	
-	var cells_to_fill_1 : Dictionary[Vector2i, bool]
+	var cells_to_fill_1: Dictionary[Vector2i, bool]
 	# This goes through column by column
 
 	for i in range(max_pos[Direction.LEFT], max_pos[Direction.RIGHT] + 1):
 		# Checking each x position
 		
-		var found_cell_front : bool = false
-		var found_cell_back : bool = false
-		var empty_cells : Array[Vector2i]
+		var found_cell_front: bool = false
+		var found_cell_back: bool = false
+		var empty_cells: Array[Vector2i]
 		for j in range(max_pos[Direction.UP], max_pos[Direction.DOWN] + 1):
 			# Checking each y position
 			if(is_cell_traveller_colour(Vector2i(i, j))):
@@ -264,13 +268,13 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 		
 	# Row by row
 	
-	var cells_to_fill_2 : Dictionary[Vector2i, bool]
+	var cells_to_fill_2: Dictionary[Vector2i, bool]
 	
 	for i in range(max_pos[Direction.UP], max_pos[Direction.DOWN] + 1):
 		# Checking each y position
-		var found_cell_front : bool = false
-		var found_cell_back : bool = false
-		var empty_cells : Array[Vector2i]
+		var found_cell_front: bool = false
+		var found_cell_back: bool = false
+		var empty_cells: Array[Vector2i]
 		for j in range(max_pos[Direction.LEFT], max_pos[Direction.RIGHT] + 1):
 			# Checking each x position
 			
@@ -297,17 +301,17 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 			
 	
 			
-	var all_visited_cells : Array[Array]
+	var all_visited_cells: Array[Array]
 	# temp value here
-	var a : Array
+	var a: Array
 	a.resize(200)
 	a.fill(false)
 	for i in range(200):
 		all_visited_cells.push_back(a.duplicate())
 	
-	const adj_mat_offset : int = 100
+	const adj_mat_offset: int = 100
 	
-	var cell_is_invalid : Dictionary
+	var cell_is_invalid: Dictionary
 	
 	for cell in cells_to_fill_1.keys():
 		if(all_visited_cells[cell.x + adj_mat_offset][cell.y + adj_mat_offset] == true): 
@@ -315,11 +319,11 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 		
 		if(cells_to_fill_2.get_or_add(cell, false) == true):
 			# dfs here
-			var marked_empty_cells : Dictionary
-			var stack : Array[Vector2i]
+			var marked_empty_cells: Dictionary
+			var stack: Array[Vector2i]
 			stack.push_back(cell)
 			
-			var is_dfs_valid : bool = true
+			var is_dfs_valid: bool = true
 			
 			while(stack.is_empty() == false):
 				var cur_cell = stack.pop_back()
@@ -359,8 +363,8 @@ func check_if_enclosed(_current_next_position : Vector2i) -> void:
 						stack.push_back(cur_cell + direction2)
 				
 			if(is_dfs_valid == true):
-				var arr_for_playback : Array = ["fill"]
-				var temp_arr_for_positions : Array[Vector2i]
+				var arr_for_playback: Array = ["fill"]
+				var temp_arr_for_positions: Array[Vector2i]
 				for dfs_marked_cell in marked_empty_cells.keys():
 					#???
 					if(is_new_position.get_or_add(current_position, true) == true):

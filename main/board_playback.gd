@@ -6,6 +6,8 @@ var cur_turn : int = 0
 
 var prev_positions : Array[Vector2i]
 
+# TODO add the border
+
 func set_cell_colour(cell_coords : Vector2i, colour : Vector2i):
 	self.set_cell(cell_coords, 0, colour)
 
@@ -48,5 +50,3 @@ func _physics_process(_delta: float) -> void:
 				set_cell_colour(position_of_trav, Vector2i(GlobalTravInfo.traveller_colours[i], 0))
 			
 	cur_turn += 1
-	if cur_turn == 1: 
-		print(move_log)

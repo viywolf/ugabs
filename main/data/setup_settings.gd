@@ -10,8 +10,12 @@ var saved_current_trav_id: int = -1
 
 var saved_temp_added_travs_storage: Dictionary = {}
 
-var saved_current_trav_type_selected: String
+var saved_current_trav_type_selected: int
 
 var saved_border_type: String
 
 var saved_border_radius: int
+
+var saved_starting_pos: Vector2i
+
+var saved_trav_colour: int
