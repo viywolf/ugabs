@@ -1,8 +1,9 @@
 extends TileMapLayer
 
-# Emits every turn, with a Array[int] of cells claimed
+## Emits every turn, with a Array[int] of cells claimed
 signal update_cells_claimed
 
+## Signal to play a beep sound on empty cell taken
 signal beep
 
 @export_category("Travellers")
@@ -32,10 +33,8 @@ var filled_cells_in_grid: Dictionary
 
 var empty_cells_in_grid: Dictionary[Vector2i, bool]
 
-# making an astar grid for each colour
-# which allows teams
-
 """
+Format for replay
 [
 	[[action type, action value]],[ [action type, action value]],
 	[[action type, action value]],[ [action type, action value]], for each move
@@ -199,7 +198,6 @@ func _ready() -> void:
 		printerr(name, " has no children")
 	
 	for i in range(self.get_child_count()):
-	#for child: Traveller in self.get_children():
 		var child: Traveller = self.get_child(i)
 		
 		child.move_finished.connect(traveller_move_finished.bind(i))
@@ -234,7 +232,6 @@ func _physics_process(_delta: float) -> void:
 	
 	if is_all_travellers_finished() == false:
 		return
-	GlobalTravInfo.current_turn += 1
 	
 	for arr: Array in GlobalTravInfo.global_move_log:
 		arr.push_back([])
@@ -251,6 +248,8 @@ func _physics_process(_delta: float) -> void:
 		for child: Traveller in self.get_children():
 			if child.disabled: continue
 			update_solid_points(get_astar_grid(child.passed_colour), child.active_colour, child.passed_colour)
+	
+	GlobalTravInfo.current_turn += 1
 	
 	var cur_cells_claimed: Array[int]
 	

@@ -9,6 +9,10 @@ func _ready() -> void:
 	$TravellerSetupMenu.setup_done.connect(tilemap_created)
 
 
+func _process(_delta: float) -> void:
+	if(Input.is_action_just_pressed("Toggle Sound")):
+		Global.sound_muted = not Global.sound_muted
+
 func tilemap_created() -> void:
 	for child: Node in get_children():
 		if child is TileMapLayer:
@@ -18,6 +22,8 @@ func tilemap_created() -> void:
 	%UI.update_no_of_labels()
 	%UI.show()
 	%UI.stop_updating_turns = false
+	$UI/ReplayButton.hide()
+	$UI/EndOfSimLabel.hide()
 
 
 func end_of_sim_actions() -> void:
@@ -65,7 +71,7 @@ func _on_back_button_pressed() -> void:
 
 
 func make_a_beep() -> void:
-	if(%Beep.playing == false):
+	if(%Beep.playing == false and Global.sound_muted == false):
 		%Beep.play()
 
 

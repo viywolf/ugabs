@@ -27,9 +27,8 @@ func _ready() -> void:
 	$SpeedSlider.position.x = this_screen_size.x / 2.5
 	$SpeedSliderLabelFast.position.x = $SpeedSlider.position.x + 10
 	$SpeedSliderLabelSlow.position.x = $SpeedSlider.position.x + 10
-	
-	$EndOfSimLabel.position.x = ($EndOfSimLabel.size.x / 2) - (this_screen_size.x / 2)
-	$EndOfSimLabel.position.y = (this_screen_size.y / 2) - ($EndOfSimLabel.size.y / 2)
+	$EndOfSimLabel.position.x = -(this_screen_size.x / 4) + ($EndOfSimLabel.size.x / 2)
+	$EndOfSimLabel.position.y = (this_screen_size.y / 2) - ($EndOfSimLabel.size.y * 2)
 	
 	$SpeedSlider.min_value = 0
 	var screen_refresh_rate: float = DisplayServer.screen_get_refresh_rate()

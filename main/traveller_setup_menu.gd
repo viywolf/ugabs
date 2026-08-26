@@ -105,7 +105,6 @@ func _on_add_new_traveller_button_pressed() -> void:
 	@warning_ignore("integer_division")
 	
 	if (positions_taken.get_or_add(position_as_vector, false) == true):
-		positions_taken[position_as_vector] = true
 		show_warning("Position value entered cannot be the same as a previously added position")
 		return
 	positions_taken[position_as_vector] = true
@@ -128,6 +127,8 @@ func add_trav_box_info(trav_name: String, type: String, colour: Vector2i, pos: V
 	temp_added_travs_storage[cur_id] = this_box_info.duplicate()
 	
 	%CurrentlySelectedOptions.add_child(new_info_box)
+	
+	show_or_hide_warning_label()
 
 func _on_start_button_pressed() -> void:
 	if(%CurrentlySelectedOptions.get_child_count() == 0):
@@ -162,16 +163,21 @@ func _on_start_button_pressed() -> void:
 	
 	Global.setup_open = false
 	
+	GlobalTravInfo.reset_global_move_log()
+	
+	GlobalTravInfo.grid_radius = $BorderInfo/SpinBox.value
+	GlobalTravInfo.grid_shape = $BorderInfo/OptionButton.text
+	
 	queue_free()
 	
 func remove_traveller(id: int) -> void:
 	for child: Node in %CurrentlySelectedOptions.get_children():
 		if child.node_id == id:
 			child.queue_free()
-			positions_taken.erase(temp_added_travs_storage[id][2])
+			positions_taken.erase(temp_added_travs_storage[id][3])
 			temp_added_travs_storage[id] = []
-			##await get_tree().process_frame
-			##show_or_hide_warning_label()
+			await get_tree().process_frame
+			show_or_hide_warning_label()
 			return
 	printerr("Id " + str(id) + " was not found")
 
@@ -227,7 +233,7 @@ func show_or_hide_warning_label() -> void:
 		# TODO
 		# If its a circle, do a special boundary check
 		if($BorderInfo/OptionButton.selected == 1):
-			if(abs(child.trav_start_pos.x) + abs(child.trav_start_pos.y) >= cur_radius):
+			if(abs(child.trav_start_pos.x) + abs(child.trav_start_pos.y) >= cur_radius - 1):
 				has_coords_more_than_rad = true
 				break
 		if(abs(child.trav_start_pos.x) >= cur_radius

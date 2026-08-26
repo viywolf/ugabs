@@ -38,4 +38,4 @@ This project was made for Horizons by Hack Club.
 
 ## License
 
-Uh yeah MIT license or something I don't really know also Godot uses the MIT license which is [here](godotengine.org/license).
+This project uses the MIT license which is [here](godotengine.org/license).
