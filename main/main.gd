@@ -5,6 +5,8 @@ var setup_res: PackedScene = load("res://main/traveller_setup_menu.tscn")
 
 var main_tilemap_scene: TileMapLayer
 
+var has_sim_ended: bool = false
+
 func _ready() -> void:
 	$TravellerSetupMenu.setup_done.connect(tilemap_created)
 
@@ -24,14 +26,53 @@ func tilemap_created() -> void:
 	%UI.stop_updating_turns = false
 	$UI/ReplayButton.hide()
 	$UI/EndOfSimLabel.hide()
+	has_sim_ended = false
+	for child: Label in %UI/Labels.get_children():
+		child.hide()
 
 
 func end_of_sim_actions() -> void:
+	if(has_sim_ended == true): return
+	has_sim_ended = true
+	
 	for child: Traveller in main_tilemap_scene.get_children():
 		child.disabled = true
 	%UI.stop_updating_turns = true
 	$UI/ReplayButton.show()
 	$UI/EndOfSimLabel.show()
+	
+	# Colour wins label
+	
+	create_win_text("Placeholder message")
+	
+
+func create_win_text(message: String) -> void:
+	var message_label: Label = Label.new()
+	message_label.text = message
+	message_label.theme = load("res://main/ui/main_theme.tres")
+	message_label.add_theme_font_size_override("font_size", 24)
+	#message_label.add_theme_color_override("font_color", Color(0.0, 0.0, 0.0, 1.0))
+	
+	@warning_ignore("integer_division")
+	message_label.global_position.x = -MetaInfo.screen_size.x / 10
+	message_label.global_position.y = -MetaInfo.screen_size.y / 2 + (MetaInfo.fraction_of_screen)
+	
+	message_label.modulate = Color(1.0, 1.0, 1.0, 0.0)
+	
+	%UI/Labels.add_child(message_label)
+	
+	var tween  = create_tween()
+	await tween.tween_property(message_label, "modulate:a", 1, 0.5).finished
+	
+	await get_tree().create_timer(0.7).timeout
+	
+	tween = create_tween()
+	tween.set_ease(Tween.EASE_IN)
+	tween.set_trans(Tween.TRANS_QUART)
+	tween.tween_property(message_label, "modulate:a", 0, 1.5)
+	await tween.parallel().tween_property(message_label, "position:y", -400, 1.7).finished
+	
+	message_label.queue_free()
 
 
 func update_cells_percentage_claimed_data(cur_cells_claimed: Array[int]):

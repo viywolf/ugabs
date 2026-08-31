@@ -56,7 +56,7 @@ theme = ExtResource("2_dhah8")
 text = "Quick start guide:
 
 -Add 'travellers' before starting the simulation (they will be shown on the right)
-- Change the traveller type, colour, and starting position
+- Change the traveller type, colour, starting position, and optionally, name
 - Optionally change the shape border type and size"
 
 [node name="Label" type="Label" parent="." unique_id=110489807]

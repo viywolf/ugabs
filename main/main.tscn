@@ -156,6 +156,12 @@ offset_bottom = -77.0
 theme = ExtResource("4_3wy1v")
 text = "End of simulation. Press the replay button to replay this round."
 
+[node name="Labels" type="Control" parent="UI" unique_id=2067840540]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
 [node name="Camera2D" type="Camera2D" parent="." unique_id=561495329]
 
 [node name="TravellerSetupMenu" parent="." unique_id=392752584 instance=ExtResource("7_e3y7d")]

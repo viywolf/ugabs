@@ -79,10 +79,6 @@ func get_next_position() -> Vector2i:
 			is_path_complete = true
 			return current_position
 
-
-#TODO: Make it so if all surrounding cells are not null, get a path to the closest non-null cell and
-# walk across this path, before continuing
-
 func get_next_cell() -> Vector2i:
 	return Vector2i(path_to_target[index_in_path])
 

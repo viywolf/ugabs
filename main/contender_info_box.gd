@@ -11,6 +11,8 @@ var node_id: int
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	if(trav_name == ""):
+		trav_name = "(None)"
 	%NameLabel.text = "Name: " + trav_name
 	%TypeLabel.text = "Type: " + trav_type
 	%StartPosLabel.text += " (" + str(trav_start_pos.x) + ", " + str(trav_start_pos.y) + ")"
