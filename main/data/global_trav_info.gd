@@ -13,7 +13,7 @@ var all_traveller_types: Dictionary[String, Resource] = {
 	"user": load("res://main/travellers/user.gd"),
 	"stationary": load("res://main/travellers/does_not_move.gd"),
 	"closest": load("res://main/travellers/closest.gd"),
-	"left hand": load("res://main/travellers/left_hand_rule.gd"),
+	"spiral": load("res://main/travellers/spiral.gd"),
 }
 
 # Change to dictionary?
@@ -23,7 +23,7 @@ var trav_types_desc: Array[String] = [
 	"'User' is controlled by you. Use arrow keys to control its movement. If no input is detected, its turn is skipped.", # user
 	"'Stationary' will never move. Not to be confused with 'stationery'.",
 	"'Closest' tries to find the closest uncoloured cell and moves towards it.",
-	"Left hand rule",
+	"'Spiral' moves in an anti-clockwise direction in a spiral like shape.",
 	"Placeholder",
 	"Placeholder",
 	"Placeholder",

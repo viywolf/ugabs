@@ -4,4 +4,4 @@ add naming travellers features
 
 stop being so laggy
 
-- need to draw border on replay
+Issue with a cell on replay? (lhr)

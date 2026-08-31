@@ -6,6 +6,8 @@ signal move_finished
 
 signal can_beep
 
+signal set_up_traveller(index: int)
+
 var tilemap: TileMapLayer
 
 ## A list of every Vector direction (UP, DOWN, LEFT, RIGHT)
@@ -51,6 +53,8 @@ var child_no: int = -1
 
 var cells_claimed: int = 0
 
+var can_jump_over_cells: bool = false
+
 # Relative directions
 
 var relative_direction: Array[Vector2i] = [
@@ -78,11 +82,13 @@ func _ready() -> void:
 		printerr("No tile map layer to reference!")
 		assert(false)
 		
-	# TODO
+	# TODO Traveller names show on percentages
 	if(trav_name != ""):
 		name = trav_name
 	else:
 		name = name + ' '
+		
+	set_up_traveller.emit(child_no)
 		
 	max_pos[0] = current_position.x
 	max_pos[1] = current_position.x
@@ -203,10 +209,19 @@ func move(to_next_position: Vector2i) -> void:
 	recalculate_relative_directions()
 
 
-## Returns the result of can_travel_to_cell
+## Returns the result of can_travel_to_cell and if the next position is neighbouring
 func can_move(to_next_position: Vector2i) -> bool:
-	if(can_travel_to_cell(to_next_position)):
+	if(to_next_position == current_position):
 		return true
+	if(can_travel_to_cell(to_next_position)):
+		var is_neighbouring: bool = false
+		for direction in directions:
+			if(to_next_position == current_position + direction):
+				is_neighbouring = true
+		if(is_neighbouring == true):
+			return true
+		else: 
+			return false
 	else:
 		return false
 

@@ -203,13 +203,14 @@ func _ready() -> void:
 		child.move_finished.connect(traveller_move_finished.bind(i))
 		child.can_beep.connect(emit_signal_beep)
 		
-		#GlobalTravInfo.traveller_teams[child.active_colour] = true
 		GlobalTravInfo.team_cells_claimed[child.active_colour] = 0
 		
 		GlobalTravInfo.traveller_colours[i] = child.active_colour.x
 		GlobalTravInfo.is_traveller_disabled[i] = child.disabled
+		# Does not update fast enough
 		GlobalTravInfo.traveller_names[i] = child.name
 		child.child_no = i
+		child.set_up_traveller.connect(update_traveller_info)
 		
 		if(child.disabled): continue
 		var new_astar_grid: AStarGrid2D = AStarGrid2D.new()
@@ -274,3 +275,6 @@ func is_all_travellers_finished() -> bool:
 
 func emit_signal_beep() -> void:
 	beep.emit()
+
+func update_traveller_info(index: int):
+	GlobalTravInfo.traveller_names[index] = get_child(index).name
