@@ -18,13 +18,24 @@ UGABS is a simulation of various algorithms on a 2d grid, following the followin
 
 ## Features
 
-UGABS currently features 2 (technically four?) different algorithms. More are planned to be added.
+UGABS currently features four (plus two) different algorithms. More are planned to be added.
+
+Currently availiable algorithms:
+	'Random' chooses a random direction to travel in every turn. This includes directions which it cannot move to, causing it to skip a turn.
+	'Random Router' chooses a random uncoloured cell on the grid, which it will then attempt to travel to in the shortest route possible.
+	'Closest' tries to find the closest uncoloured cell and moves towards it.
+	'Spiral' moves in an anti-clockwise direction in a spiral like shape.
+Plus a few bonus non-algorithms:
+	'User' is controlled by you. Use arrow keys to control its movement. If no input is detected in time, its turn is skipped.
+	'Stationary' will never move. Not to be confused with 'stationery'.
 
 You may customise the colours for each one of the algorithm grid people, as well as choose where they start on the grid.
 
 The grid itself can also be customised, with the ability to choose a square/circle based shape, and the radius/size of it.
 
 ![](https://github.com/viywolf/ugabs/blob/main/misc/CustomisationDemoUGABS.gif)
+
+After all cells in the grid are taken, the simulation will stop. You will then have the option to replay it.
 
 ## Inspiration
 

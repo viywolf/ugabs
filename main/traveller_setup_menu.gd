@@ -181,6 +181,7 @@ func remove_traveller(id: int) -> void:
 			return
 	printerr("Id " + str(id) + " was not found")
 
+## Creates a warning popup with the given message
 func show_warning(message: String) -> void:
 	var warning_panel: Panel = Panel.new()
 	
@@ -227,6 +228,8 @@ func update_coords_limits() -> void:
 	
 	show_or_hide_warning_label()
 
+## Checks if the warning label for the border size vs traveller position should be shown or hidden,
+## and does the corresponding action.
 func show_or_hide_warning_label() -> void:
 	var has_coords_more_than_rad: bool = false
 	for child in %CurrentlySelectedOptions.get_children():

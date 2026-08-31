@@ -20,7 +20,7 @@ var all_traveller_types: Dictionary[String, Resource] = {
 var trav_types_desc: Array[String] = [
 	"'Random' chooses a random direction to travel in every turn. This includes directions which it cannot move to, causing it to skip a turn.", # random
 	"'Random Router' chooses a random uncoloured cell on the grid, which it will then attempt to travel to in the shortest route possible.", # seeker
-	"'User' is controlled by you. Use arrow keys to control its movement. If no input is detected, its turn is skipped.", # user
+	"'User' is controlled by you. Use arrow keys to control its movement. If no input is detected in time, its turn is skipped.", # user
 	"'Stationary' will never move. Not to be confused with 'stationery'.",
 	"'Closest' tries to find the closest uncoloured cell and moves towards it.",
 	"'Spiral' moves in an anti-clockwise direction in a spiral like shape.",

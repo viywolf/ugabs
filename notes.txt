@@ -1,7 +1,17 @@
 zoom would be cool
 
-add naming travellers features
-
 stop being so laggy
 
 Issue with a cell on replay? (lhr)
+
+
+Customisation:
+	add naming travellers features
+	custom colours
+	custom grid
+	
+	
+extra:
+	live traveller placement+grid customisation?
+	- need bfs to find the placable area so it is not placed outside of the circle
+	Indicate when the game is too laggy

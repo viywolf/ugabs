@@ -155,6 +155,7 @@ func _ready() -> void:
 				get_cell_tile_data(Vector2i(x, y)).set_custom_data("Colour", Vector2i(9, 0))
 	
 	if auto_add_travellers == true:
+		var index: int = 0
 		for traveller: Array[Variant] in travellers:
 			var traveller_type: String = traveller[TravInfo.TYPE]
 			traveller_type = traveller_type.to_lower()
@@ -181,6 +182,8 @@ func _ready() -> void:
 					
 		for child: Traveller in get_children():
 			child.disabled = false
+			
+		index += 1
 	
 	GlobalTravInfo.global_move_log.resize(self.get_child_count())
 	moves_finished.resize(self.get_child_count())
@@ -200,17 +203,15 @@ func _ready() -> void:
 	for i in range(self.get_child_count()):
 		var child: Traveller = self.get_child(i)
 		
-		child.move_finished.connect(traveller_move_finished.bind(i))
-		child.can_beep.connect(emit_signal_beep)
-		
 		GlobalTravInfo.team_cells_claimed[child.active_colour] = 0
 		
 		GlobalTravInfo.traveller_colours[i] = child.active_colour.x
 		GlobalTravInfo.is_traveller_disabled[i] = child.disabled
-		# Does not update fast enough
-		GlobalTravInfo.traveller_names[i] = child.name
+		
 		child.child_no = i
-		child.set_up_traveller.connect(update_traveller_info)
+		child.set_up_name()
+		child.move_finished.connect(traveller_move_finished.bind(i))
+		child.can_beep.connect(emit_signal_beep)
 		
 		if(child.disabled): continue
 		var new_astar_grid: AStarGrid2D = AStarGrid2D.new()
@@ -275,6 +276,3 @@ func is_all_travellers_finished() -> bool:
 
 func emit_signal_beep() -> void:
 	beep.emit()
-
-func update_traveller_info(index: int):
-	GlobalTravInfo.traveller_names[index] = get_child(index).name

@@ -6,8 +6,6 @@ signal move_finished
 
 signal can_beep
 
-signal set_up_traveller(index: int)
-
 var tilemap: TileMapLayer
 
 ## A list of every Vector direction (UP, DOWN, LEFT, RIGHT)
@@ -82,14 +80,6 @@ func _ready() -> void:
 		printerr("No tile map layer to reference!")
 		assert(false)
 		
-	# TODO Traveller names show on percentages
-	if(trav_name != ""):
-		name = trav_name
-	else:
-		name = name + ' '
-		
-	set_up_traveller.emit(child_no)
-		
 	max_pos[0] = current_position.x
 	max_pos[1] = current_position.x
 	max_pos[2] = current_position.y
@@ -98,6 +88,12 @@ func _ready() -> void:
 	recalculate_relative_directions()
 	
 	preparatory_actions()
+
+## Called by travellers_manager.gd
+func set_up_name() -> void:
+	if(trav_name != ""):
+		name = trav_name
+	GlobalTravInfo.traveller_names[child_no] = name
 
 
 ## 'Moves' this traveller to the given position, 
@@ -221,6 +217,7 @@ func can_move(to_next_position: Vector2i) -> bool:
 		if(is_neighbouring == true):
 			return true
 		else: 
+			printerr(name + " attempted to skip cells!")
 			return false
 	else:
 		return false
