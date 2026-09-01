@@ -4,12 +4,9 @@ stop being so laggy
 
 Issue with a cell on replay? (lhr)
 
-
 Customisation:
-	add naming travellers features
 	custom colours
 	custom grid
-	
 	
 extra:
 	live traveller placement+grid customisation?

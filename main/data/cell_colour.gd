@@ -35,3 +35,19 @@ var colours_rgba : Array[Color] = [
 	Color(131/255.0, 34/255.0, 206/255.0), 
 	Color(189/255.0, 11/255.0, 171/255.0),
 ]
+
+## Converts a vector2i to its equivilent colour name
+func vector2i_to_colour_name(vector: Vector2i) -> String:
+	for i in range(colours_in_tileset.size()):
+		if(colours_in_tileset[i] == vector):
+			return colour_names[i]
+	printerr("Colour not found")
+	return ""
+	
+## Converts a colour to its equivelent vector2i value
+func colour_name_to_vector2i(colour_name: String) -> Vector2i:
+	for i in range(colour_names.size()):
+		if(colour_names[i] == colour_name):
+			return colours_in_tileset[i]
+	printerr("Vector2i equivilent not found")
+	return Vector2i(-1, -1)

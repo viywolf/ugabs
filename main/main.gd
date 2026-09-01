@@ -14,6 +14,10 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if(Input.is_action_just_pressed("Toggle Sound")):
 		Global.sound_muted = not Global.sound_muted
+	if(Input.is_action_just_pressed("ui_down")):
+		%Camera2D.zoom -= (%Camera2D.zoom * 0.1)
+	if(Input.is_action_just_pressed("ui_up")):
+		%Camera2D.zoom += (%Camera2D.zoom * 0.1)
 
 func tilemap_created() -> void:
 	for child: Node in get_children():
@@ -42,8 +46,17 @@ func end_of_sim_actions() -> void:
 	$UI/EndOfSimLabel.show()
 	
 	# Colour wins label
+	# TODO make it centered? and needs testing
 	
-	create_win_text("Placeholder message")
+	var current_highest_colour_claimed: String
+	var current_highest_amount_claimed: float = 0
+	
+	for key in GlobalTravInfo.team_cells_claimed.keys():
+		if(GlobalTravInfo.team_cells_claimed[key] > current_highest_amount_claimed):
+			current_highest_amount_claimed = GlobalTravInfo.team_cells_claimed[key]
+			current_highest_colour_claimed = CellColour.vector2i_to_colour_name(key)
+	
+	create_win_text(str(current_highest_colour_claimed) + " won!")
 	
 
 func create_win_text(message: String) -> void:
@@ -51,7 +64,6 @@ func create_win_text(message: String) -> void:
 	message_label.text = message
 	message_label.theme = load("res://main/ui/main_theme.tres")
 	message_label.add_theme_font_size_override("font_size", 24)
-	#message_label.add_theme_color_override("font_color", Color(0.0, 0.0, 0.0, 1.0))
 	
 	@warning_ignore("integer_division")
 	message_label.global_position.x = -MetaInfo.screen_size.x / 10
