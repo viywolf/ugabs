@@ -16,6 +16,10 @@ func _ready() -> void:
 	# random out of bounds value
 	prev_positions.fill(Vector2i(237, 237))
 	draw_shape_border(GlobalTravInfo.grid_shape.to_lower(), GlobalTravInfo.grid_radius)
+	# Fill in the starting cell for each trav
+	for key in GlobalTravInfo.starting_colours_positions:
+		# The key is saved as the base colour, but we want to use the desat colour
+		set_cell_colour(GlobalTravInfo.starting_colours_positions[key], Vector2i(key.x, 1))
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

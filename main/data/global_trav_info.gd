@@ -47,6 +47,9 @@ var team_cells_claimed: Dictionary[Vector2i, float]
 # Only used in playback?
 var traveller_colours: Array[int]
 
+## The colours and starting position of each traveller, used in board playback
+var starting_colours_positions: Dictionary[Vector2i, Vector2i]
+
 var is_traveller_disabled: Array[bool]
 
 var current_turn: int = 0

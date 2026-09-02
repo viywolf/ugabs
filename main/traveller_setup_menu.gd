@@ -24,6 +24,7 @@ var positions_taken: Dictionary
 
 var current_trav_id: int = 0
 
+## trav_name, trav_type, trav_colour, trav_start_pos, node_id
 var temp_added_travs_storage: Dictionary[int, Array]
 
 @onready var cur_radius: int = $BorderInfo/SpinBox.value
@@ -167,6 +168,11 @@ func _on_start_button_pressed() -> void:
 	
 	GlobalTravInfo.grid_radius = $BorderInfo/SpinBox.value
 	GlobalTravInfo.grid_shape = $BorderInfo/OptionButton.text
+	
+	var TRAV_COLOUR: int = 2
+	var TRAV_POS: int = 3
+	for key in temp_added_travs_storage.keys():
+		GlobalTravInfo.starting_colours_positions[temp_added_travs_storage[key][TRAV_COLOUR]] = temp_added_travs_storage[key][TRAV_POS]
 	
 	queue_free()
 	
