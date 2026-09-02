@@ -19,18 +19,18 @@ func _ready() -> void:
 	
 	var this_screen_size: Vector2i = get_viewport().get_visible_rect().size
 	
-	%BackButton.position.y = this_screen_size.y / 2.2 - %BackButton.size.y
+	%BackButton.position.y = this_screen_size.y / 2.2 - %BackButton.size.y + (MetaInfo.screen_size.y / 2)
 	$ReplayButton.position.y = %BackButton.position.y
+	$ReplayButton.position.x = %BackButton.position.x + %BackButton.size.x + MetaInfo.fraction_of_screen
+	$EndOfSimLabel.position.y = %BackButton.position.y + (%BackButton.size.y / 4)
+	$EndOfSimLabel.position.x = $ReplayButton.position.x + $ReplayButton.size.x + MetaInfo.fraction_of_screen
 	$ToggleUILabel.position.y = %BackButton.position.y - $ToggleUILabel.size.y - 5
 	
-	$CurrentTurnLabel.position.x = this_screen_size.x / 2.2 - $CurrentTurnLabel.size.x - 50
-	$SpeedSlider.position.x = this_screen_size.x / 2.5
-	$SpeedSliderLabelFast.position.x = $SpeedSlider.position.x + 10
+	$CurrentTurnLabel.position.x = this_screen_size.x / 2.2 - $CurrentTurnLabel.size.x - 50 + (MetaInfo.screen_size.x / 2)
+	$SpeedSlider.position.x = this_screen_size.x / 2.5 + (MetaInfo.screen_size.x / 2)
+	$SpeedSliderLabelFast.position.x = $SpeedSlider.position.x + 10 
 	$SpeedSliderLabelSlow.position.x = $SpeedSlider.position.x + 10
-	
-	$EndOfSimLabel.position.x = -(this_screen_size.x / 4.0) + ($EndOfSimLabel.size.x / 2.0)
-	$EndOfSimLabel.position.y = (this_screen_size.y / 2.0) - ($EndOfSimLabel.size.y * 2.0)
-	
+
 	$SpeedSlider.min_value = 0
 	var screen_refresh_rate: float = DisplayServer.screen_get_refresh_rate()
 	if(screen_refresh_rate > 0):
@@ -41,6 +41,7 @@ func _ready() -> void:
 	$SpeedSlider.step = 0.1
 	$SpeedSlider.value = sqrt(12)
 	
+
 func _input(event: InputEvent) -> void:
 	# not on the setup menu
 	if(event.is_action_pressed("ToggleUI") && Global.setup_open == false):
@@ -129,3 +130,11 @@ func _on_toggle_percentages_pressed() -> void:
 		$HBoxContainer/TogglePercentages.text = "Show Colours"
 	else:
 		$HBoxContainer/TogglePercentages.text = "Show Types"
+
+
+func _on_speed_slider_drag_started() -> void:
+	Global.is_dragging_speed_slider = true
+
+
+func _on_speed_slider_drag_ended(value_changed: bool) -> void:
+	Global.is_dragging_speed_slider = false

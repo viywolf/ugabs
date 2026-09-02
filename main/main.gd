@@ -7,17 +7,39 @@ var main_tilemap_scene: TileMapLayer
 
 var has_sim_ended: bool = false
 
+var is_mouse_held: bool = false
+var mouse_original_pos: Vector2
+
+const CAMERA_BOUNDS := Vector2(500, 500)
+
 func _ready() -> void:
 	$TravellerSetupMenu.setup_done.connect(tilemap_created)
+	
+	$UI/Labels.position.x = (MetaInfo.screen_size.x / 2)
+	$UI/Labels.position.y = 50
 
 
 func _process(_delta: float) -> void:
+	# Toggling beep sound
 	if(Input.is_action_just_pressed("Toggle Sound")):
 		Global.sound_muted = not Global.sound_muted
-	if(Input.is_action_just_pressed("ui_down")):
+		
+	# Zooming in and out
+	if(Input.is_action_just_pressed("zoom_out")):
 		%Camera2D.zoom -= (%Camera2D.zoom * 0.1)
-	if(Input.is_action_just_pressed("ui_up")):
+	if(Input.is_action_just_pressed("zoom_in")):
 		%Camera2D.zoom += (%Camera2D.zoom * 0.1)
+	%Camera2D.zoom = Vector2(clampf(%Camera2D.zoom.x, 0.1, 10), clampf(%Camera2D.zoom.y, 0.1, 10))
+		
+	# Moving the camera around
+	if(Input.is_action_pressed("left_click") and Global.is_dragging_speed_slider == false):
+		if(is_mouse_held == false):
+			is_mouse_held = true
+			mouse_original_pos = get_local_mouse_position()
+		%Camera2D.position -= get_local_mouse_position() - mouse_original_pos
+		%Camera2D.position = Vector2(clampf(%Camera2D.position.x, -CAMERA_BOUNDS.x, CAMERA_BOUNDS.x), clampf(%Camera2D.position.y, -CAMERA_BOUNDS.y, CAMERA_BOUNDS.y))
+	else:
+		is_mouse_held = false
 
 func tilemap_created() -> void:
 	for child: Node in get_children():
@@ -46,7 +68,6 @@ func end_of_sim_actions() -> void:
 	$UI/EndOfSimLabel.show()
 	
 	# Colour wins label
-	# TODO make it centered? and needs testing
 	
 	var current_highest_colour_claimed: String
 	var current_highest_amount_claimed: float = 0
@@ -65,13 +86,11 @@ func create_win_text(message: String) -> void:
 	message_label.theme = load("res://main/ui/main_theme.tres")
 	message_label.add_theme_font_size_override("font_size", 24)
 	
-	@warning_ignore("integer_division")
-	message_label.global_position.x = -MetaInfo.screen_size.x / 10
-	message_label.global_position.y = -MetaInfo.screen_size.y / 2 + (MetaInfo.fraction_of_screen)
-	
 	message_label.modulate = Color(1.0, 1.0, 1.0, 0.0)
 	
 	%UI/Labels.add_child(message_label)
+	
+	message_label.position.x = -message_label.size.x / 2
 	
 	var tween  = create_tween()
 	await tween.tween_property(message_label, "modulate:a", 1, 0.5).finished
