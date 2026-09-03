@@ -32,6 +32,18 @@ text = "Type:"
 layout_mode = 2
 theme = ExtResource("2_p13as")
 
+[node name="ExplanationBox" type="ScrollContainer" parent="MainContainer" unique_id=580387083]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_p13as")
+horizontal_scroll_mode = 3
+
+[node name="Label" type="Label" parent="MainContainer/ExplanationBox" unique_id=661271342]
+layout_mode = 2
+theme = ExtResource("2_p13as")
+text = "place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text "
+autowrap_mode = 3
+
 [node name="ColourContainer" type="HBoxContainer" parent="MainContainer" unique_id=353664610]
 layout_mode = 2
 theme = ExtResource("2_p13as")
@@ -79,38 +91,22 @@ theme = ExtResource("2_p13as")
 placeholder_text = "[Optional]"
 
 [node name="AddNewTravellerButton" type="Button" parent="MainContainer" unique_id=906707842]
+custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 theme = ExtResource("2_p13as")
 text = "Add"
 
-[node name="ExplanationBox" type="ScrollContainer" parent="." unique_id=580387083]
-offset_left = 379.0
-offset_top = 30.0
-offset_right = 379.0
-offset_bottom = 30.0
-theme = ExtResource("2_p13as")
-horizontal_scroll_mode = 3
-
-[node name="Label" type="Label" parent="ExplanationBox" unique_id=661271342]
+[node name="BorderInfo" type="HBoxContainer" parent="MainContainer" unique_id=1286213096]
+unique_name_in_owner = true
 layout_mode = 2
-theme = ExtResource("2_p13as")
-text = "place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text place holder text "
-horizontal_alignment = 1
-autowrap_mode = 3
-
-[node name="BorderInfo" type="HBoxContainer" parent="." unique_id=1286213096]
-offset_left = 27.0
-offset_top = 308.0
-offset_right = 390.0
-offset_bottom = 348.0
 theme = ExtResource("2_p13as")
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="BorderInfo" unique_id=1902496587]
+[node name="Label" type="Label" parent="MainContainer/BorderInfo" unique_id=1902496587]
 layout_mode = 2
 text = "Border Type:"
 
-[node name="OptionButton" type="OptionButton" parent="BorderInfo" unique_id=966220343]
+[node name="OptionButton" type="OptionButton" parent="MainContainer/BorderInfo" unique_id=966220343]
 layout_mode = 2
 theme = ExtResource("2_p13as")
 selected = 0
@@ -120,33 +116,30 @@ popup/item_0/id = 0
 popup/item_1/text = "Circle"
 popup/item_1/id = 1
 
-[node name="Label2" type="Label" parent="BorderInfo" unique_id=971946379]
+[node name="Label2" type="Label" parent="MainContainer/BorderInfo" unique_id=971946379]
 layout_mode = 2
 theme = ExtResource("2_p13as")
 text = "Radius: "
 
-[node name="SpinBox" type="SpinBox" parent="BorderInfo" unique_id=1153893608]
+[node name="SpinBox" type="SpinBox" parent="MainContainer/BorderInfo" unique_id=1153893608]
 layout_mode = 2
 theme = ExtResource("2_p13as")
 min_value = 1.0
 max_value = 35.0
 value = 10.0
 
-[node name="WarningLabel" type="Label" parent="." unique_id=1467416956]
+[node name="WarningLabel" type="Label" parent="MainContainer" unique_id=1467416956]
 unique_name_in_owner = true
-offset_left = 30.0
-offset_top = 378.0
-offset_right = 343.0
-offset_bottom = 453.0
+layout_mode = 2
 theme = ExtResource("2_p13as")
 text = "Warning: Currently added positions may not fit in the border. Please increase the border radius or adjust starting positions."
 autowrap_mode = 3
 
 [node name="StartButton" type="Button" parent="." unique_id=368410278]
-offset_left = 43.0
-offset_top = 553.0
-offset_right = 355.0
-offset_bottom = 603.0
+unique_name_in_owner = true
+offset_top = 465.0
+offset_right = 347.0
+offset_bottom = 507.0
 theme = ExtResource("2_p13as")
 theme_override_font_sizes/font_size = 30
 text = "Start The Simulation!"
@@ -165,5 +158,5 @@ theme = ExtResource("2_p13as")
 
 [connection signal="item_selected" from="MainContainer/TypeContainer/OptionButton" to="." method="_on_option_button_item_selected"]
 [connection signal="pressed" from="MainContainer/AddNewTravellerButton" to="." method="_on_add_new_traveller_button_pressed"]
-[connection signal="value_changed" from="BorderInfo/SpinBox" to="." method="_on_spin_box_value_changed"]
+[connection signal="value_changed" from="MainContainer/BorderInfo/SpinBox" to="." method="_on_spin_box_value_changed"]
 [connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]

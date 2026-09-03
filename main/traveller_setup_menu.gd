@@ -27,7 +27,7 @@ var current_trav_id: int = 0
 ## trav_name, trav_type, trav_colour, trav_start_pos, node_id
 var temp_added_travs_storage: Dictionary[int, Array]
 
-@onready var cur_radius: int = $BorderInfo/SpinBox.value
+@onready var cur_radius: int = %BorderInfo/SpinBox.value
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -35,24 +35,29 @@ func _ready() -> void:
 	
 	#region positioning ui nodes
 	$MainContainer.position.x = MetaInfo.screen_size.x / MetaInfo.fraction_of_screen
-	$BorderInfo.position.x = MetaInfo.screen_size.x / MetaInfo.fraction_of_screen
+	$MainContainer.size.x = MetaInfo.screen_size.x / 2
 	
-	$StartButton.position.x = MetaInfo.screen_size.x / MetaInfo.fraction_of_screen
-	$StartButton.position.y = MetaInfo.screen_size.y - $StartButton.size.y - (MetaInfo.screen_size.y / MetaInfo.fraction_of_screen)
+	%BorderInfo.position.x = MetaInfo.screen_size.x / MetaInfo.fraction_of_screen
+	
+	%StartButton.position.x = MetaInfo.screen_size.x / MetaInfo.fraction_of_screen
+	%StartButton.position.y = MetaInfo.screen_size.y - $StartButton.size.y - (MetaInfo.screen_size.y / MetaInfo.fraction_of_screen)
+	%StartButton.size.x = $MainContainer.size.x
+	
 	
 	%WarningLabel.size.x = $MainContainer.size.x
-	%WarningLabel.position.x = $MainContainer.position.x
-	%WarningLabel.position.y = $StartButton.position.y - (MetaInfo.fraction_of_screen * 5)
+#	%WarningLabel.position.x = $MainContainer.position.x
+#	%WarningLabel.position.y = $StartButton.position.y - (MetaInfo.fraction_of_screen * 5)
 	%WarningLabel.hide()
 	
-	$ExplanationBox.position.x = $MainContainer.position.x + $MainContainer.size.x + MetaInfo.screen_size.x / MetaInfo.fraction_of_screen
-	$ExplanationBox.position.y = $MainContainer.position.y
+	%ExplanationBox.position.x = $MainContainer.position.x + $MainContainer.size.x + MetaInfo.screen_size.x / MetaInfo.fraction_of_screen
+	%ExplanationBox.position.y = $MainContainer.position.y
 	
 	$ScrollContainer.position.x = MetaInfo.screen_size.x - $ScrollContainer.size.x - (MetaInfo.screen_size.x / MetaInfo.fraction_of_screen)
 	
-	$ExplanationBox/Label.custom_minimum_size.x = MetaInfo.screen_size.x - $ScrollContainer.custom_minimum_size.x - $MainContainer.size.x - (MetaInfo.screen_size.x / MetaInfo.fraction_of_screen * 4)
-	$ExplanationBox.custom_minimum_size.x = $ExplanationBox/Label.custom_minimum_size.x
-	$ExplanationBox.custom_minimum_size.y = $MainContainer.size.y + $BorderInfo.size.y
+	%ExplanationBox/Label.custom_minimum_size.x = $MainContainer.size.x
+	%ExplanationBox.custom_minimum_size.x = %ExplanationBox/Label.custom_minimum_size.x
+	%ExplanationBox.custom_minimum_size.y = MetaInfo.screen_size.y / 10
+	
 	#endregion
 	
 	# Set up
@@ -64,12 +69,12 @@ func _ready() -> void:
 		if colour == "BLACK": break
 		$MainContainer/ColourContainer/OptionButton.add_item(colour.capitalize())
 	
-	$ExplanationBox/Label.text = GlobalTravInfo.trav_types_desc[0]
+	%ExplanationBox/Label.text = GlobalTravInfo.trav_types_desc[0]
 	
 	update_coords_limits()
 	
-	$BorderInfo/SpinBox.min_value = 1
-	$BorderInfo/SpinBox.max_value = int(GlobalTravInfo.grid_size.y / 2.0)
+	%BorderInfo/SpinBox.min_value = 1
+	%BorderInfo/SpinBox.max_value = int(GlobalTravInfo.grid_size.y / 2.0)
 	
 	# Get saved settings if any
 	if(SetupSettings.has_saved_settings == true):
@@ -83,16 +88,20 @@ func _ready() -> void:
 		$MainContainer/ColourContainer/OptionButton.selected = SetupSettings.saved_trav_colour
 		
 		match SetupSettings.saved_border_type.capitalize():
-			"Square": $BorderInfo/OptionButton.selected = 0
-			"Circle": $BorderInfo/OptionButton.selected = 1
-			"Logo": $BorderInfo/OptionButton.selected = 2
+			"Square": %BorderInfo/OptionButton.selected = 0
+			"Circle": %BorderInfo/OptionButton.selected = 1
+			"Logo": %BorderInfo/OptionButton.selected = 2
 			_: printerr("Shape not found: " + str(SetupSettings.saved_border_type)) 
 			
-		$BorderInfo/SpinBox.value = SetupSettings.saved_border_radius
+		%BorderInfo/SpinBox.value = SetupSettings.saved_border_radius
 		
 		for i in current_trav_id:
 			if(temp_added_travs_storage[i] != []):
 				add_trav_box_info(temp_added_travs_storage[i][0], temp_added_travs_storage[i][1], temp_added_travs_storage[i][2], temp_added_travs_storage[i][3], i)
+
+func _input(event: InputEvent) -> void:
+	if(event.is_action_pressed("DisableLimits")):
+		%BorderInfo/SpinBox.max_value = 237
 
 func _on_add_new_traveller_button_pressed() -> void:
 	current_traveller_info[0] = $MainContainer/NameContainer/NameLineEdit.text
@@ -140,15 +149,15 @@ func _on_start_button_pressed() -> void:
 		if(temp_added_travs_storage[key] != []):
 			main_sim_instance.travellers.push_back(temp_added_travs_storage[key].duplicate())
 	
-	main_sim_instance.chosen_border_shape = $BorderInfo/OptionButton.text
-	main_sim_instance.border_radius = $BorderInfo/SpinBox.value
+	main_sim_instance.chosen_border_shape = %BorderInfo/OptionButton.text
+	main_sim_instance.border_radius = %BorderInfo/SpinBox.value
 	
 	add_sibling(main_sim_instance)
 	setup_done.emit()
 	
 	# Save cur settings
-	SetupSettings.saved_border_type = $BorderInfo/OptionButton.text
-	SetupSettings.saved_border_radius = $BorderInfo/SpinBox.value
+	SetupSettings.saved_border_type = %BorderInfo/OptionButton.text
+	SetupSettings.saved_border_radius = %BorderInfo/SpinBox.value
 	
 	SetupSettings.saved_current_trav_type_selected = $MainContainer/TypeContainer/OptionButton.selected
 	SetupSettings.saved_current_trav_id = current_trav_id
@@ -166,12 +175,13 @@ func _on_start_button_pressed() -> void:
 	
 	GlobalTravInfo.reset_global_move_log()
 	
-	GlobalTravInfo.grid_radius = $BorderInfo/SpinBox.value
-	GlobalTravInfo.grid_shape = $BorderInfo/OptionButton.text
+	GlobalTravInfo.grid_radius = %BorderInfo/SpinBox.value
+	GlobalTravInfo.grid_shape = %BorderInfo/OptionButton.text
 	
 	var TRAV_COLOUR: int = 2
 	var TRAV_POS: int = 3
 	for key in temp_added_travs_storage.keys():
+		if(temp_added_travs_storage[key].size() == 0): continue
 		GlobalTravInfo.starting_colours_positions[temp_added_travs_storage[key][TRAV_COLOUR]] = temp_added_travs_storage[key][TRAV_POS]
 	
 	queue_free()
@@ -223,7 +233,7 @@ func show_warning(message: String) -> void:
 	warning_panel.queue_free()
 
 func _on_option_button_item_selected(index: int) -> void:
-	$ExplanationBox/Label.text = GlobalTravInfo.trav_types_desc[index]
+	%ExplanationBox/Label.text = GlobalTravInfo.trav_types_desc[index]
 
 func update_coords_limits() -> void:
 	# Position limits
@@ -240,7 +250,7 @@ func show_or_hide_warning_label() -> void:
 	var has_coords_more_than_rad: bool = false
 	for child in %CurrentlySelectedOptions.get_children():
 		# If its a circle, do a special boundary check
-		if($BorderInfo/OptionButton.selected == 1):
+		if(%BorderInfo/OptionButton.selected == 1):
 			if(abs(child.trav_start_pos.x) + abs(child.trav_start_pos.y) >= cur_radius - 1):
 				has_coords_more_than_rad = true
 				break

@@ -3,7 +3,7 @@ extends Traveller
 var next_pos_ready : bool = false
 var next_position_input : Vector2i
 
-@export var hold_to_continue_mode : bool = false
+@export var hold_to_continue_mode : bool = true
 
 func preparatory_actions() -> void:
 	name = "User "
