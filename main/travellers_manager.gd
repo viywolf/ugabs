@@ -200,6 +200,8 @@ func _ready() -> void:
 	if self.get_child_count() == 0:
 		printerr(name, " has no children")
 	
+	GlobalTravInfo.reset_team_cells_claimed()
+	
 	for i in range(self.get_child_count()):
 		var child: Traveller = self.get_child(i)
 		
@@ -226,6 +228,7 @@ func _ready() -> void:
 		update_solid_points(get_astar_grid(child.passed_colour), child.active_colour, child.passed_colour)
 		
 		child.set_cell_colour(child.current_position, child.active_colour)
+		
 
 func _physics_process(_delta: float) -> void:
 	if name == "OriginalTileMap":

@@ -44,7 +44,7 @@ var traveller_names: Array[String]
 ## The number of cells claimed per colour
 var team_cells_claimed: Dictionary[Vector2i, float]
 
-# Only used in playback?
+## List of all colours
 var traveller_colours: Array[int]
 
 ## The colours and starting position of each traveller, used in board playback
@@ -59,3 +59,6 @@ var total_cells_in_grid: int
 
 var grid_radius: int
 var grid_shape: String
+
+func reset_team_cells_claimed() -> void:
+	team_cells_claimed.clear()

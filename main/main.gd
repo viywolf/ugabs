@@ -55,6 +55,11 @@ func tilemap_created() -> void:
 	has_sim_ended = false
 	for child: Label in %UI/Labels.get_children():
 		child.hide()
+	
+	# Prevents the player accidentally moving the camera on sim start
+	process_mode = Node.PROCESS_MODE_DISABLED
+	await get_tree().create_timer(0.5).timeout
+	process_mode = Node.PROCESS_MODE_ALWAYS
 
 
 func end_of_sim_actions() -> void:
@@ -80,6 +85,7 @@ func end_of_sim_actions() -> void:
 	create_win_text(str(current_highest_colour_claimed) + " won!")
 	
 
+## Creates a win notification text. Hides previously created text until it fades.
 func create_win_text(message: String) -> void:
 	var message_label: Label = Label.new()
 	message_label.text = message

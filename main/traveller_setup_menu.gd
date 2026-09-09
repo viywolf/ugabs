@@ -99,6 +99,9 @@ func _ready() -> void:
 			if(temp_added_travs_storage[i] != []):
 				add_trav_box_info(temp_added_travs_storage[i][0], temp_added_travs_storage[i][1], temp_added_travs_storage[i][2], temp_added_travs_storage[i][3], i)
 
+func _process(_delta: float) -> void:
+	show_or_hide_warning_label()
+
 func _input(event: InputEvent) -> void:
 	if(event.is_action_pressed("DisableLimits")):
 		%BorderInfo/SpinBox.max_value = 237
@@ -192,8 +195,6 @@ func remove_traveller(id: int) -> void:
 			child.queue_free()
 			positions_taken.erase(temp_added_travs_storage[id][3])
 			temp_added_travs_storage[id] = []
-			await get_tree().process_frame
-			show_or_hide_warning_label()
 			return
 	printerr("Id " + str(id) + " was not found")
 
@@ -241,8 +242,6 @@ func update_coords_limits() -> void:
 	$MainContainer/StartingPosContainer/GridPosInputX.max_value = int(cur_radius - 1)
 	$MainContainer/StartingPosContainer/GridPosInputY.min_value = int(-cur_radius + 1)
 	$MainContainer/StartingPosContainer/GridPosInputY.max_value = int(cur_radius - 1)
-	
-	show_or_hide_warning_label()
 
 ## Checks if the warning label for the border size vs traveller position should be shown or hidden,
 ## and does the corresponding action.
@@ -251,7 +250,7 @@ func show_or_hide_warning_label() -> void:
 	for child in %CurrentlySelectedOptions.get_children():
 		# If its a circle, do a special boundary check
 		if(%BorderInfo/OptionButton.selected == 1):
-			if(abs(child.trav_start_pos.x) + abs(child.trav_start_pos.y) >= cur_radius - 1):
+			if(abs(child.trav_start_pos.x) >= cur_radius or abs(child.trav_start_pos.y) >= cur_radius):
 				has_coords_more_than_rad = true
 				break
 		if(abs(child.trav_start_pos.x) >= cur_radius
